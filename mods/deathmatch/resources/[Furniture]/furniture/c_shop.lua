@@ -83,7 +83,7 @@ function orderFurniture()
 	
 		lastClick = getTickCount()
 		if #myFurnitures + 1 > 10 then 
-			outputChatBox("[!]#ffffff You can buy a maximum of 10 furniture items!",255,0,0,true)
+			outputChatBox("[!]#ffffff You can only hold 10 unplaced items in your inventory!",255,0,0,true)
 			return
 		end
 		
@@ -147,7 +147,7 @@ function drawnShop()
 	dxDrawRectangle(x+4,y+4,w-8,h-8,tocolor(10,10,10,150))
 	dxDrawRectangle(x+4,y+4,w-8,20,tocolor(35,35,35,120))
 	tx,ty,tw,th = x+4,y+4,w-8,20
-	dxDrawText("  "..color["hex"].."GtaHero#ffffff - Furniture store",tx,ty,tw+tx,th+ty,tocolor(255,255,255),1,font,"center","center",false,false,false,true)
+	dxDrawText("  "..color["hex"].."Brawl Furniture#ffffff - System",tx,ty,tw+tx,th+ty,tocolor(255,255,255),1,font,"center","center",false,false,false,true)
 
 	dxDrawText("",x+20,y,w+x+20,h+y,tocolor(255,255,255),1,font_big,"left","center")
 	
@@ -166,7 +166,7 @@ function drawnShop()
 	
 	drawButton("Buy",x+w/2-200/2-200,y+h-50,200,30,color["hex"].."aa",false, false, false, nil, true)
 	
-	drawButton("give up",x+w/2-200/2+200,y+h-50,200,30,"#c0392baa",false, false, false, nil, true)
+	drawButton("Cancel",x+w/2-200/2+200,y+h-50,200,30,"#c0392baa",false, false, false, nil, true)
 	
 end
 
@@ -199,7 +199,7 @@ function clickShop(button, state)
 		
 		if isInSlot(x+w/2-200/2-200,y+h-50,200,30) then
 			if #myFurnitures + 1 > 10 then 
-				outputChatBox("[!]#ffffff Maximum 10 mobilya alabilirsin!",255,0,0,true)
+				outputChatBox("[!]#ffffff You can only hold 10 unplaced items in your inventory!",255,0,0,true)
 				return
 			end
 			

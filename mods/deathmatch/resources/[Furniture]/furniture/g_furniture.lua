@@ -31,16 +31,16 @@ furnitures = {
 	{name = "Small tv", model = 1747, price = 350, offset = 0.5, isRenderable = true},
 	{name = "scuba tv", model = 1518, price = 250, offset = 1},
 	{name = "Small tv", model = 1748, price = 350, offset = 0.5, isRenderable = true},
-	{name = "Orta boy tv", model = 1749, price = 500, offset = 0.5, isRenderable = true},
-	{name = "Orta boy tv", model = 1750, price = 500, offset = 1, isRenderable = true},
-	{name = "Orta boy tv", model = 1751, price = 500, offset = 0.5, isRenderable = true},
-	{name = "Orta boy tv", model = 1752, price = 500, offset = 1, isRenderable = true},
-	{name = "Orta boy tv", model = 1781, price = 500, offset = 0.5, isRenderable = true},
-	{name = "LED tv", model = 1786, price = 2500, offset = 0.5, isRenderable = true,isModding=true},
-	{name = "Plazma TV", model = 1792, price = 800, offset = 0.5, isRenderable = true},
-	{name = "tv with shelves", model = 2091, price = 12000, offset = 0},
-	{name = "tv with shelves", model = 2093, price = 6000, offset = 0},
-	{name = "Hi-fi", model = 2100, price = 150, offset = 0, isRenderable = true,isModding=true},
+	{name = "Medium TV", model = 1749, price = 500, offset = 0.5, isRenderable = true},
+	{name = "Medium TV", model = 1750, price = 500, offset = 1, isRenderable = true},
+	{name = "Medium TV", model = 1751, price = 500, offset = 0.5, isRenderable = true},
+	{name = "Medium TV", model = 1752, price = 500, offset = 1, isRenderable = true},
+	{name = "Medium TV", model = 1781, price = 500, offset = 0.5, isRenderable = true},
+	{name = "LED TV", model = 1786, price = 2500, offset = 0.5, isRenderable = true,isModding=true},
+	{name = "Plasma TV", model = 1792, price = 800, offset = 0.5, isRenderable = true},
+	{name = "TV with Shelves", model = 2091, price = 2500, offset = 0},
+	{name = "TV with Shelves", model = 2093, price = 1500, offset = 0},
+	{name = "Hi-Fi", model = 2100, price = 150, offset = 0, isRenderable = true,isModding=true},
 	{name = "Computer", model = 2190, price = 750, offset = 0, isRenderable = true,isModding=true},
 	},
 {
@@ -64,7 +64,7 @@ furnitures = {
 	{name = "Couch", model = 1702, price = 200, offset = 0, isRenderable = true},
 	},
 {
-		name = "Lambs",
+		name = "Lamps",
 	{name = "Work Lamp", model = 2196, price = 50, offset = 0, isRenderable = true},
 	},	
 {
@@ -76,7 +76,7 @@ furnitures = {
 		
 	},	
 {
-		name = "cabinets",
+		name = "Cabinets",
 	{name = "Bookcase", model = 1742, price = 500, offset = 0, isRenderable = true},
 	{name = "Single Shelf", model = 1744, price = 50, offset = 0, isRenderable = true},
 	{name = "Multiple Shelves 1", model = 2462, price = 100, offset = 0, isRenderable = true},
@@ -86,7 +86,7 @@ furnitures = {
 	{name = "Table Shelf", model = 2502, price = 50, offset = 0},
 	{name = "Shelf", model = 2509, price = 50, offset = 0},
 	{name = "Bookcase Shelf", model = 2608, price = 150, offset = 0},
-	{name = "Dolap", model = 2708, price = 250, offset = 0},
+	{name = "Wardrobe", model = 2708, price = 250, offset = 0},
 	{name = "Cabinet with Bookcase and Drawers", model = 2164, price = 250, offset = 0},
 	{name = "Cabinet with Bookcase and Drawers 2", model = 2161, price = 250, offset = 0},
 	
@@ -111,10 +111,10 @@ furnitures = {
 	{name = "Covered Bed", model = 14880, price = 10, offset = 0},
 	{name = "Bunk", model = 1812, price = 150, offset = 0, isRenderable = true},
 	{name = "Bed", model = 2090, price = 500, offset = 0, isRenderable = true},
-	{name = "Komidinli Bed", model = 2298, price = 500, offset = 0, isRenderable = true}
+	{name = "Bed with Nightstand", model = 2298, price = 500, offset = 0, isRenderable = true}
 	},	
 {
-		name = "carpets",
+		name = "Carpets",
 	{name = "Orange Rug", model = 2847, price = 50, offset = 0},
 	{name = "Green Rug", model = 2817, price = 50, offset = 0},
 	{name = "Red Rug", model = 2818, price = 50, offset = 0},
@@ -137,13 +137,13 @@ furnitures = {
 	{name = "Frame 1", model = 1583, price = 125, offset = 0, isRenderable = true},
 	{name = "Frame 2", model = 1584, price = 125, offset = 0, isRenderable = true},
 	{name = "Frame 3", model = 1585, price = 125, offset = 0, isRenderable = true},
-	{name = "Automat", model = 1776, price = 225, offset = 0, isRenderable = true},
+	{name = "Vending Machine", model = 1776, price = 225, offset = 0, isRenderable = true},
 	{name = "Mop", model = 1778, price = 25, offset = 0, isRenderable = true},
 	{name = "Sound system", model = 2229, price = 125, offset = 0, isRenderable = true},
 	
 	},
 {
-		name = "Kitchen ",
+		name = "Kitchen",
 	{name = "Red Cabinet Set Piece", model = 2127, price = 375, offset = 0, isRenderable = true},
 	{name = "Red Cabinet Set Piece", model = 2128, price = 375, offset = 0, isRenderable = true},
 	{name = "Red Cabinet Set Piece", model = 2129, price = 375, offset = 0, isRenderable = true},
@@ -178,7 +178,7 @@ furnitures = {
 	{name = "Bathroom Furniture Piece", model = 2527, price = 175, offset = 0, isRenderable = true}, 
 	},
 {
-		name = "Sporting Goods",
+		name = "Gym Equipment",
 	{name = "Treadmill", model = 2627, price = 375, offset = 0, isRenderable = true},
 	{name = "Weightlifting Machine", model = 2629, price = 300, offset = 0, isRenderable = true}, 
 	{name = "Sporting Goods", model = 2628, price = 175, offset = 0, isRenderable = true}, 

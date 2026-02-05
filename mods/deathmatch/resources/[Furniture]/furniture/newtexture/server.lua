@@ -50,7 +50,7 @@ addEventHandler("newtexture:delete", resourceRoot,
 		if global:hasItem(client, 4, interior) or global:hasItem(client, 5, interior) or (integration:isPlayerAdmin(client) and global:isAdminOnDuty(client)) or (interior==0) then
 			local data = savedTextures[interior]
 			if not data or not data[id] then
-				outputChatBox("This isn't even your texture?", client, 255, 0, 0)
+				outputChatBox("This is not your texture.", client, 255, 0, 0)
 			else
 				local query = dbExec(mysql:getConnection(), "DELETE FROM interior_textures WHERE id = '" ..  ( id ) .. "' AND interior = '" .. ( interior ) .. "'")
 				if query then
@@ -66,7 +66,7 @@ addEventHandler("newtexture:delete", resourceRoot,
 				
 					savedTextures[interior][id] = nil
 				else
-					outputChatBox("MySQL error: " .. id .. " // Contact the Jesse", client, 255, 0, 0)
+					outputChatBox("MySQL error: " .. id .. " // Contact a Developer", client, 255, 0, 0)
 				end
 			end
 		else

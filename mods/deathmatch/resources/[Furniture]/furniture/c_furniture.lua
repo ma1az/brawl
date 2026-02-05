@@ -42,7 +42,7 @@ function Furnitures.draw()
 		local x, y, z = getElementPosition(selectedFurniture)
 		local wX, wY = getScreenFromWorldPosition(x, y, z)
 		if wX and wY then
-			dxDrawText("To place furniture '"..color["hex"].."E#ffffff' bas \n"..color["hex"].." #ffffffAdjust its location by pressing and holding the mouse.",wX, wY, wX, wY, tocolor(255, 255, 255, 255), 1, font3, "center", "center", false ,false, false, true)
+			dxDrawText("Press '"..color["hex"].."E#ffffff' to place furniture\n"..color["hex"].." #ffffffHold left mouse button to adjust location.",wX, wY, wX, wY, tocolor(255, 255, 255, 255), 1, font3, "center", "center", false ,false, false, true)
 		end
 		dxDrawRectangle(sX - 190, sY - 80, 165, 60, tocolor(0, 0, 0, 150))
 		dxDrawImage(sX - 190, sY - 80, 64, 64, "files/pgdn.png")
@@ -158,13 +158,13 @@ function Furnitures.drawHifi()
 	if not show_hifi or not selectedHifi then return end
 	dxDrawRectangle(sX/2 - 400/2-4, sY/2 - 170/2-6-4, 400+8, 186+8, tocolor(0, 0, 0, 120))
 	dxDrawRectangle(sX/2 - 400/2, sY/2 - 170/2-6, 400, 186, tocolor(10,10,10,150))
-	baslik = color["hex"].."Valhalla#ffffff HI-FI"
+	baslik = color["hex"].."Brawl#ffffff HI-FI"
 	dxDrawRectangle(sX/2 - 400/2, sY/2 - 170/2-6, dxGetTextWidth(baslik,0.97,font1)+20, 20, tocolor(10,10,10,150))
 	dxDrawText(baslik,sX/2 - 400/2+4, sY/2 - 170/2-6, dxGetTextWidth(baslik,0.97,font1)+24, 20+(sY/2 - 170/2-6),tocolor(255,255,255),1,font1,"left","center",false,false,false,true)
 	dxDrawRectangle(sX/2 - 400/2, sY/2 - 170/2-6+19, dxGetTextWidth(baslik,1,font1)+20, 1, tocolor(unpack(color["rgb"])))
 	
 	if selectedHifiKey > 0 then
-		dxDrawText("Çfield channel: "..color["hex"]..radio_channels[selectedHifiKey][1] or "n/a",sX/2 - 400/2+4, sY/2 - 170/2-6+25, dxGetTextWidth(baslik,0.97,font1)+24, 20+(sY/2 - 170/2-6+25),tocolor(255,255,255),1,font1,"left","top",false,false,false,true)
+		dxDrawText("Current Channel: "..color["hex"]..radio_channels[selectedHifiKey][1] or "n/a",sX/2 - 400/2+4, sY/2 - 170/2-6+25, dxGetTextWidth(baslik,0.97,font1)+24, 20+(sY/2 - 170/2-6+25),tocolor(255,255,255),1,font1,"left","top",false,false,false,true)
 	else
 		dxDrawText("field channel: "..color["hex"].."n/a",sX/2 - 400/2+4, sY/2 - 170/2-6+25, dxGetTextWidth(baslik,0.97,font1)+24, 20+(sY/2 - 170/2-6+25),tocolor(255,255,255),1,font1,"left","top",false,false,false,true)
 	end
@@ -183,7 +183,7 @@ function Furnitures.drawHifi()
 		end
 	end
 	
-	drawButton("Shut the sound",sX/2 - 400/2, sY/2 - 170/2 + 100,150,20,"#eb4d4baa",false, false, false, nil, true)
+	drawButton("Turn Off Sound",sX/2 - 400/2, sY/2 - 170/2 + 100,150,20,"#eb4d4baa",false, false, false, nil, true)
 	drawButton("Close Panel",sX/2 - 400/2, sY/2 - 170/2 + 125,150,20,"#74b9ffaa",false, false, false, nil, true)
 	--dxDrawRectangle(sX/2 - 400/2, sY/2 - 170/2 + 100, dxGetTextWidth("Mute the sound       ",1,font_bold)+5, 20, tocolor(255, 0, 0, 120)) -- Stop
 	--dxDrawText("Sesi Kapat",sX/2 - 400/2+5, sY/2 - 170/2 + 100, dxGetTextWidth("Sesi Kapat",1,font_bold)+5, 20,tocolor(255,255,255),1,font_bold,"left","top")
@@ -206,7 +206,7 @@ function Furnitures.drawHifi()
 				end
 				dxDrawRectangle(sX/2 - 400/2 + 20, sY/2 - 170/2 + (row - 1) * 22 + 20, 170, 20, tocolor(0, 0, 0, 120))
 				dxDrawRectangle(sX/2 - 400/2 + 20, sY/2 - 170/2 + (row - 1) * 22 + 20, distance/30 * 170, 20, color)
-				dxDrawText("Kanal: #"..row,sX/2 - 400/2 + 20, sY/2 - 170/2 + (row - 1) * 22 + 20, 170 + sX/2 - 400/2 + 20, 20 + sY/2 - 170/2 + (row - 1) * 22 + 20,tocolor(255,255,255,255),1,font_default,"center","center",false,false,true,true)
+				dxDrawText("Channel: #"..row,sX/2 - 400/2 + 20, sY/2 - 170/2 + (row - 1) * 22 + 20, 170 + sX/2 - 400/2 + 20, 20 + sY/2 - 170/2 + (row - 1) * 22 + 20,tocolor(255,255,255,255),1,font_default,"center","center",false,false,true,true)
 			end
 		end
 	end
@@ -279,7 +279,7 @@ function Furnitures.click(button, state, _, _, _, _, _, element)
 			setElementData(selectedHifi, "Furnitures->Hifi", {channel = 1, state = 0})
 			return
 		end
-		if isInBox(sX/2 - 400/2, sY/2 - 170/2 + 100+25, dxGetTextWidth("Menüyü Kapat       ",1,font_bold)+5, 20) then
+		if isInBox(sX/2 - 400/2, sY/2 - 170/2 + 100+25, dxGetTextWidth("Close Menu       ",1,font_bold)+5, 20) then
 		
 			show_hifi = false
 			return
@@ -447,7 +447,7 @@ addEventHandler("createFurnObject",root,function(data)
 		setElementDimension(obj, data["dimension"])
 		setElementInterior(obj, data["interior"])
 		setElementDoubleSided(obj, true)
-		--outputChatBox("furniture created succesfuly.")
+		outputChatBox("Furniture created successfully.")
 	end
 end)
 
@@ -457,7 +457,7 @@ addEventHandler("destroyFurnObject",root,function(int,dim)
 		int2,dim2 = getElementInterior(v),getElementDimension(v)
 		if (int == int2) and (dim == dim2) then
 			destroyElement(v)
-			--outputChatBox("furniture removed succesfuly.")
+			outputChatBox("Furniture removed successfully.")
 		end
 	end
 end)

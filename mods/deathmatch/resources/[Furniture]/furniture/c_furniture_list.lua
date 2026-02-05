@@ -12,7 +12,7 @@ local maxRow = math.floor(sx/90)
 
 local activeTab = "homepage"
 local activeAltTab = false
-local activeTabS = {{" Home page","homepage"}, {" furniture","furn"}, {" coatings","texs"}}
+local activeTabS = {{" Home Page","homepage"}, {" Furniture","furn"}, {" Coatings","texs"}}
 local activeAltTabs = {
 	["homepage"] = {},
 	["furn"] = {},

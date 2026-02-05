@@ -60,7 +60,7 @@ addEventHandler("onResourceStart", getResourceRootElement(),
 					
  					
 				end)   
-				outputDebugString("[Success] Loading furnitures has finished successfuly. Loaded: " .. query_lines .. " furnitures!")
+				outputDebugString("[Success] Loading furnitures has finished successfully. Loaded: " .. query_lines .. " furnitures!")
 
 			end
 		end, connection, "SELECT * FROM `furnitures`")  
@@ -214,7 +214,7 @@ function Furnitures.drop(player, furniture, x,y,z,int,dim,rot)
 	setElementDimension(furniture,dim)
 	setElementCollisionsEnabled(furniture, true)
 	
-	outputDebugString("Saving Furniture ID: " .. id .. " at Z: " .. tostring(z))
+
 	dbExec(connection, "UPDATE furnitures SET x=?, y=?, z=?, interior=?, dimension=?, rotation=?, placed=1 WHERE id=?", x, y, z, int, dim, rot, id)
 
 end
