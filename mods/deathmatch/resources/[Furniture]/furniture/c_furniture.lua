@@ -6,6 +6,7 @@ end
 
 
 Furnitures = {}
+local activeKeys = {}
 local hifiBoxes = {}
 local sX, sY = guiGetScreenSize()
 local lastClick = 0
@@ -39,16 +40,35 @@ end
 local font3 = dxCreateFont("files/5.ttf",12)
 function Furnitures.draw()
 	if getElementData(localPlayer, "Furniture->isFurnitureOnHand") and selectedFurniture then
-		local x, y, z = getElementPosition(selectedFurniture)
-		local wX, wY = getScreenFromWorldPosition(x, y, z)
-		if wX and wY then
-			dxDrawText("Press '"..color["hex"].."E#ffffff' to place furniture\n"..color["hex"].." #ffffffHold left mouse button to adjust location.",wX, wY, wX, wY, tocolor(255, 255, 255, 255), 1, font3, "center", "center", false ,false, false, true)
+		-- New UI Overlay
+		local panelW, panelH = 250, 190
+		local panelX = sX - panelW - 20
+		local panelY = sY * 0.1 -- Moved down 10%
+		
+		dxDrawRectangle(panelX, panelY, panelW, panelH, tocolor(0, 0, 0, 180))
+		dxDrawText("Controls", panelX, panelY + 10, panelX + panelW, panelY + 30, tocolor(255, 255, 255, 255), 1, font_bold, "center", "top")
+		
+		local controls = {
+			{"Move", "W, A, S, D"},
+			{"Up / Down", "E / Q"},
+			{"Rotate", "Alt + Scroll"},
+			{"Fast Rotate", "Shift + Alt + Scroll"},
+			{"Place", "F"},
+			{"Cancel", "Right Click"}
+		}
+		
+		-- Debug Info storage
+		local debugVecLen = 0
+		
+		for i, control in ipairs(controls) do
+			local y = panelY + 40 + (i-1) * 22
+			dxDrawText(control[1], panelX + 10, y, panelX + panelW, y + 20, tocolor(200, 200, 200, 255), 1, font_default, "left", "top")
+			dxDrawText(control[2], panelX, y, panelX + panelW - 10, y + 20, tocolor(255, 255, 255, 255), 1, font_default, "right", "top")
 		end
-		dxDrawRectangle(sX - 190, sY - 80, 165, 60, tocolor(0, 0, 0, 150))
-		dxDrawImage(sX - 190, sY - 80, 64, 64, "files/pgdn.png")
-		dxDrawImage(sX - 190 + 66, sY - 80, 64, 64, "files/pgup.png")
-		dxDrawImage(sX - 190 + 130, sY - 65, 32, 32, "files/ud_icon.png",90,0,0)
-	
+		
+		-- Force Input to Game
+		guiSetInputEnabled(false)
+		
 		if moveHandle then
 		local screenx, screeny, worldx, worldy, worldz = getCursorPosition()
         local px, py, pz = getCameraMatrix()
@@ -72,16 +92,74 @@ hifiXoffset = 0
 
 	if not selectedFurniture then return end
 
-	if getKeyState("arrow_u") then
-		local x, y, z, rx, ry, rz = getElementPosition(selectedFurniture)
-		--if z > 1.5 then return end
-		setElementPosition(selectedFurniture, x, y, z + 0.01)
+	-- New Movement Logic
+	local moveSpeed = 0.05
+	if activeKeys["lshift"] then moveSpeed = 0.1 end
+
+	-- Debug Input
+	-- if getKeyState("w") then outputDebugString("W pressed") end
+
+	local x, y, z = getElementPosition(selectedFurniture)
+	local camX, camY, camZ, camTX, camTY, camTZ = getCameraMatrix()
+	
+	-- Calculate forward vector on XY plane
+	local vecX = camTX - camX
+	local vecY = camTY - camY
+	-- Normalize
+	local vecLen = math.sqrt(vecX*vecX + vecY*vecY)
+	
+	-- Safety check for NaN
+	if vecLen > 0 then
+		vecX = vecX / vecLen
+		vecY = vecY / vecLen
+		
+		local moved = false
+		if activeKeys["w"] then
+			x = x + vecX * moveSpeed
+			y = y + vecY * moveSpeed
+			moved = true
+		end
+		if activeKeys["s"] then
+			x = x - vecX * moveSpeed
+			y = y - vecY * moveSpeed
+			moved = true
+		end
+		
+		local rightX = vecY
+		local rightY = -vecX
+		
+		if activeKeys["d"] then
+			x = x + rightX * moveSpeed
+			y = y + rightY * moveSpeed
+			moved = true
+		end
+		if activeKeys["a"] then
+			x = x - rightX * moveSpeed
+			y = y - rightY * moveSpeed
+			moved = true
+		end
+		
+		-- Vertical Movement
+		if activeKeys["e"] then
+			z = z + moveSpeed
+			moved = true
+		end
+		if activeKeys["q"] then
+			z = z - moveSpeed
+			moved = true
+		end
+
+		if moved then
+			setElementPosition(selectedFurniture, x, y, z)
+			
+			-- Sync with server (Removed for smoothness, managed in onKey)
+			-- if lastClick + 50 <= getTickCount() then
+			-- 	lastClick = getTickCount()
+			-- 	triggerServerEvent("Furnitures->setPos", localPlayer, localPlayer, selectedFurniture, {x, y, z, Furnitures.getRotation()})
+			-- end
+		end
 	end
-	if getKeyState("arrow_d") then
-		local x, y, z, rx, ry, rz = getElementPosition(selectedFurniture)
-		--if z < - 1.5 then return end
-		setElementPosition(selectedFurniture, x, y, z - 0.01)
-	end	
+
 	--
 	if not showEditInterface then return end
 	
@@ -343,10 +421,28 @@ function disableArrows(key,state)
 	end
 end
 addEventHandler("onClientKey",root,disableArrows)
+
 function Furnitures.onKey(key, state)
-	if getElementData(localPlayer, "Furniture->isFurnitureOnHand") and key == "lshift" and state then
-		cancelEvent()
+	if getElementData(localPlayer, "Furniture->isFurnitureOnHand") then
+		-- Track movement keys manually to ensure they work even if getKeyState fails
+		if key == "w" or key == "a" or key == "s" or key == "d" or key == "q" or key == "e" or key == "lalt" or key == "lshift" then
+			activeKeys[key] = state
+		end
+		
+		-- Prevent player movement while editing furniture
+		if (key == "w" or key == "a" or key == "s" or key == "d" or key == "space") and state then
+			cancelEvent()
+		end
 	end
+
+	-- Sync on key release to prevent lag/twitching
+	if not state and getElementData(localPlayer, "Furniture->isFurnitureOnHand") and selectedFurniture then
+		if key == "w" or key == "a" or key == "s" or key == "d" or key == "q" or key == "e" then
+			local x, y, z = getElementPosition(selectedFurniture)
+			triggerServerEvent("Furnitures->setPos", localPlayer, localPlayer, selectedFurniture, {x, y, z, Furnitures.getRotation()})
+		end
+	end
+
 	if show_hifi then
 		if key == "mouse_wheel_down" or key == "pgdn" then
 			if hifi_scroll < #radio_channels - maxHifiShow then
@@ -359,25 +455,31 @@ function Furnitures.onKey(key, state)
 			end
 		end
 	end
-	if selectedFurniture then
-		if key == "mouse_wheel_up" or key == "arrow_r" and state then
+	if selectedFurniture and activeKeys["lalt"] then
+		if key == "mouse_wheel_up" and state then
 			local rx, ry, rz = getElementRotation(selectedFurniture)
 			local plus = 1
-			if getKeyState("lshift") then
-				plus = 2
+			if activeKeys["lshift"] then
+				plus = 5
 			end
 			setElementRotation(selectedFurniture, rx, ry, rz + plus)
+			-- Sync rotation immediately as it is distinct event
+			local x, y, z = getElementPosition(selectedFurniture)
+			triggerServerEvent("Furnitures->setPos", localPlayer, localPlayer, selectedFurniture, {x, y, z, Furnitures.getRotation()})
 		end	
-		if key == "mouse_wheel_down" or key == "arrow_l" and state then
+		if key == "mouse_wheel_down" and state then
 			local rx, ry, rz = getElementRotation(selectedFurniture)
 			local plus = 1
-			if getKeyState("lshift") then
-				plus = 2
+			if activeKeys["lshift"] then
+				plus = 5
 			end
 			setElementRotation(selectedFurniture,rx, ry, rz - plus)
+			-- Sync rotation immediately
+			local x, y, z = getElementPosition(selectedFurniture)
+			triggerServerEvent("Furnitures->setPos", localPlayer, localPlayer, selectedFurniture, {x, y, z, Furnitures.getRotation()})
 		end
 	end
-	if key == "e" and state and selectedFurniture and getElementData(localPlayer, "Furniture->isFurnitureOnHand") then
+	if key == "f" and state and selectedFurniture and getElementData(localPlayer, "Furniture->isFurnitureOnHand") then
 		local _x, _y, _z = getElementPosition(selectedFurniture)
 		local _, _, _rot = getElementRotation(selectedFurniture)
 		local _int, _dim = getElementInterior(selectedFurniture),getElementDimension(selectedFurniture)
@@ -386,6 +488,7 @@ function Furnitures.onKey(key, state)
 		setElementData(selectedFurniture, "Furniture->used", false)
 		setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
 		selectedFurniture = nil
+		activeKeys = {} -- Reset keys on drop
 	end
 	if not selectedFurniture then return end
 	if key == "pgup" or key == "pgdn" and state then cancelEvent() end
@@ -393,8 +496,8 @@ end
 addEventHandler("onClientKey", root, Furnitures.onKey)
 function Furnitures.getRotation()
 	cam = Camera.matrix:getRotation():getZ()
-	cam2 = tonumber(string.format("%.0f",cam/90))*90--90 ve katları
-	return cam or 0
+	cam2 = tonumber(string.format("%.0f",cam)) -- Full integers
+	return cam2 or 0
 end
 
 
