@@ -200,6 +200,8 @@ adminTitles = {
 	[3] = "Senior Admin",
 	[4] = "Lead Admin",
 	[5] = "Head Admin",
+	[6] = "General Manager",
+	[7] = "Owner",
 	[10] = "Scripter",
 }
 
