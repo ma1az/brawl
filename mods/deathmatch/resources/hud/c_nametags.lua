@@ -141,10 +141,20 @@ function getPlayerIcons(name, player, forTopHUD, distance)
 			if getElementData(player,"duty_admin") == 1 then -- and getElementData(player, "admin_level") <= 5
 				if exports.integration:isPlayerLeadScripter(player) and getElementData(player, "admin_level") == 10 then
 					table.insert(icons, "scr_on")
-				elseif exports.integration:isPlayerLeadAdmin(player) then
-					table.insert(icons, "uat_on")
-				elseif exports.integration:isPlayerTrialAdmin(player) and getElementData(player, "admin_level") <= 5  then
+				elseif exports.integration:isPlayerOwner(player) and getElementData(player, "admin_level") == 7 then
+					table.insert(icons, "owner_on")
+				elseif exports.integration:isPlayerGeneralManager(player) and getElementData(player, "admin_level") == 6 then
+					table.insert(icons, "gma_on")
+				elseif exports.integration:isPlayerHeadAdmin(player) and getElementData(player, "admin_level") == 5 then
+					table.insert(icons, "hadm_on")	
+				elseif exports.integration:isPlayerLeadAdmin(player) and getElementData(player, "admin_level") == 4 then
+					table.insert(icons, "ladm_on")
+				elseif exports.integration:isPlayerSeniorAdmin(player) and getElementData(player, "admin_level") == 3 then
+					table.insert(icons, "sadm_on")
+				elseif exports.integration:isPlayerAdmin(player) and getElementData(player, "admin_level") == 2 then
 					table.insert(icons, "adm_on")
+				elseif exports.integration:isPlayerTrialAdmin(player) and getElementData(player, "admin_level") == 1 then
+					table.insert(icons, "tadm_on")
 				end
 			end
 

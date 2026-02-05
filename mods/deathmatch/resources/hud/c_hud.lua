@@ -95,14 +95,55 @@ function drawHUD()
 			end
 			
 			-- ADMIN TAG 
-			local isAdmin = exports.integration:isPlayerTrialAdmin(localPlayer)
-			local isUAT = exports.integration:isPlayerLeadAdmin(localPlayer)
-			if isUAT then
+			local isOwner = exports.integration:isPlayerOwner(localPlayer)
+			local isGM = exports.integration:isPlayerGeneralManager(localPlayer)
+			local isHead = exports.integration:isPlayerHeadAdmin(localPlayer)
+			local isLead = exports.integration:isPlayerLeadAdmin(localPlayer)
+			local isSenior = exports.integration:isPlayerSeniorAdmin(localPlayer)
+			local isAdmin = exports.integration:isPlayerAdmin(localPlayer)
+			local isTrial = exports.integration:isPlayerTrialAdmin(localPlayer)
+			if isOwner then
 				if getElementData( localPlayer,"duty_admin" )  == 1  then
-					dxDrawImage(ax,ay,iconH,iconH,"images/hud/uat_on.png")
+					dxDrawImage(ax,ay,iconH,iconH,"images/hud/owner_on.png")
 					table.insert(tooltips, "adminonduty")
 				else
-					dxDrawImage(ax,ay,iconH,iconH,"images/hud/uat_on.png", 0, 0, 0, disabled_item(100))
+					dxDrawImage(ax,ay,iconH,iconH,"images/hud/owner_on.png", 0, 0, 0, disabled_item(100))
+					table.insert(tooltips, "adminoffduty")
+				end
+				ax = ax - iconW
+			elseif isGM then
+				if getElementData( localPlayer,"duty_admin" )  == 1  then
+					dxDrawImage(ax,ay,iconH,iconH,"images/hud/gma_on.png")
+					table.insert(tooltips, "adminonduty")
+				else
+					dxDrawImage(ax,ay,iconH,iconH,"images/hud/gma_on.png", 0, 0, 0, disabled_item(100))
+					table.insert(tooltips, "adminoffduty")
+				end
+				ax = ax - iconW
+			elseif isHead then
+				if getElementData( localPlayer,"duty_admin" )  == 1  then
+					dxDrawImage(ax,ay,iconH,iconH,"images/hud/hadm_on.png")
+					table.insert(tooltips, "adminonduty")
+				else
+					dxDrawImage(ax,ay,iconH,iconH,"images/hud/hadm_on.png", 0, 0, 0, disabled_item(100))
+					table.insert(tooltips, "adminoffduty")
+				end
+				ax = ax - iconW
+			elseif isLead then
+				if getElementData( localPlayer,"duty_admin" )  == 1  then
+					dxDrawImage(ax,ay,iconH,iconH,"images/hud/ladm_on.png")
+					table.insert(tooltips, "adminonduty")
+				else
+					dxDrawImage(ax,ay,iconH,iconH,"images/hud/ladm_on.png", 0, 0, 0, disabled_item(100))
+					table.insert(tooltips, "adminoffduty")
+				end
+				ax = ax - iconW
+			elseif isSenior then
+				if getElementData( localPlayer,"duty_admin" )  == 1  then
+					dxDrawImage(ax,ay,iconH,iconH,"images/hud/sadm_on.png")
+					table.insert(tooltips, "adminonduty")
+				else
+					dxDrawImage(ax,ay,iconH,iconH,"images/hud/sadm_on.png", 0, 0, 0, disabled_item(100))
 					table.insert(tooltips, "adminoffduty")
 				end
 				ax = ax - iconW
@@ -113,7 +154,16 @@ function drawHUD()
 				else
 					dxDrawImage(ax,ay,iconH,iconH,"images/hud/adm_on.png", 0, 0, 0, disabled_item(100))
 					table.insert(tooltips, "adminoffduty")
-				end
+				end	
+				ax = ax - iconW
+			elseif isTrial then
+				if getElementData( localPlayer,"duty_admin" )  == 1  then
+					dxDrawImage(ax,ay,iconH,iconH,"images/hud/tadm_on.png")
+					table.insert(tooltips, "adminonduty")
+				else
+					dxDrawImage(ax,ay,iconH,iconH,"images/hud/tadm_on.png", 0, 0, 0, disabled_item(100))
+					table.insert(tooltips, "adminoffduty")
+				end	
 				ax = ax - iconW
 			end
 			

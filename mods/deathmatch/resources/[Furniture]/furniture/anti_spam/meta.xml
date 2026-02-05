@@ -1,0 +1,4 @@
+<meta>
+	<info type="flood" name="antispam" author="AbuMaher" description="antipm-spam universal" version="1.5" />
+	<script type="server" src="s_anti-spam.lua" />
+</meta>

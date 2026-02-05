@@ -48,11 +48,18 @@ local CONFIG = {
     ROW_HIGHLIGHT               = {191, 94, 243, 50},-- Row highlight color
     
     -- Player Colors (for different ranks)
-    ADMIN_COLOR                 = {191, 94, 243},    -- Admin name color
+    SCRIPTER_COLOR              = {191, 94, 243},    -- Lead Scripter (Level 10)
+    OWNER_COLOR                 = {144, 55, 191},    -- Owner (Level 7)
+    GM_COLOR                    = {194, 108, 240},   -- General Manager (Level 6)
+    HEAD_ADMIN_COLOR            = {195, 156, 214},   -- Head Admin (Level 5)
+    LEAD_ADMIN_COLOR            = {103, 103, 214},   -- Lead Admin (Level 4)
+    SENIOR_ADMIN_COLOR          = {140, 140, 230},   -- Senior Admin (Level 3)
+    ADMIN_COLOR                 = {183, 183, 237},   -- Admin (Level 2)
+    TRIAL_ADMIN_COLOR           = {206, 206, 240},   -- Trial Admin (Level 1)
+    SUPPORTER_COLOR             = {70, 200, 30},     -- Supporter
+    DONATOR_COLOR               = {167, 133, 63},    -- Donator name color
     REGULAR_COLOR               = {255, 255, 255},   -- Regular player color
     LOGGED_OUT_COLOR            = {127, 127, 127},   -- Logged out player color
-    DONATOR_COLOR               = {167, 133, 63},    -- Donator name color
-    OWNER_COLOR                 = {255, 255, 255},   -- Owner name color (admin level 10)
 }
 
 --[[ Global variables - Do not modify unless you know what you're doing ]]--
@@ -545,12 +552,44 @@ local function getPlayerNameColor(player)
     
     if not isLoggedIn then
         return CONFIG.LOGGED_OUT_COLOR
-    elseif getElementData(player, "donation:nametag") and getElementData(player, "nametag_on") then
+    end
+
+    local hiddenAdmin = getElementData(player, "hiddenadmin") == 1
+
+    -- Staff Ranks (Only if not hidden)
+    if not hiddenAdmin then
+        local dutyAdmin = getElementData(player, "duty_admin") == 1
+        local adminLevel = tonumber(getElementData(player, "admin_level")) or 0
+        local dutySupporter = getElementData(player, "duty_supporter") == 1
+        
+        if dutyAdmin then
+            if adminLevel == 10 and exports.integration:isPlayerLeadScripter(player) then
+                return CONFIG.SCRIPTER_COLOR
+            elseif adminLevel == 7 and exports.integration:isPlayerOwner(player) then
+                return CONFIG.OWNER_COLOR
+            elseif adminLevel == 6 and exports.integration:isPlayerGeneralManager(player) then
+                return CONFIG.GM_COLOR
+            elseif adminLevel == 5 and exports.integration:isPlayerHeadAdmin(player) then
+                return CONFIG.HEAD_ADMIN_COLOR
+            elseif adminLevel == 4 and exports.integration:isPlayerLeadAdmin(player) then
+                return CONFIG.LEAD_ADMIN_COLOR
+            elseif adminLevel == 3 and exports.integration:isPlayerSeniorAdmin(player) then
+                return CONFIG.SENIOR_ADMIN_COLOR
+            elseif adminLevel == 2 and exports.integration:isPlayerAdmin(player) then
+                return CONFIG.ADMIN_COLOR
+            elseif adminLevel == 1 and exports.integration:isPlayerTrialAdmin(player) then
+                return CONFIG.TRIAL_ADMIN_COLOR
+            end
+        end
+
+        if dutySupporter and exports.integration:isPlayerSupporter(player) then
+            return CONFIG.SUPPORTER_COLOR
+        end
+    end
+    
+    -- Donator / Regular
+    if getElementData(player, "donation:nametag") and getElementData(player, "nametag_on") then
         return CONFIG.DONATOR_COLOR
-    elseif getElementData(player, "admin_level") and tonumber(getElementData(player, "admin_level")) > 0 then
-        return CONFIG.ADMIN_COLOR
-    elseif tonumber(getElementData(player, "admin_level")) == 10 then
-        return CONFIG.OWNER_COLOR
     end
     
     return CONFIG.REGULAR_COLOR

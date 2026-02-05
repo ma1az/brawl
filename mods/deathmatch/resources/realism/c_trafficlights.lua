@@ -1,6 +1,7 @@
 local c_x, c_y, c_z = 389.3779296875, 2497.4990234375, 16.5
 local oldState = getTrafficLightState()
 
+--[[
 addEventHandler('onClientPreRender', root,
 	function()
 		local state = getTrafficLightState()
@@ -14,3 +15,4 @@ addEventHandler('onClientPreRender', root,
 			oldState = state
 		end
 	end)
+]]

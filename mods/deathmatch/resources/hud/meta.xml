@@ -69,6 +69,12 @@
     <file src="images/hud/gm.png" />
 
     <file src="images/hud/adm_on.png" />
+    <file src="images/hud/tadm_on.png" />
+    <file src="images/hud/sadm_on.png" />
+    <file src="images/hud/ladm_on.png" />
+    <file src="images/hud/hadm_on.png" />
+    <file src="images/hud/gma_on.png" />
+    <file src="images/hud/owner_on.png" />
     <file src="images/hud/uat_on.png" />
     <file src="images/hud/scr_on.png" />
     <file src="images/hud/donor.png" />
