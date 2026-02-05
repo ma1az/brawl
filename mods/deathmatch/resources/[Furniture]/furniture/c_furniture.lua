@@ -51,8 +51,9 @@ function Furnitures.draw()
 		local controls = {
 			{"Move", "W, A, S, D"},
 			{"Up / Down", "E / Q"},
-			{"Rotate", "Alt + Scroll"},
-			{"Fast Rotate", "Shift + Alt + Scroll"},
+			{"Rotate", "Scroll"},
+			{"Fast Rotate", "Shift + Scroll"},
+			{"Slow Move", "Alt + Move"},
 			{"Place", "F"},
 			{"Cancel", "Right Click"}
 		}
@@ -82,7 +83,7 @@ function Furnitures.draw()
 		
 	end
 	
-hifiXoffset = 0
+	hifiXoffset = 0
 	
 	dim2 = getElementDimension(localPlayer)
 	dim2 = tonumber(dim2)
@@ -95,6 +96,7 @@ hifiXoffset = 0
 	-- New Movement Logic
 	local moveSpeed = 0.05
 	if activeKeys["lshift"] then moveSpeed = 0.1 end
+	if activeKeys["lalt"] then moveSpeed = 0.01 end
 
 	-- Debug Input
 	-- if getKeyState("w") then outputDebugString("W pressed") end
@@ -455,7 +457,7 @@ function Furnitures.onKey(key, state)
 			end
 		end
 	end
-	if selectedFurniture and activeKeys["lalt"] then
+	if selectedFurniture then
 		if key == "mouse_wheel_up" and state then
 			local rx, ry, rz = getElementRotation(selectedFurniture)
 			local plus = 1
