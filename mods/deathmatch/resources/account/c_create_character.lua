@@ -443,7 +443,7 @@ function selectStartPointGUI(characterName, characterDescription, race, gender, 
 	--config
 	local locations = {
 					-- x, 			y,					 z, 			rot    		int, 	dim 	Location Name
-		["default"] = {1168.6484375, -1412.576171875, 13.497941017151, 357.72854614258, 0, 0, "A bus stop near the mall"},
+		["default"] = {-2153.0048828125, -2482.08203125, 30.625, 230.15884399414, 0, 0, "A bus stop near the mall"},
 		["igs"] = { 1922.9072265625, -1760.6982421875, 13.546875, 0,			0, 		0, 		"A bus stop next in Idlewood"},
 		["bus"] = {1749.509765625, -1860.5087890625, 13.578649520874, 359.0744, 	0, 		0, 		"Unity Bus Station"},
 		["metro"] = {808.88671875, -1354.6513671875, -0.5078125, 139.5092, 			0, 		0,		"Metro Station"},
