@@ -1,0 +1,1304 @@
+==================================================================
+= Multi Theft Auto: San Andreas v1.6 [64 bit]
+==================================================================
+= Server name      : Default MTA Server
+= Server IP address: auto
+= Server port      : 22003
+= 
+= Log file         : ..e/container/mods/deathmatch/logs/server.log
+= Maximum players  : 50
+= HTTP port        : 22005
+= Voice Chat       : Disabled
+= Bandwidth saving : Medium
+==================================================================
+[26-02-04 17:00:54] File 'settings.xml' not present, creating new node.
+[26-02-04 17:00:54] Resource 'ip2c' requests some acl rights. Use the command 'aclrequest list ip2c'
+[26-02-04 17:00:54] Resource 'runcode' requests some acl rights. Use the command 'aclrequest list runcode'
+[26-02-04 17:00:54] Resources: 205 loaded, 0 failed
+[26-02-04 17:00:55] Starting resources...
+[26-02-04 17:00:55] Admin access list successfully updated 
+[26-02-04 17:00:55] INFO: Admin added 602 missing rights
+[26-02-04 17:00:55] Server minclientversion is now 1.5.9-9.20957.0
+[26-02-04 17:00:55] startResource: Resource 'ip2c' started
+[26-02-04 17:00:55] Server minclientversion is now 1.6.0-9.22676
+[26-02-04 17:00:55] Server minclientversion is now 1.6.0-9.22815
+[26-02-04 17:00:55] Gamemode 'play' started.
+[26-02-04 17:00:55] Querying MTA master server... success! (Auto detected IP:179.61.132.127)
+[26-02-04 17:00:55] Authorized serial account protection is enabled for the ACL group(s): `Admin`  See http://multitheftauto.com/authserial
+[26-02-04 17:00:55] WARNING: <owner_email_address> not set
+[26-02-04 17:00:55] Server started and is ready to accept connections!
+[26-02-04 17:00:55] To stop the server, type 'shutdown' or press Ctrl-C
+[26-02-04 17:00:55] Type 'help' for a list of commands.
+[26-02-04 17:00:56] INFO: IpToCountry file not found, successfully copied from backup
+[26-02-04 17:00:56] WARNING: [admin]/ip2c/server.lua:230: Access denied @ 'fetchRemote'
+[26-02-04 17:44:47] SHUTDOWN: Got shutdown command from Console (No reason specified)
+[26-02-04 17:44:48] Server stopped!
+[26-02-04 17:44:48] Stopping resources..................
+[26-02-04 17:44:48] Failed to start resource item loading.gif in ajax
+[26-02-04 17:44:48] Failed to start resource item loading.gif in ajax
+[26-02-04 17:44:48] Failed to start resource item loading.gif in ajax
+[26-02-04 17:44:48] Closing SQLite3 database
+==================================================================
+= Multi Theft Auto: San Andreas v1.6 [64 bit]
+==================================================================
+= Server name      : Brawl Roleplay ♦ English roleplay from the loving community. ♦ brawlroleplay.com
+= Server IP address: auto
+= Server port      : 22003
+= 
+= Log file         : ..e/container/mods/deathmatch/logs/server.log
+= Maximum players  : 50
+= HTTP port        : 22005
+= Voice Chat       : Disabled
+= Bandwidth saving : Medium
+==================================================================
+[26-02-04 17:44:50] Compacting accounts database 'internal.db' ...
+[26-02-04 17:44:50] Resource 'guied' requests some acl rights. Use the command 'aclrequest list guied'
+[26-02-04 17:44:50] Resource 'ip2c' requests some acl rights. Use the command 'aclrequest list ip2c'
+[26-02-04 17:44:50] Resource 'mtasa-pAttach' requests some acl rights. Use the command 'aclrequest list mtasa-pAttach'
+[26-02-04 17:44:51] Resource 'newmodels_azul' requests some acl rights. Use the command 'aclrequest list newmodels_azul'
+[26-02-04 17:44:51] ERROR: Not processing resource 'ipb' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/ipb"
+                  Path #2: "resources/[dev]/ipb"
+[26-02-04 17:44:51] ERROR: Not processing resource 'runcode' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/runcode"
+                  Path #2: "resources/[dev]/runcode"
+[26-02-04 17:44:51] Resources: 150 loaded, 0 failed
+[26-02-04 17:44:51] Compacting database 'registry.db' ...
+[26-02-04 17:44:51] Starting resources....
+[26-02-04 17:44:51] WARNING: mysql/s_server_global_maintenance.lua:47: Access denied @ 'getServerPassword'
+[26-02-04 17:44:51] Server minclientversion is now 1.3.4-0.00000
+[26-02-04 17:44:51] WARNING: [addons]/newmodels_azul/scripts/optional/update_checker/s_update_checker.lua:80: Access denied @ 'fetchRemote'
+[26-02-04 17:44:51] Server minclientversion is now 1.6.0-9.22649.0
+[26-02-04 17:44:51] WARNING: account/s_main.lua:41: Access denied @ 'restartResource'
+[26-02-04 17:44:51] INFO: Loaded 0 reports.
+[26-02-04 17:44:51] Please wait...
+[26-02-04 17:44:51] Please wait...
+[26-02-04 17:44:51] WARNING: help/s_infopoints.lua:1: Access denied @ 'aclReload'
+[26-02-04 17:44:51] INFO: Deleting all unprotected 30+ days old exterior items (mode 2)
+[26-02-04 17:44:51] INFO: item-texture: Loading textures for 0 world items
+[26-02-04 17:44:51] INFO: item-texture: 0 clients waiting on initial sync.
+[26-02-04 17:44:51] INFO: item-texture: 0 textured elements were added for initial sync.
+[26-02-04 17:44:51] INFO: Loaded 0 pilot licenses in 1ms.
+[26-02-04 17:44:52] INFO: Server: Fetched 0 stations from db.
+[26-02-04 17:44:52] INFO: Loaded 0 texture records for all interiors in 0ms
+[26-02-04 17:44:52] INFO: LeFire Script loaded ...
+[26-02-04 17:44:52] INFO: PRISON-SYSTEM: Loaded 24 cell gates from s_gates.lua
+[26-02-04 17:44:52] INFO: Loaded 0 animated texture records in 0ms
+[26-02-04 17:44:52] Querying MTA master server... success! (Auto detected IP:179.61.132.127)
+[26-02-04 17:44:52] Authorized serial account protection is enabled for the ACL group(s): `Admin`  See http://multitheftauto.com/authserial
+[26-02-04 17:44:52] WARNING: <owner_email_address> not set
+[26-02-04 17:44:52] Server started and is ready to accept connections!
+[26-02-04 17:44:52] To stop the server, type 'shutdown' or press Ctrl-C
+[26-02-04 17:44:52] Type 'help' for a list of commands.
+[26-02-04 17:44:52] INFO: [ELEVATOR] Spawning 0 elevators will be finished in approx. 0 seconds.
+[26-02-04 17:44:52] INFO: [TRUCKER] Refreshed 0 orders.
+[26-02-04 17:44:52] INFO: [CLOTHES] Server / Loaded 0 clothing items
+[26-02-04 17:44:56] INFO: [MAPS] Started loading 7020 mapping objects. Finishing in 35.1 second(s)
+[26-02-04 17:45:35] Server minclientversion is now 1.6.0-9.23324.0
+[26-02-04 17:45:35] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-04 17:45:37] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-04 17:45:37] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 17:45:37] NICK: Malaz is now known as Owl.Player.8198
+[26-02-04 17:45:49] QUIT: Owl.Player.8198 left the game [Timed out] 
+[26-02-04 17:45:49] INFO: [Phone] Owl.Player.8198 triggered cancelPhoneCall / Timed out / 0
+[26-02-04 17:48:12] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-04 17:48:13] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-04 17:48:13] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 17:48:13] NICK: Malaz is now known as Owl.Player.2339
+[26-02-04 17:50:19] WARNING: mysql/mysql.lua:50: dbPoll failed; You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'Alexo'' at line 1
+[26-02-04 17:50:19] WARNING: mysql/mysql.lua:65: dbPoll failed; You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'Alexo', `x`='1168.6484', `y`='-1412.5762', `z`='13.497941', `rotation`='357.7...' at line 1
+[26-02-04 17:50:19] WARNING: mysql/mysql.lua:50: dbPoll failed; You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'have an error in your SQL syntax; check the manual that corresponds to your M...' at line 1
+[26-02-04 17:50:25] WARNING: mysql/mysql.lua:50: dbPoll failed; You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'have an error in your SQL syntax; check the manual that corresponds to your M...' at line 1  [DUP x7]
+[26-02-04 17:50:44] QUIT: Owl.Player.2339 left the game [Quit] 
+[26-02-04 17:50:44] INFO: [Phone] Owl.Player.2339 triggered cancelPhoneCall / Quit / 0
+[26-02-04 17:51:39] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-04 17:51:41] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-04 17:51:41] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 17:51:41] NICK: Malaz is now known as Owl.Player.7306
+[26-02-04 17:55:16] WARNING: mysql/mysql.lua:50: dbPoll failed; You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'Alexo'' at line 1
+[26-02-04 17:55:16] WARNING: mysql/mysql.lua:65: dbPoll failed; You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'Alexo', `x`='1168.6484', `y`='-1412.5762', `z`='13.497941', `rotation`='357.7...' at line 1
+[26-02-04 17:55:16] WARNING: mysql/mysql.lua:50: dbPoll failed; You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'have an error in your SQL syntax; check the manual that corresponds to your M...' at line 1
+[26-02-04 17:55:22] WARNING: mysql/mysql.lua:50: dbPoll failed; You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'have an error in your SQL syntax; check the manual that corresponds to your M...' at line 1  [DUP x7]
+[26-02-04 17:55:40] QUIT: Owl.Player.7306 left the game [Quit] 
+[26-02-04 17:55:40] INFO: [Phone] Owl.Player.7306 triggered cancelPhoneCall / Quit / 0
+[26-02-04 17:55:41] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-04 17:55:42] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-04 17:55:42] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 17:55:42] NICK: Malaz is now known as Owl.Player.3725
+[26-02-04 17:56:43] NICK: Owl.Player.3725 is now known as James_Reynold
+[26-02-04 17:56:46] WARNING: account/s_characters.lua:507: Access denied @ 'executeCommandHandler'
+[26-02-04 17:57:54] QUIT: James_Reynold left the game [Quit] 
+[26-02-04 17:57:54] INFO: [Phone] James_Reynold triggered cancelPhoneCall / Quit / 0
+[26-02-04 17:59:01] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-04 17:59:02] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-04 17:59:02] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 17:59:02] NICK: Malaz is now known as Owl.Player.1248
+[26-02-04 17:59:24] NICK: Owl.Player.1248 is now known as James_Reynold
+[26-02-04 17:59:27] WARNING: account/s_characters.lua:507: Access denied @ 'executeCommandHandler'
+[26-02-04 17:59:52] INFO: Server: Fetched 0 stations from db.
+[26-02-04 18:00:52] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-04 18:00:52] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-04 18:00:52] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-04 18:00:52] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-04 18:13:04] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 18:13:04] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 18:14:52] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-04 18:14:52] INFO: Server: Fetched 0 stations from db.
+[26-02-04 18:19:43] LOGIN: James_Reynold tried to log in as 'malaz' (Unknown account) (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2)
+[26-02-04 18:20:37] LOGIN: James_Reynold tried to log in as 'malaz' (Unknown account) (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2)
+[26-02-04 18:22:05] QUIT: James_Reynold left the game [Quit] 
+[26-02-04 18:22:15] INFO: [Phone] James_Reynold triggered cancelPhoneCall / Quit / 0
+[26-02-04 18:22:22] SHUTDOWN: Got shutdown command from Console (No reason specified)
+[26-02-04 18:22:22] Server stopped!
+[26-02-04 18:22:22] Stopping resources................................................
+[26-02-04 18:22:22] ERROR: event-system/paintball/s_paintball.lua:445: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 18:22:22] ERROR: event-system/paintball/s_paintball.lua:446: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 18:22:22] INFO: [Factions] Saving duty allow changes...
+[26-02-04 18:22:22] INFO: [Factions] Completed in 0 seconds.
+[26-02-04 18:22:22] INFO: Saving insurance data.
+[26-02-04 18:22:22] ERROR: [interior]/interior_system/safe_s.lua:75: exports: Call to non-running server resource (global) [string "?"]
+[26-02-04 18:22:22] ERROR: mdc/apbbox/s_apb_box.lua:72: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 18:22:22] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-04 18:22:22] INFO: [SHOP] Faction Drop - Failed to Restock products
+[26-02-04 18:22:22] ERROR: npc/faction_drop_s.lua:284: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 18:22:22] ERROR: pool/pool_s.lua:84: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 18:22:22] ERROR: pool/pool_s.lua:85: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 18:22:22] ERROR: prison-system/s_prison.lua:40: exports: Call to non-running server resource (pool) [string "?"]
+[26-02-04 18:22:22] ERROR: prison-system/s_prison.lua:41: bad argument #1 to 'ipairs' (table expected, got nil)
+[26-02-04 18:22:22] ERROR: report/s_reports.lua:87: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 18:22:22] Closing SQLite3 database
+==================================================================
+= Multi Theft Auto: San Andreas v1.6 [64 bit]
+==================================================================
+= Server name      : Brawl Roleplay ♦ English roleplay from the loving community. ♦ brawlroleplay.com
+= Server IP address: auto
+= Server port      : 22003
+= 
+= Log file         : ..e/container/mods/deathmatch/logs/server.log
+= Maximum players  : 50
+= HTTP port        : 22005
+= Voice Chat       : Disabled
+= Bandwidth saving : Medium
+==================================================================
+[26-02-04 18:22:25] Compacting accounts database 'internal.db' ...
+[26-02-04 18:22:25] Resource 'guied' requests some acl rights. Use the command 'aclrequest list guied'
+[26-02-04 18:22:25] Resource 'ip2c' requests some acl rights. Use the command 'aclrequest list ip2c'
+[26-02-04 18:22:25] Resource 'mtasa-pAttach' requests some acl rights. Use the command 'aclrequest list mtasa-pAttach'
+[26-02-04 18:22:25] Resource 'newmodels_azul' requests some acl rights. Use the command 'aclrequest list newmodels_azul'
+[26-02-04 18:22:26] ERROR: Not processing resource 'ipb' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/ipb"
+                  Path #2: "resources/[dev]/ipb"
+[26-02-04 18:22:26] ERROR: Not processing resource 'runcode' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/runcode"
+                  Path #2: "resources/[dev]/runcode"
+[26-02-04 18:22:26] Resources: 150 loaded, 0 failed
+[26-02-04 18:22:26] Compacting database 'registry.db' ...
+[26-02-04 18:22:26] Starting resources....
+[26-02-04 18:22:26] WARNING: mysql/s_server_global_maintenance.lua:47: Access denied @ 'getServerPassword'
+[26-02-04 18:22:26] Server minclientversion is now 1.6.0-9.23324.0
+[26-02-04 18:22:26] WARNING: [addons]/newmodels_azul/scripts/optional/update_checker/s_update_checker.lua:80: Access denied @ 'fetchRemote'
+[26-02-04 18:22:26] WARNING: account/s_main.lua:41: Access denied @ 'restartResource'
+[26-02-04 18:22:26] INFO: Loaded 0 reports.
+[26-02-04 18:22:26] Please wait...
+[26-02-04 18:22:26] Please wait...
+[26-02-04 18:22:26] WARNING: help/s_infopoints.lua:1: Access denied @ 'aclReload'
+[26-02-04 18:22:26] INFO: Deleting all unprotected 30+ days old exterior items (mode 2)
+[26-02-04 18:22:26] INFO: item-texture: Loading textures for 0 world items
+[26-02-04 18:22:26] INFO: item-texture: 0 clients waiting on initial sync.
+[26-02-04 18:22:26] INFO: item-texture: 0 textured elements were added for initial sync.
+[26-02-04 18:22:26] INFO: Loaded 0 pilot licenses in 1ms.
+[26-02-04 18:22:26] INFO: Server: Fetched 0 stations from db.
+[26-02-04 18:22:26] INFO: Loaded 0 texture records for all interiors in 0ms
+[26-02-04 18:22:27] INFO: LeFire Script loaded ...
+[26-02-04 18:22:27] INFO: PRISON-SYSTEM: Loaded 24 cell gates from s_gates.lua
+[26-02-04 18:22:27] INFO: Loaded 0 animated texture records in 0ms
+[26-02-04 18:22:27] Querying MTA master server... success! (Auto detected IP:179.61.132.127)
+[26-02-04 18:22:27] Authorized serial account protection is enabled for the ACL group(s): `Admin`  See http://multitheftauto.com/authserial
+[26-02-04 18:22:27] WARNING: <owner_email_address> not set
+[26-02-04 18:22:27] Server started and is ready to accept connections!
+[26-02-04 18:22:27] To stop the server, type 'shutdown' or press Ctrl-C
+[26-02-04 18:22:27] Type 'help' for a list of commands.
+[26-02-04 18:22:27] INFO: [ELEVATOR] Spawning 0 elevators will be finished in approx. 0 seconds.
+[26-02-04 18:22:27] INFO: [TRUCKER] Refreshed 0 orders.
+[26-02-04 18:22:27] INFO: [CLOTHES] Server / Loaded 0 clothing items
+[26-02-04 18:22:31] INFO: [MAPS] Started loading 7020 mapping objects. Finishing in 35.1 second(s)
+[26-02-04 18:23:11] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-04 18:23:12] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-04 18:23:12] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 18:23:12] NICK: Malaz is now known as Owl.Player.0396
+[26-02-04 18:23:24] QUIT: Owl.Player.0396 left the game [Timed out] 
+[26-02-04 18:23:24] INFO: [Phone] Owl.Player.0396 triggered cancelPhoneCall / Timed out / 0
+[26-02-04 18:23:39] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-04 18:23:40] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-04 18:23:40] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 18:23:40] NICK: Malaz is now known as Owl.Player.8200
+[26-02-04 18:23:50] help [command]
+[26-02-04 18:23:50] Available commands:
+
+start                    stop                     stopall                  
+restart                  refresh                  refreshall               
+list                     info                     upgrade                  
+check                    say                      teamsay                  
+msg                      me                       nick                     
+login                    logout                   chgmypass                
+addaccount               delaccount               chgpass                  
+shutdown                 aexec                    whois                    
+debugscript              help                     loadmodule               
+unloadmodule             reloadmodule             ver                      
+sver                     ase                      openports                
+debugdb                  reloadbans               aclrequest               
+authserial               reloadacl                debugjoinflood           
+debuguptime              sfakelag                 
+[26-02-04 18:24:01] addaccount: Syntax is 'addaccount <nick> <password>'
+[26-02-04 18:24:07] ACCOUNTS: Console added account 'malaz'
+[26-02-04 18:24:38] NICK: Owl.Player.8200 is now known as James_Reynold
+[26-02-04 18:24:41] WARNING: account/s_characters.lua:507: Access denied @ 'executeCommandHandler'
+[26-02-04 18:25:16] QUIT: James_Reynold left the game [Quit] 
+[26-02-04 18:25:16] INFO: [Phone] James_Reynold triggered cancelPhoneCall / Quit / 0
+[26-02-04 18:25:18] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-04 18:25:18] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-04 18:25:18] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 18:25:18] NICK: Malaz is now known as Owl.Player.5712
+[26-02-04 18:25:50] NICK: Owl.Player.5712 is now known as James_Reynold
+[26-02-04 18:25:53] WARNING: account/s_characters.lua:507: Access denied @ 'executeCommandHandler'
+[26-02-04 18:27:18] LOGIN: (Everyone, Console) James_Reynold successfully logged in as 'malaz' (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2)
+[26-02-04 18:32:51] CONNECT: Qays connected (IP: 82.205.75.117  Serial: C086C1EDCDD567405AF5CEAD17B498A1  Version: 1.6.0-9.23690.0)
+[26-02-04 18:32:52] JOIN: Qays joined the game (IP: 82.205.75.117)
+[26-02-04 18:32:52] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 18:32:52] NICK: Qays is now known as Owl.Player.2969
+[26-02-04 18:35:03] ERROR: Infinite/too long execution (apps)
+[26-02-04 18:35:03] ERROR: Aborting; infinite running script in apps
+[26-02-04 18:35:37] QUIT: Owl.Player.2969 left the game [Quit] 
+[26-02-04 18:35:37] INFO: [Phone] Owl.Player.2969 triggered cancelPhoneCall / Quit / 0
+[26-02-04 18:37:26] INFO: Server: Fetched 0 stations from db.
+[26-02-04 18:47:26] CONNECT: Qays connected (IP: 82.205.75.117  Serial: C086C1EDCDD567405AF5CEAD17B498A1  Version: 1.6.0-9.23690.0)
+[26-02-04 18:47:27] JOIN: Qays joined the game (IP: 82.205.75.117)
+[26-02-04 18:47:27] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 18:47:27] NICK: Qays is now known as Owl.Player.5419
+[26-02-04 18:49:48] help [command]
+[26-02-04 18:49:48] Available commands:
+
+start                    stop                     stopall                  
+restart                  refresh                  refreshall               
+list                     info                     upgrade                  
+check                    say                      teamsay                  
+msg                      me                       nick                     
+login                    logout                   chgmypass                
+addaccount               delaccount               chgpass                  
+shutdown                 aexec                    whois                    
+debugscript              help                     loadmodule               
+unloadmodule             reloadmodule             ver                      
+sver                     ase                      openports                
+debugdb                  reloadbans               aclrequest               
+authserial               reloadacl                debugjoinflood           
+debuguptime              sfakelag                 
+[26-02-04 18:50:45] NICK: Owl.Player.5419 is now known as Qays_Almaloh
+[26-02-04 18:50:48] WARNING: account/s_characters.lua:507: Access denied @ 'executeCommandHandler'
+[26-02-04 18:50:54] chgpass: Syntax is 'chgpass <nick> <pass>'
+[26-02-04 18:51:08] SHUTDOWN: Got shutdown command from Console (No reason specified)
+[26-02-04 18:51:09] INFO: [Phone] James_Reynold triggered cancelPhoneCall / Quit / 0
+[26-02-04 18:51:09] INFO: [Phone] Qays_Almaloh triggered cancelPhoneCall / Quit / 0
+[26-02-04 18:51:09] Server stopped!
+[26-02-04 18:51:09] Stopping resources................................................
+[26-02-04 18:51:09] ERROR: event-system/paintball/s_paintball.lua:445: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 18:51:09] ERROR: event-system/paintball/s_paintball.lua:446: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 18:51:09] INFO: [Factions] Saving duty allow changes...
+[26-02-04 18:51:09] INFO: [Factions] Completed in 0 seconds.
+[26-02-04 18:51:09] INFO: Saving insurance data.
+[26-02-04 18:51:09] ERROR: [interior]/interior_system/safe_s.lua:75: exports: Call to non-running server resource (global) [string "?"]
+[26-02-04 18:51:09] ERROR: mdc/apbbox/s_apb_box.lua:72: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 18:51:09] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-04 18:51:09] INFO: [SHOP] Faction Drop - Failed to Restock products
+[26-02-04 18:51:09] ERROR: npc/faction_drop_s.lua:284: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 18:51:09] ERROR: pool/pool_s.lua:84: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 18:51:09] ERROR: pool/pool_s.lua:85: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 18:51:09] ERROR: prison-system/s_prison.lua:40: exports: Call to non-running server resource (pool) [string "?"]
+[26-02-04 18:51:09] ERROR: prison-system/s_prison.lua:41: bad argument #1 to 'ipairs' (table expected, got nil)
+[26-02-04 18:51:09] ERROR: report/s_reports.lua:87: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 18:51:09] Closing SQLite3 database
+==================================================================
+= Multi Theft Auto: San Andreas v1.6 [64 bit]
+==================================================================
+= Server name      : Brawl Roleplay ♦ English roleplay from the loving community. ♦ brawlroleplay.com
+= Server IP address: auto
+= Server port      : 22003
+= 
+= Log file         : ..e/container/mods/deathmatch/logs/server.log
+= Maximum players  : 50
+= HTTP port        : 22005
+= Voice Chat       : Disabled
+= Bandwidth saving : Medium
+==================================================================
+[26-02-04 18:51:11] Compacting accounts database 'internal.db' ...
+[26-02-04 18:51:12] Resource 'guied' requests some acl rights. Use the command 'aclrequest list guied'
+[26-02-04 18:51:12] Resource 'ip2c' requests some acl rights. Use the command 'aclrequest list ip2c'
+[26-02-04 18:51:12] Resource 'mtasa-pAttach' requests some acl rights. Use the command 'aclrequest list mtasa-pAttach'
+[26-02-04 18:51:12] Resource 'newmodels_azul' requests some acl rights. Use the command 'aclrequest list newmodels_azul'
+[26-02-04 18:51:12] ERROR: Not processing resource 'ipb' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/ipb"
+                  Path #2: "resources/[dev]/ipb"
+[26-02-04 18:51:12] ERROR: Not processing resource 'runcode' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/runcode"
+                  Path #2: "resources/[dev]/runcode"
+[26-02-04 18:51:12] Resources: 150 loaded, 0 failed
+[26-02-04 18:51:12] Compacting database 'registry.db' ...
+[26-02-04 18:51:12] Starting resources....
+[26-02-04 18:51:12] WARNING: mysql/s_server_global_maintenance.lua:47: Access denied @ 'getServerPassword'
+[26-02-04 18:51:12] Server minclientversion is now 1.6.0-9.23324.0
+[26-02-04 18:51:12] WARNING: [addons]/newmodels_azul/scripts/optional/update_checker/s_update_checker.lua:80: Access denied @ 'fetchRemote'
+[26-02-04 18:51:12] WARNING: account/s_main.lua:41: Access denied @ 'restartResource'
+[26-02-04 18:51:12] INFO: Loaded 0 reports.
+[26-02-04 18:51:12] Please wait...
+[26-02-04 18:51:13] Please wait...
+[26-02-04 18:51:13] WARNING: help/s_infopoints.lua:1: Access denied @ 'aclReload'
+[26-02-04 18:51:13] INFO: Deleting all unprotected 30+ days old exterior items (mode 2)
+[26-02-04 18:51:13] INFO: item-texture: Loading textures for 0 world items
+[26-02-04 18:51:13] INFO: item-texture: 0 clients waiting on initial sync.
+[26-02-04 18:51:13] INFO: item-texture: 0 textured elements were added for initial sync.
+[26-02-04 18:51:13] INFO: Loaded 0 pilot licenses in 1ms.
+[26-02-04 18:51:13] INFO: Server: Fetched 0 stations from db.
+[26-02-04 18:51:13] INFO: Loaded 0 texture records for all interiors in 0ms
+[26-02-04 18:51:13] INFO: LeFire Script loaded ...
+[26-02-04 18:51:13] INFO: PRISON-SYSTEM: Loaded 24 cell gates from s_gates.lua
+[26-02-04 18:51:13] INFO: Loaded 0 animated texture records in 0ms
+[26-02-04 18:51:13] Querying MTA master server... success! (Auto detected IP:179.61.132.127)
+[26-02-04 18:51:13] Authorized serial account protection is enabled for the ACL group(s): `Admin`  See http://multitheftauto.com/authserial
+[26-02-04 18:51:13] WARNING: <owner_email_address> not set
+[26-02-04 18:51:13] Server started and is ready to accept connections!
+[26-02-04 18:51:13] To stop the server, type 'shutdown' or press Ctrl-C
+[26-02-04 18:51:13] Type 'help' for a list of commands.
+[26-02-04 18:51:13] INFO: [ELEVATOR] Spawning 0 elevators will be finished in approx. 0 seconds.
+[26-02-04 18:51:13] INFO: [TRUCKER] Refreshed 0 orders.
+[26-02-04 18:51:13] INFO: [CLOTHES] Server / Loaded 0 clothing items
+[26-02-04 18:51:17] INFO: [MAPS] Started loading 7020 mapping objects. Finishing in 35.1 second(s)
+[26-02-04 18:51:42] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-04 18:51:42] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-04 18:51:42] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 18:51:42] NICK: Malaz is now known as Owl.Player.6522
+[26-02-04 18:52:20] NICK: Owl.Player.6522 is now known as James_Reynold
+[26-02-04 18:52:23] WARNING: account/s_characters.lua:507: Access denied @ 'executeCommandHandler'
+[26-02-04 18:52:31] CONNECT: Qays connected (IP: 82.205.75.117  Serial: C086C1EDCDD567405AF5CEAD17B498A1  Version: 1.6.0-9.23690.0)
+[26-02-04 18:52:32] JOIN: Qays joined the game (IP: 82.205.75.117)
+[26-02-04 18:52:32] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 18:52:32] NICK: Qays is now known as Owl.Player.1496
+[26-02-04 18:53:15] LOGIN: (Everyone, Console) James_Reynold successfully logged in as 'malaz' (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2)
+[26-02-04 18:54:40] NICK: Owl.Player.1496 is now known as Qays_Almaloh
+[26-02-04 18:54:43] WARNING: account/s_characters.lua:507: Access denied @ 'executeCommandHandler'
+[26-02-04 18:54:54] restart: Requested by James_Reynold(malaz)
+[26-02-04 18:54:54] Stopping hud
+[26-02-04 18:54:54] Starting hud
+[26-02-04 18:54:54] hud restarted successfully
+[26-02-04 18:54:55] restart: Requested by James_Reynold(malaz)
+[26-02-04 18:54:55] Stopping hud
+[26-02-04 18:54:55] Starting hud
+[26-02-04 18:54:55] hud restarted successfully
+[26-02-04 18:55:51] INFO: [FREECAM] asyncActivateFreecam / Ran
+[26-02-04 18:56:11] restart: Requested by Console
+[26-02-04 18:56:11] restart: Resource 'hud' restarting...
+[26-02-04 18:56:11] Stopping hud
+[26-02-04 18:56:11] Starting hud
+[26-02-04 18:56:11] hud restarted successfully
+[26-02-04 18:56:15] INFO: [FREECAM] asyncDeactivateFreecam / Ran
+[26-02-04 18:57:07] QUIT: Qays_Almaloh left the game [Quit] 
+[26-02-04 18:57:11] INFO: [Phone] Qays_Almaloh triggered cancelPhoneCall / Quit / 0
+[26-02-04 18:57:14] CONNECT: Qays connected (IP: 82.205.75.117  Serial: C086C1EDCDD567405AF5CEAD17B498A1  Version: 1.6.0-9.23690.0)
+[26-02-04 18:57:14] JOIN: Qays joined the game (IP: 82.205.75.117)
+[26-02-04 18:57:14] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 18:57:14] NICK: Qays is now known as Owl.Player.2213
+[26-02-04 18:57:43] NICK: Owl.Player.2213 is now known as Qays_Almaloh
+[26-02-04 18:57:46] WARNING: account/s_characters.lua:507: Access denied @ 'executeCommandHandler'
+[26-02-04 18:58:14] restart: Requested by Console
+[26-02-04 18:58:14] restart: Resource 'hud' restarting...
+[26-02-04 18:58:14] Stopping hud
+[26-02-04 18:58:14] Starting hud
+[26-02-04 18:58:14] hud restarted successfully
+[26-02-04 19:00:13] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-04 19:00:13] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-04 19:00:13] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-04 19:00:13] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-04 19:00:46] restart: Requested by Console
+[26-02-04 19:00:46] restart: Resource 'hud' restarting...
+[26-02-04 19:00:46] Stopping hud
+[26-02-04 19:00:46] Resource 'hud' changed, reloading and starting
+[26-02-04 19:00:46] Starting hud
+[26-02-04 19:00:46] hud restarted successfully
+[26-02-04 19:02:31] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:02:31] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:04:11] INFO: [Phone] applyPhone / phonestate = 0 / action = phone_in
+[26-02-04 19:04:17] INFO: [Phone] applyPhone / phonestate = 0 / action = phone_out
+[26-02-04 19:06:04] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:06:04] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:06:13] INFO: Server: Fetched 0 stations from db.
+[26-02-04 19:06:14] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:06:16] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:06:16] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:06:16] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:08:16] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:08:16] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:08:16] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:08:22] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:11:12] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:11:12] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:11:18] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:11:18] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:11:25] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:11:25] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:11:25] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:11:25] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:11:25] INFO: Possible command spam from: Qays_Almaloh LOCK/UNLOCK
+[26-02-04 19:11:25] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:11:25] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:11:25] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:11:25] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:11:25] INFO: Possible command spam from: Qays_Almaloh LOCK/UNLOCK
+[26-02-04 19:12:57] INFO: logs:dbLog: No passed data from vehicle_manager nil
+[26-02-04 19:13:03] INFO: logs:dbLog: No passed data from vehicle_manager nil
+[26-02-04 19:14:23] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:14:23] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:14:29] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'  [DUP x3]
+[26-02-04 19:14:29] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed  [DUP x3]
+[26-02-04 19:15:10] INFO: Server: Fetched 1 stations from db.
+[26-02-04 19:19:11] INFO: logs:dbLog: No passed data from vehicle_manager nil
+[26-02-04 19:19:17] INFO: logs:dbLog: No passed data from vehicle_manager nil
+[26-02-04 19:19:18] INFO: logs:dbLog: No passed data from vehicle_manager nil
+[26-02-04 19:19:24] INFO: logs:dbLog: No passed data from vehicle_manager nil  [DUP x2]
+[26-02-04 19:19:26] INFO: [FREECAM] asyncActivateFreecam / Ran
+[26-02-04 19:19:42] INFO: logs:dbLog: No passed data from vehicle_manager nil
+[26-02-04 19:19:48] INFO: logs:dbLog: No passed data from vehicle_manager nil
+[26-02-04 19:19:59] INFO: [FREECAM] asyncDeactivateFreecam / Ran
+[26-02-04 19:21:13] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-04 19:21:13] INFO: Server: Fetched 1 stations from db.
+[26-02-04 19:22:46] INFO: Server: sending 1 stations to client.
+[26-02-04 19:22:49] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:22:49] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:22:55] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:22:55] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:23:38] SHUTDOWN: Got shutdown command from Console (No reason specified)
+[26-02-04 19:23:38] INFO: [Phone] James_Reynold triggered cancelPhoneCall / Quit / 0
+[26-02-04 19:23:38] INFO: [Phone] Qays_Almaloh triggered cancelPhoneCall / Quit / 0
+[26-02-04 19:23:38] Server stopped!
+[26-02-04 19:23:38] Stopping resources................................................
+[26-02-04 19:23:38] ERROR: event-system/paintball/s_paintball.lua:445: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 19:23:38] ERROR: event-system/paintball/s_paintball.lua:446: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 19:23:38] INFO: [Factions] Saving duty allow changes...
+[26-02-04 19:23:38] INFO: [Factions] Completed in 0 seconds.
+[26-02-04 19:23:38] INFO: Saving insurance data.
+[26-02-04 19:23:38] ERROR: [interior]/interior_system/safe_s.lua:75: exports: Call to non-running server resource (global) [string "?"]
+[26-02-04 19:23:38] ERROR: mdc/apbbox/s_apb_box.lua:72: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 19:23:38] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-04 19:23:38] INFO: [SHOP] Faction Drop - Failed to Restock products
+[26-02-04 19:23:38] ERROR: npc/faction_drop_s.lua:284: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 19:23:38] ERROR: pool/pool_s.lua:84: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 19:23:38] ERROR: pool/pool_s.lua:85: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 19:23:38] ERROR: prison-system/s_prison.lua:40: exports: Call to non-running server resource (pool) [string "?"]
+[26-02-04 19:23:38] ERROR: prison-system/s_prison.lua:41: bad argument #1 to 'ipairs' (table expected, got nil)
+[26-02-04 19:23:38] ERROR: report/s_reports.lua:87: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 19:23:38] ERROR: [vehicle]/vehicle/save_s.lua:47: exports: Call to non-running server resource (mysql) [string "?"]
+[26-02-04 19:23:38] WARNING: [vehicle]/vehicle/save_s.lua:47: Bad argument @ 'dbExec' [Expected db-connection at argument 1, got nil]
+[26-02-04 19:23:38] ERROR: [vehicle]/vehicle/save_s.lua:47: exports: Call to non-running server resource (mysql) [string "?"]
+[26-02-04 19:23:38] WARNING: [vehicle]/vehicle/save_s.lua:47: Bad argument @ 'dbExec' [Expected db-connection at argument 1, got nil]
+[26-02-04 19:23:38] Closing SQLite3 database
+==================================================================
+= Multi Theft Auto: San Andreas v1.6 [64 bit]
+==================================================================
+= Server name      : Brawl Roleplay ♦ English roleplay from the loving community. ♦ brawlroleplay.com
+= Server IP address: auto
+= Server port      : 22003
+= 
+= Log file         : ..e/container/mods/deathmatch/logs/server.log
+= Maximum players  : 50
+= HTTP port        : 22005
+= Voice Chat       : Disabled
+= Bandwidth saving : Medium
+==================================================================
+[26-02-04 19:23:41] Compacting accounts database 'internal.db' ...
+[26-02-04 19:23:41] Resource 'guied' requests some acl rights. Use the command 'aclrequest list guied'
+[26-02-04 19:23:41] Resource 'ip2c' requests some acl rights. Use the command 'aclrequest list ip2c'
+[26-02-04 19:23:41] Resource 'mtasa-pAttach' requests some acl rights. Use the command 'aclrequest list mtasa-pAttach'
+[26-02-04 19:23:41] Resource 'newmodels_azul' requests some acl rights. Use the command 'aclrequest list newmodels_azul'
+[26-02-04 19:23:41] ERROR: Not processing resource 'ipb' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/ipb"
+                  Path #2: "resources/[dev]/ipb"
+[26-02-04 19:23:41] ERROR: Not processing resource 'runcode' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/runcode"
+                  Path #2: "resources/[dev]/runcode"
+[26-02-04 19:23:41] Resources: 151 loaded, 0 failed
+[26-02-04 19:23:41] Compacting database 'registry.db' ...
+[26-02-04 19:23:41] Starting resources....
+[26-02-04 19:23:41] WARNING: mysql/s_server_global_maintenance.lua:47: Access denied @ 'getServerPassword'
+[26-02-04 19:23:41] Server minclientversion is now 1.6.0-9.23324.0
+[26-02-04 19:23:41] WARNING: [addons]/newmodels_azul/scripts/optional/update_checker/s_update_checker.lua:80: Access denied @ 'fetchRemote'
+[26-02-04 19:23:41] WARNING: account/s_main.lua:41: Access denied @ 'restartResource'
+[26-02-04 19:23:41] INFO: Loaded 0 reports.
+[26-02-04 19:23:42] Please wait...
+[26-02-04 19:23:42] Please wait...
+[26-02-04 19:23:42] WARNING: help/s_infopoints.lua:1: Access denied @ 'aclReload'
+[26-02-04 19:23:42] INFO: Deleting all unprotected 30+ days old exterior items (mode 2)
+[26-02-04 19:23:42] INFO: item-texture: Loading textures for 0 world items
+[26-02-04 19:23:42] INFO: item-texture: 0 clients waiting on initial sync.
+[26-02-04 19:23:42] INFO: item-texture: 0 textured elements were added for initial sync.
+[26-02-04 19:23:42] INFO: Loaded 0 pilot licenses in 1ms.
+[26-02-04 19:23:42] INFO: [VEHICLE] Started loading 2 vehicles. Finish in 0.01 second(s)
+[26-02-04 19:23:42] INFO: Server: Fetched 1 stations from db.
+[26-02-04 19:23:42] INFO: Loaded 0 texture records for all interiors in 0ms
+[26-02-04 19:23:42] INFO: LeFire Script loaded ...
+[26-02-04 19:23:42] INFO: PRISON-SYSTEM: Loaded 24 cell gates from s_gates.lua
+[26-02-04 19:23:42] INFO: Loaded 0 animated texture records in 0ms
+[26-02-04 19:23:42] Querying MTA master server... success! (Auto detected IP:179.61.132.127)
+[26-02-04 19:23:42] Authorized serial account protection is enabled for the ACL group(s): `Admin`  See http://multitheftauto.com/authserial
+[26-02-04 19:23:42] WARNING: <owner_email_address> not set
+[26-02-04 19:23:42] Server started and is ready to accept connections!
+[26-02-04 19:23:42] To stop the server, type 'shutdown' or press Ctrl-C
+[26-02-04 19:23:42] Type 'help' for a list of commands.
+[26-02-04 19:23:42] INFO: [ELEVATOR] Spawning 0 elevators will be finished in approx. 0 seconds.
+[26-02-04 19:23:42] INFO: [TRUCKER] Refreshed 0 orders.
+[26-02-04 19:23:42] INFO: [CLOTHES] Server / Loaded 0 clothing items
+[26-02-04 19:23:46] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-04 19:23:46] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-04 19:23:46] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 19:23:46] NICK: Malaz is now known as Owl.Player.5480
+[26-02-04 19:23:47] INFO: [MAPS] Started loading 7020 mapping objects. Finishing in 105.3 second(s)
+[26-02-04 19:23:47] CONNECT: Qays connected (IP: 82.205.75.117  Serial: C086C1EDCDD567405AF5CEAD17B498A1  Version: 1.6.0-9.23690.0)
+[26-02-04 19:23:47] JOIN: Qays joined the game (IP: 82.205.75.117)
+[26-02-04 19:23:47] NICK: Qays is now known as Owl.Player.3268
+[26-02-04 19:23:53] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 19:23:55] INFO: Server: sending 1 stations to client.
+[26-02-04 19:24:01] INFO: Server: sending 1 stations to client.
+[26-02-04 19:24:09] NICK: Owl.Player.5480 is now known as James_Reynold
+[26-02-04 19:24:13] WARNING: account/s_characters.lua:507: Access denied @ 'executeCommandHandler'
+[26-02-04 19:24:16] ACL: Denied 'James_Reynold' access to command 'start'
+[26-02-04 19:24:19] NICK: Owl.Player.3268 is now known as Qays_Almaloh
+[26-02-04 19:24:21] LOGIN: James_Reynold tried to log in as 'malaz' with an invalid password (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2)
+[26-02-04 19:24:22] WARNING: account/s_characters.lua:507: Access denied @ 'executeCommandHandler'
+[26-02-04 19:24:27] LOGIN: (Everyone, Console) James_Reynold successfully logged in as 'malaz' (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2)
+[26-02-04 19:24:37] start: Requested by James_Reynold(malaz)
+[26-02-04 19:24:37] Starting AngelNotFinal
+[26-02-04 19:28:53] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:28:53] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:28:59] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:28:59] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:29:03] INFO: logs:dbLog: No affected in tables from vehicle_manager RESTOREVEH
+[26-02-04 19:29:03] WARNING: [vehicle]/vehicle_manager/s_vehicle_commands.lua:1941: Bad argument @ 'getElementModel' [Expected element at argument 1, got nil]
+[26-02-04 19:29:03] WARNING: [vehicle]/vehicle_manager/s_vehicle_commands.lua:1942: Bad argument @ 'getVehicleNameFromModel' [Expected number at argument 1, got boolean]
+[26-02-04 19:29:03] WARNING: [vehicle]/vehicle_manager/s_vehicle_commands.lua:1943: Bad argument @ 'getElementData' [Expected element at argument 1, got nil]
+[26-02-04 19:29:03] WARNING: [vehicle]/vehicle_manager/s_vehicle_commands.lua:1944: Bad argument @ 'getElementData' [Expected element at argument 1, got nil]
+[26-02-04 19:29:03] ERROR: [vehicle]/vehicle_manager/s_vehicle_commands.lua:1964: attempt to concatenate local 'vehicleName' (a boolean value)
+[26-02-04 19:29:21] WARNING: [vehicle]/vehicle_manager/s_vehicle_manager.lua:53: Access denied @ 'executeCommandHandler'
+[26-02-04 19:29:27] WARNING: [vehicle]/vehicle_manager/s_vehicle_manager.lua:53: Access denied @ 'executeCommandHandler'  [DUP x9]
+[26-02-04 19:29:34] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:29:34] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:29:40] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'  [DUP x3]
+[26-02-04 19:29:40] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed  [DUP x3]
+[26-02-04 19:29:46] INFO: logs:dbLog: No passed data from vehicle_manager nil
+[26-02-04 19:29:56] INFO: logs:dbLog: No passed data from vehicle_manager nil
+[26-02-04 19:30:48] INFO: [FREECAM] asyncActivateFreecam / Ran
+[26-02-04 19:31:13] INFO: [FREECAM] asyncDeactivateFreecam / Ran
+[26-02-04 19:33:16] INFO: Server: Fetched 2 stations from db.
+[26-02-04 19:37:40] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:37:40] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:37:49] INFO: logs:dbLog: No passed data from vehicle_manager nil
+[26-02-04 19:38:07] INFO: logs:dbLog: No passed data from vehicle_manager nil
+[26-02-04 19:38:08] INFO: logs:dbLog: No passed data from vehicle_manager nil
+[26-02-04 19:38:42] INFO: Server: Fetched 2 stations from db.
+[26-02-04 19:38:44] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:38:44] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:39:03] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:39:03] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:39:20] INFO: Server: sending 2 stations to client.
+[26-02-04 19:39:26] INFO: Server: sending 2 stations to client.
+[26-02-04 19:51:32] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:51:32] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:51:38] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:51:38] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:53:30] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:53:30] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:53:42] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-04 19:53:42] INFO: Server: Fetched 2 stations from db.
+[26-02-04 19:53:50] INFO: [Phone] applyPhone / phonestate = 0 / action = phone_in
+[26-02-04 19:53:56] INFO: [Phone] applyPhone / phonestate = 0 / action = phone_in
+[26-02-04 19:54:10] INFO: [Phone] James_Reynold triggered cancelPhoneCall / 0 / 2
+[26-02-04 19:54:10] INFO: [Phone] killDialingTimers killed.
+[26-02-04 19:54:10] INFO: [Phone] killDialingTimers killed.  [DUP x4]
+[26-02-04 19:54:10] INFO: [Phone] applyPhone / phonestate = 0 / action = phone_out
+[26-02-04 19:54:13] INFO: [Phone] Qays_Almaloh triggered cancelPhoneCall / not_existed / 1
+[26-02-04 19:54:13] INFO: [Phone] killDialingTimers killed.
+[26-02-04 19:54:20] INFO: [Phone] applyPhone / phonestate = 1 / action = phone_out
+[26-02-04 19:54:20] INFO: [Phone] Qays_Almaloh triggered cancelPhoneCall /  / 1
+[26-02-04 19:54:26] INFO: [Phone] killDialingTimers killed.
+[26-02-04 19:54:50] INFO: Server: sending 2 stations to client.
+[26-02-04 19:54:56] INFO: Server: sending 2 stations to client.
+[26-02-04 19:55:03] INFO: logs:dbLog: No passed data from vehicle_manager nil
+[26-02-04 19:55:09] INFO: logs:dbLog: No passed data from vehicle_manager nil  [DUP x4]
+[26-02-04 19:55:24] WARNING: mysql/mysql.lua:70: dbExec failed; (1064) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'San Andreas Police Department'.',  type='noti_faction_updates'' at line 1
+[26-02-04 19:55:25] WARNING: mysql/mysql.lua:70: dbExec failed; (1064) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'San Andreas Police Department'', details='Set by (1) Head Admin malaz', type=...' at line 1
+[26-02-04 19:55:31] WARNING: mysql/mysql.lua:70: dbExec failed; (1064) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'San Andreas Police Department'', details='Set by (1) Head Admin malaz', type=...' at line 1
+[26-02-04 19:55:51] start: Requested by James_Reynold(malaz)
+[26-02-04 19:55:54] start: Requested by James_Reynold(malaz)
+[26-02-04 19:56:54] start: Requested by James_Reynold(malaz)
+[26-02-04 19:57:43] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:57:43] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 19:57:49] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 19:57:49] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 20:00:42] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-04 20:00:42] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-04 20:00:42] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-04 20:00:42] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-04 20:02:24] INFO: logs:dbLog: No passed data from vehicle_manager nil
+[26-02-04 20:05:21] QUIT: Qays_Almaloh left the game [Quit] 
+[26-02-04 20:05:21] INFO: [Phone] Qays_Almaloh triggered cancelPhoneCall / Quit / 0
+[26-02-04 20:07:27] SHUTDOWN: Got shutdown command from Console (No reason specified)
+[26-02-04 20:07:27] INFO: [Phone] James_Reynold triggered cancelPhoneCall / Quit / 0
+[26-02-04 20:07:27] Server stopped!
+[26-02-04 20:07:27] Stopping resources.................................................
+[26-02-04 20:07:27] ERROR: event-system/paintball/s_paintball.lua:445: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:07:27] ERROR: event-system/paintball/s_paintball.lua:446: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:07:27] INFO: [Factions] Saving duty allow changes...
+[26-02-04 20:07:27] INFO: [Factions] Completed in 0 seconds.
+[26-02-04 20:07:27] INFO: Saving insurance data.
+[26-02-04 20:07:27] ERROR: [interior]/interior_system/safe_s.lua:75: exports: Call to non-running server resource (global) [string "?"]
+[26-02-04 20:07:27] ERROR: mdc/apbbox/s_apb_box.lua:72: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:07:28] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-04 20:07:28] INFO: [SHOP] Faction Drop - Failed to Restock products
+[26-02-04 20:07:28] ERROR: npc/faction_drop_s.lua:284: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:07:28] ERROR: pool/pool_s.lua:84: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:07:28] ERROR: pool/pool_s.lua:85: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:07:28] ERROR: prison-system/s_prison.lua:40: exports: Call to non-running server resource (pool) [string "?"]
+[26-02-04 20:07:28] ERROR: prison-system/s_prison.lua:41: bad argument #1 to 'ipairs' (table expected, got nil)
+[26-02-04 20:07:28] ERROR: report/s_reports.lua:87: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:07:28] ERROR: [vehicle]/vehicle/save_s.lua:47: exports: Call to non-running server resource (mysql) [string "?"]
+[26-02-04 20:07:28] WARNING: [vehicle]/vehicle/save_s.lua:47: Bad argument @ 'dbExec' [Expected db-connection at argument 1, got nil]
+[26-02-04 20:07:28] ERROR: [vehicle]/vehicle/save_s.lua:47: exports: Call to non-running server resource (mysql) [string "?"]  [DUP x2]
+[26-02-04 20:07:28] WARNING: [vehicle]/vehicle/save_s.lua:47: Bad argument @ 'dbExec' [Expected db-connection at argument 1, got nil]  [DUP x2]
+[26-02-04 20:07:28] Closing SQLite3 database
+==================================================================
+= Multi Theft Auto: San Andreas v1.6 [64 bit]
+==================================================================
+= Server name      : Brawl Roleplay ♦ English roleplay from the loving community. ♦ brawlroleplay.com
+= Server IP address: auto
+= Server port      : 22003
+= 
+= Log file         : ..e/container/mods/deathmatch/logs/server.log
+= Maximum players  : 50
+= HTTP port        : 22005
+= Voice Chat       : Disabled
+= Bandwidth saving : Medium
+==================================================================
+[26-02-04 20:08:18] Compacting accounts database 'internal.db' ...
+[26-02-04 20:08:19] Resource 'guied' requests some acl rights. Use the command 'aclrequest list guied'
+[26-02-04 20:08:19] Resource 'ip2c' requests some acl rights. Use the command 'aclrequest list ip2c'
+[26-02-04 20:08:19] Resource 'mtasa-pAttach' requests some acl rights. Use the command 'aclrequest list mtasa-pAttach'
+[26-02-04 20:08:19] Resource 'newmodels_azul' requests some acl rights. Use the command 'aclrequest list newmodels_azul'
+[26-02-04 20:08:19] ERROR: Not processing resource 'ipb' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/ipb"
+                  Path #2: "resources/[dev]/ipb"
+[26-02-04 20:08:19] ERROR: Not processing resource 'runcode' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/runcode"
+                  Path #2: "resources/[dev]/runcode"
+[26-02-04 20:08:19] Resources: 151 loaded, 0 failed
+[26-02-04 20:08:19] Compacting database 'registry.db' ...
+[26-02-04 20:08:19] Starting resources....
+[26-02-04 20:08:19] WARNING: mysql/s_server_global_maintenance.lua:47: Access denied @ 'getServerPassword'
+[26-02-04 20:08:19] Server minclientversion is now 1.6.0-9.23324.0
+[26-02-04 20:08:19] WARNING: [addons]/newmodels_azul/scripts/optional/update_checker/s_update_checker.lua:80: Access denied @ 'fetchRemote'
+[26-02-04 20:08:19] WARNING: account/s_main.lua:41: Access denied @ 'restartResource'
+[26-02-04 20:08:19] INFO: Loaded 0 reports.
+[26-02-04 20:08:19] Please wait...
+[26-02-04 20:08:19] Please wait...
+[26-02-04 20:08:19] WARNING: help/s_infopoints.lua:1: Access denied @ 'aclReload'
+[26-02-04 20:08:20] INFO: Deleting all unprotected 30+ days old exterior items (mode 2)
+[26-02-04 20:08:20] INFO: item-texture: Loading textures for 0 world items
+[26-02-04 20:08:20] INFO: item-texture: 0 clients waiting on initial sync.
+[26-02-04 20:08:20] INFO: item-texture: 0 textured elements were added for initial sync.
+[26-02-04 20:08:20] INFO: Loaded 0 pilot licenses in 1ms.
+[26-02-04 20:08:20] INFO: [VEHICLE] Started loading 3 vehicles. Finish in 0.015 second(s)
+[26-02-04 20:08:20] INFO: Server: Fetched 2 stations from db.
+[26-02-04 20:08:20] INFO: Loaded 0 texture records for all interiors in 0ms
+[26-02-04 20:08:20] INFO: LeFire Script loaded ...
+[26-02-04 20:08:20] INFO: PRISON-SYSTEM: Loaded 24 cell gates from s_gates.lua
+[26-02-04 20:08:20] INFO: Loaded 0 animated texture records in 0ms
+[26-02-04 20:08:20] Authorized serial account protection is enabled for the ACL group(s): `Admin`  See http://multitheftauto.com/authserial
+[26-02-04 20:08:20] WARNING: <owner_email_address> not set
+[26-02-04 20:08:20] Server started and is ready to accept connections!
+[26-02-04 20:08:20] To stop the server, type 'shutdown' or press Ctrl-C
+[26-02-04 20:08:20] Type 'help' for a list of commands.
+[26-02-04 20:08:20] INFO: [ELEVATOR] Spawning 0 elevators will be finished in approx. 0 seconds.
+[26-02-04 20:08:20] INFO: [TRUCKER] Refreshed 0 orders.
+[26-02-04 20:08:20] INFO: [CLOTHES] Server / Loaded 0 clothing items
+[26-02-04 20:08:20] Querying MTA master server... success! (Auto detected IP:179.61.132.127)
+[26-02-04 20:08:24] INFO: [MAPS] Started loading 7020 mapping objects. Finishing in 35.1 second(s)
+[26-02-04 20:08:38] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-04 20:08:38] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-04 20:08:38] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 20:08:38] NICK: Malaz is now known as Owl.Player.0679
+[26-02-04 20:10:00] SHUTDOWN: Got shutdown command from Console (No reason specified)
+[26-02-04 20:10:00] INFO: [Phone] Owl.Player.0679 triggered cancelPhoneCall / Quit / 0
+[26-02-04 20:10:00] Server stopped!
+[26-02-04 20:10:01] Stopping resources................................................
+[26-02-04 20:10:01] ERROR: event-system/paintball/s_paintball.lua:445: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:10:01] ERROR: event-system/paintball/s_paintball.lua:446: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:10:01] INFO: [Factions] Saving duty allow changes...
+[26-02-04 20:10:01] INFO: [Factions] Completed in 0 seconds.
+[26-02-04 20:10:01] INFO: Saving insurance data.
+[26-02-04 20:10:01] ERROR: [interior]/interior_system/safe_s.lua:75: exports: Call to non-running server resource (global) [string "?"]
+[26-02-04 20:10:01] ERROR: mdc/apbbox/s_apb_box.lua:72: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:10:01] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-04 20:10:01] INFO: [SHOP] Faction Drop - Failed to Restock products
+[26-02-04 20:10:01] ERROR: npc/faction_drop_s.lua:284: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:10:01] ERROR: pool/pool_s.lua:84: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:10:01] ERROR: pool/pool_s.lua:85: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:10:01] ERROR: prison-system/s_prison.lua:40: exports: Call to non-running server resource (pool) [string "?"]
+[26-02-04 20:10:01] ERROR: prison-system/s_prison.lua:41: bad argument #1 to 'ipairs' (table expected, got nil)
+[26-02-04 20:10:01] ERROR: report/s_reports.lua:87: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:10:01] ERROR: [vehicle]/vehicle/save_s.lua:47: exports: Call to non-running server resource (mysql) [string "?"]
+[26-02-04 20:10:01] WARNING: [vehicle]/vehicle/save_s.lua:47: Bad argument @ 'dbExec' [Expected db-connection at argument 1, got nil]
+[26-02-04 20:10:01] ERROR: [vehicle]/vehicle/save_s.lua:47: exports: Call to non-running server resource (mysql) [string "?"]  [DUP x2]
+[26-02-04 20:10:01] WARNING: [vehicle]/vehicle/save_s.lua:47: Bad argument @ 'dbExec' [Expected db-connection at argument 1, got nil]  [DUP x2]
+[26-02-04 20:10:01] Closing SQLite3 database
+==================================================================
+= Multi Theft Auto: San Andreas v1.6 [64 bit]
+==================================================================
+= Server name      : Brawl Roleplay ♦ English roleplay from the loving community. ♦ brawlroleplay.com
+= Server IP address: auto
+= Server port      : 22003
+= 
+= Log file         : ..e/container/mods/deathmatch/logs/server.log
+= Maximum players  : 50
+= HTTP port        : 22005
+= Voice Chat       : Disabled
+= Bandwidth saving : Medium
+==================================================================
+[26-02-04 20:10:03] Compacting accounts database 'internal.db' ...
+[26-02-04 20:10:03] Resource 'guied' requests some acl rights. Use the command 'aclrequest list guied'
+[26-02-04 20:10:03] Resource 'ip2c' requests some acl rights. Use the command 'aclrequest list ip2c'
+[26-02-04 20:10:03] Resource 'mtasa-pAttach' requests some acl rights. Use the command 'aclrequest list mtasa-pAttach'
+[26-02-04 20:10:03] Resource 'newmodels_azul' requests some acl rights. Use the command 'aclrequest list newmodels_azul'
+[26-02-04 20:10:04] ERROR: Not processing resource 'ipb' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/ipb"
+                  Path #2: "resources/[dev]/ipb"
+[26-02-04 20:10:04] ERROR: Not processing resource 'runcode' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/runcode"
+                  Path #2: "resources/[dev]/runcode"
+[26-02-04 20:10:04] Resources: 151 loaded, 0 failed
+[26-02-04 20:10:04] Compacting database 'registry.db' ...
+[26-02-04 20:10:04] Server password set to 'qaystizi'
+[26-02-04 20:10:04] Starting resources....
+[26-02-04 20:10:11] WARNING: mysql/s_server_global_maintenance.lua:47: Access denied @ 'getServerPassword'
+[26-02-04 20:10:11] Server minclientversion is now 1.6.0-9.23324.0
+[26-02-04 20:10:11] WARNING: [addons]/newmodels_azul/scripts/optional/update_checker/s_update_checker.lua:80: Access denied @ 'fetchRemote'
+[26-02-04 20:10:11] WARNING: account/s_main.lua:41: Access denied @ 'restartResource'
+[26-02-04 20:10:11] INFO: Loaded 0 reports.
+[26-02-04 20:10:11] Please wait...
+[26-02-04 20:10:11] Please wait...
+[26-02-04 20:10:11] WARNING: help/s_infopoints.lua:1: Access denied @ 'aclReload'
+[26-02-04 20:10:11] INFO: Deleting all unprotected 30+ days old exterior items (mode 2)
+[26-02-04 20:10:11] INFO: item-texture: Loading textures for 0 world items
+[26-02-04 20:10:11] INFO: item-texture: 0 clients waiting on initial sync.
+[26-02-04 20:10:11] INFO: item-texture: 0 textured elements were added for initial sync.
+[26-02-04 20:10:11] INFO: Loaded 0 pilot licenses in 1ms.
+[26-02-04 20:10:12] INFO: [VEHICLE] Started loading 3 vehicles. Finish in 0.015 second(s)
+[26-02-04 20:10:12] INFO: Server: Fetched 2 stations from db.
+[26-02-04 20:10:12] INFO: Loaded 0 texture records for all interiors in 0ms
+[26-02-04 20:10:12] INFO: LeFire Script loaded ...
+[26-02-04 20:10:12] INFO: PRISON-SYSTEM: Loaded 24 cell gates from s_gates.lua
+[26-02-04 20:10:12] INFO: Loaded 0 animated texture records in 0ms
+[26-02-04 20:10:12] Querying MTA master server... success! (Auto detected IP:179.61.132.127)
+[26-02-04 20:10:12] Authorized serial account protection is enabled for the ACL group(s): `Admin`  See http://multitheftauto.com/authserial
+[26-02-04 20:10:12] WARNING: <owner_email_address> not set
+[26-02-04 20:10:12] Server started and is ready to accept connections!
+[26-02-04 20:10:12] To stop the server, type 'shutdown' or press Ctrl-C
+[26-02-04 20:10:12] Type 'help' for a list of commands.
+[26-02-04 20:10:12] INFO: [ELEVATOR] Spawning 0 elevators will be finished in approx. 0 seconds.
+[26-02-04 20:10:12] INFO: [TRUCKER] Refreshed 0 orders.
+[26-02-04 20:10:12] INFO: [CLOTHES] Server / Loaded 0 clothing items
+[26-02-04 20:10:16] INFO: [MAPS] Started loading 7020 mapping objects. Finishing in 35.1 second(s)
+[26-02-04 20:10:50] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-04 20:10:52] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-04 20:10:52] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 20:10:52] NICK: Malaz is now known as Owl.Player.7127
+[26-02-04 20:11:00] INFO: Server: sending 2 stations to client.
+[26-02-04 20:11:10] QUIT: Owl.Player.7127 left the game [Quit] 
+[26-02-04 20:11:10] INFO: [Phone] Owl.Player.7127 triggered cancelPhoneCall / Quit / 0
+[26-02-04 20:25:12] INFO: Server: Fetched 2 stations from db.
+[26-02-04 20:30:16] SHUTDOWN: Got shutdown command from Console (No reason specified)
+[26-02-04 20:30:16] Server stopped!
+[26-02-04 20:30:16] Stopping resources................................................
+[26-02-04 20:30:16] ERROR: event-system/paintball/s_paintball.lua:445: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:30:16] ERROR: event-system/paintball/s_paintball.lua:446: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:30:16] INFO: [Factions] Saving duty allow changes...
+[26-02-04 20:30:16] INFO: [Factions] Completed in 0 seconds.
+[26-02-04 20:30:16] INFO: Saving insurance data.
+[26-02-04 20:30:16] ERROR: [interior]/interior_system/safe_s.lua:75: exports: Call to non-running server resource (global) [string "?"]
+[26-02-04 20:30:16] ERROR: mdc/apbbox/s_apb_box.lua:72: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:30:16] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-04 20:30:16] INFO: [SHOP] Faction Drop - Failed to Restock products
+[26-02-04 20:30:16] ERROR: npc/faction_drop_s.lua:284: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:30:16] ERROR: pool/pool_s.lua:84: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:30:16] ERROR: pool/pool_s.lua:85: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:30:16] ERROR: prison-system/s_prison.lua:40: exports: Call to non-running server resource (pool) [string "?"]
+[26-02-04 20:30:16] ERROR: prison-system/s_prison.lua:41: bad argument #1 to 'ipairs' (table expected, got nil)
+[26-02-04 20:30:16] ERROR: report/s_reports.lua:87: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:30:16] ERROR: [vehicle]/vehicle/save_s.lua:47: exports: Call to non-running server resource (mysql) [string "?"]
+[26-02-04 20:30:16] WARNING: [vehicle]/vehicle/save_s.lua:47: Bad argument @ 'dbExec' [Expected db-connection at argument 1, got nil]
+[26-02-04 20:30:16] ERROR: [vehicle]/vehicle/save_s.lua:47: exports: Call to non-running server resource (mysql) [string "?"]  [DUP x2]
+[26-02-04 20:30:16] WARNING: [vehicle]/vehicle/save_s.lua:47: Bad argument @ 'dbExec' [Expected db-connection at argument 1, got nil]  [DUP x2]
+[26-02-04 20:30:16] Closing SQLite3 database
+==================================================================
+= Multi Theft Auto: San Andreas v1.6 [64 bit]
+==================================================================
+= Server name      : Brawl Roleplay ♦ English roleplay from the loving community. ♦ brawlroleplay.com
+= Server IP address: auto
+= Server port      : 22003
+= 
+= Log file         : ..e/container/mods/deathmatch/logs/server.log
+= Maximum players  : 50
+= HTTP port        : 22005
+= Voice Chat       : Disabled
+= Bandwidth saving : Medium
+==================================================================
+[26-02-04 20:30:19] Compacting accounts database 'internal.db' ...
+[26-02-04 20:30:19] Resource 'guied' requests some acl rights. Use the command 'aclrequest list guied'
+[26-02-04 20:30:19] Resource 'ip2c' requests some acl rights. Use the command 'aclrequest list ip2c'
+[26-02-04 20:30:19] Resource 'mtasa-pAttach' requests some acl rights. Use the command 'aclrequest list mtasa-pAttach'
+[26-02-04 20:30:19] Resource 'newmodels_azul' requests some acl rights. Use the command 'aclrequest list newmodels_azul'
+[26-02-04 20:30:19] ERROR: Not processing resource 'ipb' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/ipb"
+                  Path #2: "resources/[dev]/ipb"
+[26-02-04 20:30:19] ERROR: Not processing resource 'runcode' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/runcode"
+                  Path #2: "resources/[dev]/runcode"
+[26-02-04 20:30:19] Resources: 151 loaded, 0 failed
+[26-02-04 20:30:19] Compacting database 'registry.db' ...
+[26-02-04 20:30:20] Server password set to 'qaystizi'
+[26-02-04 20:30:20] Starting resources....
+[26-02-04 20:30:20] WARNING: mysql/s_server_global_maintenance.lua:47: Access denied @ 'getServerPassword'
+[26-02-04 20:30:20] Server minclientversion is now 1.6.0-9.23324.0
+[26-02-04 20:30:20] WARNING: [addons]/newmodels_azul/scripts/optional/update_checker/s_update_checker.lua:80: Access denied @ 'fetchRemote'
+[26-02-04 20:30:20] WARNING: account/s_main.lua:41: Access denied @ 'restartResource'
+[26-02-04 20:30:20] INFO: Loaded 0 reports.
+[26-02-04 20:30:20] Please wait...
+[26-02-04 20:30:20] Please wait...
+[26-02-04 20:30:20] WARNING: help/s_infopoints.lua:1: Access denied @ 'aclReload'
+[26-02-04 20:30:20] INFO: Deleting all unprotected 30+ days old exterior items (mode 2)
+[26-02-04 20:30:20] INFO: item-texture: Loading textures for 0 world items
+[26-02-04 20:30:20] INFO: item-texture: 0 clients waiting on initial sync.
+[26-02-04 20:30:20] INFO: item-texture: 0 textured elements were added for initial sync.
+[26-02-04 20:30:20] INFO: Loaded 0 pilot licenses in 0ms.
+[26-02-04 20:30:20] INFO: [VEHICLE] Started loading 3 vehicles. Finish in 0.015 second(s)
+[26-02-04 20:30:20] INFO: Server: Fetched 2 stations from db.
+[26-02-04 20:30:20] INFO: Loaded 0 texture records for all interiors in 0ms
+[26-02-04 20:30:21] INFO: LeFire Script loaded ...
+[26-02-04 20:30:21] INFO: PRISON-SYSTEM: Loaded 24 cell gates from s_gates.lua
+[26-02-04 20:30:21] INFO: Loaded 0 animated texture records in 0ms
+[26-02-04 20:30:21] Querying MTA master server... success! (Auto detected IP:179.61.132.127)
+[26-02-04 20:30:21] Authorized serial account protection is enabled for the ACL group(s): `Admin`  See http://multitheftauto.com/authserial
+[26-02-04 20:30:21] WARNING: <owner_email_address> not set
+[26-02-04 20:30:21] Server started and is ready to accept connections!
+[26-02-04 20:30:21] To stop the server, type 'shutdown' or press Ctrl-C
+[26-02-04 20:30:21] Type 'help' for a list of commands.
+[26-02-04 20:30:21] INFO: [ELEVATOR] Spawning 0 elevators will be finished in approx. 0 seconds.
+[26-02-04 20:30:21] INFO: [TRUCKER] Refreshed 0 orders.
+[26-02-04 20:30:21] INFO: [CLOTHES] Server / Loaded 0 clothing items
+[26-02-04 20:30:21] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-04 20:30:22] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-04 20:30:22] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 20:30:22] NICK: Malaz is now known as Owl.Player.7916
+[26-02-04 20:30:25] INFO: [MAPS] Started loading 7020 mapping objects. Finishing in 105.3 second(s)
+[26-02-04 20:30:49] QUIT: Owl.Player.7916 left the game [Timed out] 
+[26-02-04 20:30:49] INFO: [Phone] Owl.Player.7916 triggered cancelPhoneCall / Timed out / 0
+[26-02-04 20:32:58] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-04 20:33:00] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-04 20:33:00] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 20:33:00] NICK: Malaz is now known as Owl.Player.0121
+[26-02-04 20:33:10] INFO: Server: sending 2 stations to client.
+[26-02-04 20:34:50] NICK: Owl.Player.0121 is now known as James_Reynold
+[26-02-04 20:34:53] WARNING: account/s_characters.lua:507: Access denied @ 'executeCommandHandler'
+[26-02-04 20:36:33] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 20:36:33] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 20:45:20] INFO: Server: Fetched 2 stations from db.
+[26-02-04 20:46:49] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 20:46:49] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 20:48:28] restart: Requested by Console
+[26-02-04 20:48:28] restart: Resource 'account' restarting...
+[26-02-04 20:48:28] Stopping account
+[26-02-04 20:48:28] Starting account
+[26-02-04 20:48:28] WARNING: account/s_main.lua:41: Access denied @ 'restartResource'
+[26-02-04 20:48:28] account restarted successfully
+[26-02-04 20:48:31] restart: Requested by Console
+[26-02-04 20:48:31] restart: Resource 'apps' restarting...
+[26-02-04 20:48:31] Stopping apps
+[26-02-04 20:48:31] Starting apps
+[26-02-04 20:48:31] apps restarted successfully
+[26-02-04 20:48:34] INFO: Server: sending 2 stations to client.
+[26-02-04 20:48:35] SHUTDOWN: Got shutdown command from Console (No reason specified)
+[26-02-04 20:48:35] INFO: [Phone] James_Reynold triggered cancelPhoneCall / Quit / 0
+[26-02-04 20:48:35] Server stopped!
+[26-02-04 20:48:35] Stopping resources................................................
+[26-02-04 20:48:35] ERROR: event-system/paintball/s_paintball.lua:445: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:48:35] ERROR: event-system/paintball/s_paintball.lua:446: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:48:35] INFO: [Factions] Saving duty allow changes...
+[26-02-04 20:48:35] INFO: [Factions] Completed in 0 seconds.
+[26-02-04 20:48:35] INFO: Saving insurance data.
+[26-02-04 20:48:35] ERROR: [interior]/interior_system/safe_s.lua:75: exports: Call to non-running server resource (global) [string "?"]
+[26-02-04 20:48:35] ERROR: mdc/apbbox/s_apb_box.lua:72: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:48:35] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-04 20:48:35] INFO: [SHOP] Faction Drop - Failed to Restock products
+[26-02-04 20:48:35] ERROR: npc/faction_drop_s.lua:284: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:48:35] ERROR: pool/pool_s.lua:84: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:48:35] ERROR: pool/pool_s.lua:85: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:48:35] ERROR: prison-system/s_prison.lua:40: exports: Call to non-running server resource (pool) [string "?"]
+[26-02-04 20:48:35] ERROR: prison-system/s_prison.lua:41: bad argument #1 to 'ipairs' (table expected, got nil)
+[26-02-04 20:48:35] ERROR: report/s_reports.lua:87: exports: Call to non-running server resource (data) [string "?"]
+[26-02-04 20:48:35] ERROR: [vehicle]/vehicle/save_s.lua:47: exports: Call to non-running server resource (mysql) [string "?"]
+[26-02-04 20:48:35] WARNING: [vehicle]/vehicle/save_s.lua:47: Bad argument @ 'dbExec' [Expected db-connection at argument 1, got nil]
+[26-02-04 20:48:35] ERROR: [vehicle]/vehicle/save_s.lua:47: exports: Call to non-running server resource (mysql) [string "?"]  [DUP x2]
+[26-02-04 20:48:35] WARNING: [vehicle]/vehicle/save_s.lua:47: Bad argument @ 'dbExec' [Expected db-connection at argument 1, got nil]  [DUP x2]
+[26-02-04 20:48:35] Closing SQLite3 database
+==================================================================
+= Multi Theft Auto: San Andreas v1.6 [64 bit]
+==================================================================
+= Server name      : Brawl Roleplay ♦ English roleplay from the loving community. ♦ brawlroleplay.com
+= Server IP address: auto
+= Server port      : 22003
+= 
+= Log file         : ..e/container/mods/deathmatch/logs/server.log
+= Maximum players  : 50
+= HTTP port        : 22005
+= Voice Chat       : Disabled
+= Bandwidth saving : Medium
+==================================================================
+[26-02-04 20:48:38] Compacting accounts database 'internal.db' ...
+[26-02-04 20:48:38] Resource 'guied' requests some acl rights. Use the command 'aclrequest list guied'
+[26-02-04 20:48:38] Resource 'ip2c' requests some acl rights. Use the command 'aclrequest list ip2c'
+[26-02-04 20:48:38] Resource 'mtasa-pAttach' requests some acl rights. Use the command 'aclrequest list mtasa-pAttach'
+[26-02-04 20:48:38] Resource 'newmodels_azul' requests some acl rights. Use the command 'aclrequest list newmodels_azul'
+[26-02-04 20:48:38] ERROR: Not processing resource 'ipb' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/ipb"
+                  Path #2: "resources/[dev]/ipb"
+[26-02-04 20:48:38] ERROR: Not processing resource 'runcode' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/runcode"
+                  Path #2: "resources/[dev]/runcode"
+[26-02-04 20:48:38] Resources: 151 loaded, 0 failed
+[26-02-04 20:48:38] Compacting database 'registry.db' ...
+[26-02-04 20:48:38] Server password set to 'qaystizi'
+[26-02-04 20:48:38] Starting resources....
+[26-02-04 20:48:38] WARNING: mysql/s_server_global_maintenance.lua:47: Access denied @ 'getServerPassword'
+[26-02-04 20:48:38] Server minclientversion is now 1.6.0-9.23324.0
+[26-02-04 20:48:38] WARNING: [addons]/newmodels_azul/scripts/optional/update_checker/s_update_checker.lua:80: Access denied @ 'fetchRemote'
+[26-02-04 20:48:38] WARNING: account/s_main.lua:41: Access denied @ 'restartResource'
+[26-02-04 20:48:38] INFO: Loaded 0 reports.
+[26-02-04 20:48:38] Please wait...
+[26-02-04 20:48:39] Please wait...
+[26-02-04 20:48:39] WARNING: help/s_infopoints.lua:1: Access denied @ 'aclReload'
+[26-02-04 20:48:39] INFO: Deleting all unprotected 30+ days old exterior items (mode 2)
+[26-02-04 20:48:39] INFO: item-texture: Loading textures for 0 world items
+[26-02-04 20:48:39] INFO: item-texture: 0 clients waiting on initial sync.
+[26-02-04 20:48:39] INFO: item-texture: 0 textured elements were added for initial sync.
+[26-02-04 20:48:39] INFO: Loaded 0 pilot licenses in 1ms.
+[26-02-04 20:48:39] INFO: [VEHICLE] Started loading 3 vehicles. Finish in 0.015 second(s)
+[26-02-04 20:48:39] INFO: Server: Fetched 2 stations from db.
+[26-02-04 20:48:39] INFO: Loaded 0 texture records for all interiors in 0ms
+[26-02-04 20:48:39] INFO: LeFire Script loaded ...
+[26-02-04 20:48:39] INFO: PRISON-SYSTEM: Loaded 24 cell gates from s_gates.lua
+[26-02-04 20:48:39] INFO: Loaded 0 animated texture records in 0ms
+[26-02-04 20:48:39] Querying MTA master server... success! (Auto detected IP:179.61.132.127)
+[26-02-04 20:48:39] Authorized serial account protection is enabled for the ACL group(s): `Admin`  See http://multitheftauto.com/authserial
+[26-02-04 20:48:39] WARNING: <owner_email_address> not set
+[26-02-04 20:48:39] Server started and is ready to accept connections!
+[26-02-04 20:48:39] To stop the server, type 'shutdown' or press Ctrl-C
+[26-02-04 20:48:39] Type 'help' for a list of commands.
+[26-02-04 20:48:39] INFO: [ELEVATOR] Spawning 0 elevators will be finished in approx. 0 seconds.
+[26-02-04 20:48:39] INFO: [TRUCKER] Refreshed 0 orders.
+[26-02-04 20:48:39] INFO: [CLOTHES] Server / Loaded 0 clothing items
+[26-02-04 20:48:43] INFO: [MAPS] Started loading 7020 mapping objects. Finishing in 35.1 second(s)
+[26-02-04 20:48:46] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-04 20:48:46] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-04 20:48:46] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-04 20:48:46] NICK: Malaz is now known as Owl.Player.5773
+[26-02-04 20:48:55] INFO: Server: sending 2 stations to client.
+[26-02-04 20:49:22] NICK: Owl.Player.5773 is now known as James_Reynold
+[26-02-04 20:49:25] WARNING: account/s_characters.lua:507: Access denied @ 'executeCommandHandler'
+[26-02-04 20:49:36] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 20:49:36] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 20:50:36] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 20:50:36] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 20:53:05] restart: Requested by Console
+[26-02-04 20:53:05] restart: Resource 'apps' restarting...
+[26-02-04 20:53:05] Stopping apps
+[26-02-04 20:53:05] Starting apps
+[26-02-04 20:53:12] apps restarted successfully
+[26-02-04 20:53:27] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 20:53:33] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 21:00:39] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-04 21:00:39] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-04 21:00:39] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-04 21:00:39] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-04 21:03:39] INFO: Server: Fetched 2 stations from db.
+[26-02-04 21:03:49] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-04 21:03:49] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-04 21:04:20] INFO: Server: sending 2 stations to client.
+[26-02-04 21:18:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-04 21:18:39] INFO: Server: Fetched 2 stations from db.
+[26-02-04 21:19:50] INFO: Server: sending 2 stations to client.
+[26-02-04 21:23:59] QUIT: James_Reynold left the game [Timed out] 
+[26-02-04 21:23:59] INFO: [Phone] James_Reynold triggered cancelPhoneCall / Timed out / 0
+[26-02-04 21:33:39] INFO: Server: Fetched 2 stations from db.
+[26-02-04 21:48:38] INFO: WORLDSAVE INCOMING
+[26-02-04 21:48:39] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-04 21:48:39] INFO: [SHOP] Faction Drop - Restocked products
+[26-02-04 21:48:39] INFO: [DATA] Saved Faction Drop NPC logs records.
+[26-02-04 21:48:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-04 21:48:39] INFO: Server: Fetched 2 stations from db.
+[26-02-04 22:00:39] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-04 22:00:39] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-04 22:00:39] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-04 22:00:39] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-04 22:03:39] INFO: Server: Fetched 2 stations from db.
+[26-02-04 22:18:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-04 22:18:45] INFO: Server: Fetched 2 stations from db.
+[26-02-04 22:33:39] INFO: Server: Fetched 2 stations from db.
+[26-02-04 22:48:38] INFO: WORLDSAVE INCOMING
+[26-02-04 22:48:39] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-04 22:48:39] INFO: [SHOP] Faction Drop - Restocked products
+[26-02-04 22:48:39] INFO: [DATA] Saved Faction Drop NPC logs records.
+[26-02-04 22:48:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-04 22:48:39] INFO: Server: Fetched 2 stations from db.
+[26-02-04 23:00:39] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-04 23:00:39] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-04 23:00:39] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-04 23:00:39] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-04 23:03:39] INFO: Server: Fetched 2 stations from db.
+[26-02-04 23:18:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-04 23:18:45] INFO: Server: Fetched 2 stations from db.
+[26-02-04 23:33:39] INFO: Server: Fetched 2 stations from db.
+[26-02-04 23:48:38] INFO: WORLDSAVE INCOMING
+[26-02-04 23:48:39] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-04 23:48:39] INFO: [SHOP] Faction Drop - Restocked products
+[26-02-04 23:48:39] INFO: [DATA] Saved Faction Drop NPC logs records.
+[26-02-04 23:48:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-04 23:48:39] INFO: Server: Fetched 2 stations from db.
+[26-02-05 00:00:39] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-05 00:00:39] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-05 00:00:39] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-05 00:00:39] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-05 00:03:39] INFO: Server: Fetched 2 stations from db.
+[26-02-05 00:18:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 00:18:45] INFO: Server: Fetched 2 stations from db.
+[26-02-05 00:33:39] INFO: Server: Fetched 2 stations from db.
+[26-02-05 00:48:38] INFO: WORLDSAVE INCOMING
+[26-02-05 00:48:39] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-05 00:48:39] INFO: [SHOP] Faction Drop - Restocked products
+[26-02-05 00:48:39] INFO: [DATA] Saved Faction Drop NPC logs records.
+[26-02-05 00:48:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 00:48:39] INFO: Server: Fetched 2 stations from db.
+[26-02-05 01:00:39] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-05 01:00:39] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-05 01:00:39] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-05 01:00:39] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-05 01:03:39] INFO: Server: Fetched 2 stations from db.
+[26-02-05 01:18:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 01:18:45] INFO: Server: Fetched 2 stations from db.
+[26-02-05 01:33:39] INFO: Server: Fetched 2 stations from db.
+[26-02-05 01:48:39] INFO: WORLDSAVE INCOMING
+[26-02-05 01:48:39] INFO: Saving insurance data.
+[26-02-05 01:48:39] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-05 01:48:39] INFO: [SHOP] Faction Drop - Restocked products
+[26-02-05 01:48:39] INFO: [DATA] Saved Faction Drop NPC logs records.
+[26-02-05 01:48:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 01:48:39] INFO: Server: Fetched 2 stations from db.
+[26-02-05 02:00:39] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-05 02:00:39] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-05 02:00:39] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-05 02:00:39] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-05 02:03:39] INFO: Server: Fetched 2 stations from db.
+[26-02-05 02:18:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 02:18:45] INFO: Server: Fetched 2 stations from db.
+[26-02-05 02:33:39] INFO: Server: Fetched 2 stations from db.
+[26-02-05 02:48:39] INFO: WORLDSAVE INCOMING
+[26-02-05 02:48:39] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-05 02:48:39] INFO: [SHOP] Faction Drop - Restocked products
+[26-02-05 02:48:39] INFO: [DATA] Saved Faction Drop NPC logs records.
+[26-02-05 02:48:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 02:48:39] INFO: Server: Fetched 2 stations from db.
+[26-02-05 03:00:39] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-05 03:00:39] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-05 03:00:39] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-05 03:00:39] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-05 03:03:39] INFO: Server: Fetched 2 stations from db.
+[26-02-05 03:18:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 03:18:45] INFO: Server: Fetched 2 stations from db.
+[26-02-05 03:33:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 03:48:39] INFO: WORLDSAVE INCOMING
+[26-02-05 03:48:39] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-05 03:48:39] INFO: [SHOP] Faction Drop - Restocked products
+[26-02-05 03:48:39] INFO: [DATA] Saved Faction Drop NPC logs records.
+[26-02-05 03:48:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 03:48:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 04:00:39] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-05 04:00:39] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-05 04:00:39] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-05 04:00:39] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-05 04:03:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 04:18:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 04:18:45] INFO: Server: Fetched 2 stations from db.
+[26-02-05 04:33:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 04:48:39] INFO: WORLDSAVE INCOMING
+[26-02-05 04:48:39] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-05 04:48:39] INFO: [SHOP] Faction Drop - Restocked products
+[26-02-05 04:48:39] INFO: [DATA] Saved Faction Drop NPC logs records.
+[26-02-05 04:48:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 04:48:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 05:00:39] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-05 05:00:39] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-05 05:00:39] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-05 05:00:39] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-05 05:03:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 05:18:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 05:18:45] INFO: Server: Fetched 2 stations from db.
+[26-02-05 05:33:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 05:48:39] INFO: WORLDSAVE INCOMING
+[26-02-05 05:48:39] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-05 05:48:39] INFO: [SHOP] Faction Drop - Restocked products
+[26-02-05 05:48:39] INFO: [DATA] Saved Faction Drop NPC logs records.
+[26-02-05 05:48:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 05:48:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 06:00:39] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-05 06:00:39] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-05 06:00:39] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-05 06:00:39] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-05 06:03:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 06:18:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 06:18:45] INFO: Server: Fetched 2 stations from db.
+[26-02-05 06:33:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 06:48:39] INFO: WORLDSAVE INCOMING
+[26-02-05 06:48:39] INFO: Saving insurance data.
+[26-02-05 06:48:39] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-05 06:48:39] INFO: [SHOP] Faction Drop - Restocked products
+[26-02-05 06:48:39] INFO: [DATA] Saved Faction Drop NPC logs records.
+[26-02-05 06:48:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 06:48:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 06:59:50] WARNING: mysql/s_server_global_maintenance.lua:34: Access denied @ 'getServerPassword'
+[26-02-05 06:59:50] WARNING: mysql/s_server_global_maintenance.lua:35: Access denied @ 'setServerPassword'
+[26-02-05 06:59:50] WARNING: [addons]/discord_webhooks/system.lua:108: Access denied @ 'fetchRemote'
+[26-02-05 06:59:50] ERROR: [addons]/discord_webhooks/custom/config.lua:26: [Discord Webhooks] internalSendRequest ERROR: fetchRemote failed
+[26-02-05 07:00:39] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-05 07:00:39] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-05 07:00:39] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-05 07:00:39] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-05 07:03:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 07:18:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 07:18:45] INFO: Server: Fetched 2 stations from db.
+[26-02-05 07:33:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 07:48:39] INFO: WORLDSAVE INCOMING
+[26-02-05 07:48:39] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-05 07:48:39] INFO: [SHOP] Faction Drop - Restocked products
+[26-02-05 07:48:39] INFO: [DATA] Saved Faction Drop NPC logs records.
+[26-02-05 07:48:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 07:48:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 08:00:39] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-05 08:00:39] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-05 08:00:39] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-05 08:00:39] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-05 08:03:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 08:18:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 08:18:45] INFO: Server: Fetched 2 stations from db.
+[26-02-05 08:33:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 08:48:39] INFO: WORLDSAVE INCOMING
+[26-02-05 08:48:39] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-05 08:48:39] INFO: [SHOP] Faction Drop - Restocked products
+[26-02-05 08:48:39] INFO: [DATA] Saved Faction Drop NPC logs records.
+[26-02-05 08:48:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 08:48:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 09:00:39] INFO: [PAYDAY] Server / payAllWages / Ran.
+[26-02-05 09:00:39] INFO: BIZ-SYSTEM SETTINGS: wageRate=2, limitDebtAmount=6000, warningDebtAmount=5000
+[26-02-05 09:00:39] INFO: ------------START UPDATING SHOP WAGES------------
+[26-02-05 09:00:39] INFO: ------------UPDATED 0 SHOP WAGES------------
+[26-02-05 09:03:40] INFO: Server: Fetched 2 stations from db.
+[26-02-05 09:11:23] CONNECT: Malaz connected (IP: 151.177.208.110  Serial: 5DDB4D0ED21D9219DDEBBE0676041DA2  Version: 1.6.0-9.23690.0)
+[26-02-05 09:11:25] JOIN: Malaz joined the game (IP: 151.177.208.110)
+[26-02-05 09:11:25] WARNING: bans/ban_s.lua:566: Access denied @ 'callRemote'
+[26-02-05 09:11:25] NICK: Malaz is now known as Owl.Player.5356
+[26-02-05 09:11:46] INFO: Server: sending 2 stations to client.
+[26-02-05 09:18:39] INFO: [SHOP] A forum report has made for 0 Faction Drop NPC(s).
+[26-02-05 09:18:45] INFO: Server: Fetched 2 stations from db.
+[26-02-05 09:27:11] INFO: Server: sending 2 stations to client.
+[26-02-05 09:29:14] SHUTDOWN: Got shutdown command from Console (No reason specified)
+[26-02-05 09:29:15] INFO: [Phone] Owl.Player.5356 triggered cancelPhoneCall / Quit / 0
+[26-02-05 09:29:15] Server stopped!
+[26-02-05 09:29:15] Stopping resources................................................
+[26-02-05 09:29:15] ERROR: event-system/paintball/s_paintball.lua:445: exports: Call to non-running server resource (data) [string "?"]
+[26-02-05 09:29:15] ERROR: event-system/paintball/s_paintball.lua:446: exports: Call to non-running server resource (data) [string "?"]
+[26-02-05 09:29:15] INFO: [Factions] Saving duty allow changes...
+[26-02-05 09:29:15] INFO: [Factions] Completed in 0 seconds.
+[26-02-05 09:29:15] INFO: Saving insurance data.
+[26-02-05 09:29:15] ERROR: [interior]/interior_system/safe_s.lua:75: exports: Call to non-running server resource (global) [string "?"]
+[26-02-05 09:29:15] ERROR: mdc/apbbox/s_apb_box.lua:72: exports: Call to non-running server resource (data) [string "?"]
+[26-02-05 09:29:15] INFO: [SHOP] Saved 0 shops configs to SQL successfully.
+[26-02-05 09:29:15] INFO: [SHOP] Faction Drop - Failed to Restock products
+[26-02-05 09:29:15] ERROR: npc/faction_drop_s.lua:284: exports: Call to non-running server resource (data) [string "?"]
+[26-02-05 09:29:15] ERROR: pool/pool_s.lua:84: exports: Call to non-running server resource (data) [string "?"]
+[26-02-05 09:29:15] ERROR: pool/pool_s.lua:85: exports: Call to non-running server resource (data) [string "?"]
+[26-02-05 09:29:15] ERROR: prison-system/s_prison.lua:40: exports: Call to non-running server resource (pool) [string "?"]
+[26-02-05 09:29:15] ERROR: prison-system/s_prison.lua:41: bad argument #1 to 'ipairs' (table expected, got nil)
+[26-02-05 09:29:15] ERROR: report/s_reports.lua:87: exports: Call to non-running server resource (data) [string "?"]
+[26-02-05 09:29:15] ERROR: [vehicle]/vehicle/save_s.lua:47: exports: Call to non-running server resource (mysql) [string "?"]
+[26-02-05 09:29:15] WARNING: [vehicle]/vehicle/save_s.lua:47: Bad argument @ 'dbExec' [Expected db-connection at argument 1, got nil]
+[26-02-05 09:29:15] ERROR: [vehicle]/vehicle/save_s.lua:47: exports: Call to non-running server resource (mysql) [string "?"]  [DUP x2]
+[26-02-05 09:29:15] WARNING: [vehicle]/vehicle/save_s.lua:47: Bad argument @ 'dbExec' [Expected db-connection at argument 1, got nil]  [DUP x2]
+[26-02-05 09:29:15] Closing SQLite3 database
+==================================================================
+= Multi Theft Auto: San Andreas v1.6 [64 bit]
+==================================================================
+= Server name      : Brawl Roleplay ♦ English roleplay from the loving community. ♦ brawlroleplay.com
+= Server IP address: auto
+= Server port      : 22003
+= 
+= Log file         : ..e/container/mods/deathmatch/logs/server.log
+= Maximum players  : 50
+= HTTP port        : 22005
+= Voice Chat       : Disabled
+= Bandwidth saving : Medium
+==================================================================
+[26-02-05 09:29:18] Compacting accounts database 'internal.db' ...
+[26-02-05 09:29:18] Resource 'guied' requests some acl rights. Use the command 'aclrequest list guied'
+[26-02-05 09:29:18] Resource 'ip2c' requests some acl rights. Use the command 'aclrequest list ip2c'
+[26-02-05 09:29:18] Resource 'mtasa-pAttach' requests some acl rights. Use the command 'aclrequest list mtasa-pAttach'
+[26-02-05 09:29:18] Resource 'newmodels_azul' requests some acl rights. Use the command 'aclrequest list newmodels_azul'
+[26-02-05 09:29:18] ERROR: Not processing resource 'ipb' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/ipb"
+                  Path #2: "resources/[dev]/ipb"
+[26-02-05 09:29:18] ERROR: Not processing resource 'runcode' as it has duplicates on different paths:
+                  Path #1: "resources/[admin]/runcode"
+                  Path #2: "resources/[dev]/runcode"
+[26-02-05 09:29:18] Resources: 151 loaded, 0 failed
+[26-02-05 09:29:18] Compacting database 'registry.db' ...
+[26-02-05 09:29:18] Server password set to 'qaystizi'
+[26-02-05 09:29:18] Starting resources....
+[26-02-05 09:29:18] WARNING: mysql/s_server_global_maintenance.lua:47: Access denied @ 'getServerPassword'
+[26-02-05 09:29:18] Server minclientversion is now 1.6.0-9.23324.0
+[26-02-05 09:29:18] WARNING: [addons]/newmodels_azul/scripts/optional/update_checker/s_update_checker.lua:80: Access denied @ 'fetchRemote'
+[26-02-05 09:29:18] WARNING: account/s_main.lua:41: Access denied @ 'restartResource'
+[26-02-05 09:29:19] INFO: Loaded 0 reports.
+[26-02-05 09:29:19] Please wait...
+[26-02-05 09:29:19] Please wait...
+[26-02-05 09:29:19] WARNING: help/s_infopoints.lua:1: Access denied @ 'aclReload'
+[26-02-05 09:29:19] INFO: Deleting all unprotected 30+ days old exterior items (mode 2)
+[26-02-05 09:29:19] INFO: item-texture: Loading textures for 0 world items
+[26-02-05 09:29:19] INFO: item-texture: 0 clients waiting on initial sync.
+[26-02-05 09:29:19] INFO: item-texture: 0 textured elements were added for initial sync.
+[26-02-05 09:29:19] INFO: Loaded 0 pilot licenses in 1ms.
+[26-02-05 09:29:19] INFO: [VEHICLE] Started loading 3 vehicles. Finish in 0.015 second(s)
+[26-02-05 09:29:19] INFO: Server: Fetched 2 stations from db.
+[26-02-05 09:29:19] INFO: Loaded 0 texture records for all interiors in 0ms
+[26-02-05 09:29:19] INFO: LeFire Script loaded ...
+[26-02-05 09:29:19] INFO: PRISON-SYSTEM: Loaded 24 cell gates from s_gates.lua
+[26-02-05 09:29:19] INFO: Loaded 0 animated texture records in 0ms
+[26-02-05 09:29:19] Querying MTA master server... success! (Auto detected IP:179.61.132.127)
+[26-02-05 09:29:19] Authorized serial account protection is enabled for the ACL group(s): `Admin`  See http://multitheftauto.com/authserial
+[26-02-05 09:29:19] WARNING: <owner_email_address> not set
+[26-02-05 09:29:19] Server started and is ready to accept connections!
+[26-02-05 09:29:19] To stop the server, type 'shutdown' or press Ctrl-C
+[26-02-05 09:29:19] Type 'help' for a list of commands.
+[26-02-05 09:29:19] INFO: [ELEVATOR] Spawning 0 elevators will be finished in approx. 0 seconds.
+[26-02-05 09:29:19] INFO: [TRUCKER] Refreshed 0 orders.
+[26-02-05 09:29:19] INFO: [CLOTHES] Server / Loaded 0 clothing items
+[26-02-05 09:29:24] INFO: [MAPS] Started loading 7020 mapping objects. Finishing in 35.1 second(s)

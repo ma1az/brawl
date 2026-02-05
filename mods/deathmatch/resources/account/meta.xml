@@ -1,0 +1,51 @@
+<meta>
+    <info author="Maxime - Brawl Roleplay MTA Server Development Team" type="script" description="Account System" />
+
+    <script src="login-panel/server.lua" type="server" />
+    <script src="login-panel/client.lua" type="client" />
+
+    <file src="login-panel/*.png" />
+
+    <script src="g_events.lua" type="server" />
+    <script src="g_events.lua" type="client" />
+
+    <script src="s_main.lua" type="server" />
+    <script src="c_main.lua" type="client" />
+    <export function="loadSavedData" type="client" />
+    <export function="appendSavedData" type="client" />
+
+    <script src="c_tutorial.lua" type="client" />
+
+    <script src="s_characters.lua" type="server" />
+    <script src="c_characters.lua" type="client" />
+
+    <script src="s_login.lua" type="server" />
+    <script src="c_login.lua" type="client" />
+
+    <script src="s_email_request.lua" type="server" />
+    <script src="c_email_request.lua" type="client" />
+
+    <script src="c_create_character.lua" type="client" />
+    <script src="s_create_character.lua" type="server" />
+
+    <script src="c_options.lua" type="client" />
+	<script src="f10-settings\c_f10_settings.lua" type="client" />
+	<script src="f10-settings\s_f10_settings.lua" type="server" />
+
+	<script src="rules_apps/server_rules_s.lua" type="server" />
+    <script src="rules_apps/server_rules_c.lua" type="client" />
+
+    <script src="s_news.lua" type="server" />
+
+    <export function="checkValidCharacterName" type="client" />
+	<export function="checkValidCharacterName" type="server" />
+
+    <export function="screenStandBy" type="client" />
+
+    <export function="updateAccountSettings" type="client" />
+
+    <file src="img/*.png" />
+    <file src="/login-panel/gtaiv.mp3"/>
+
+    <min_mta_version client="1.3.0-9.04464"></min_mta_version>
+</meta>

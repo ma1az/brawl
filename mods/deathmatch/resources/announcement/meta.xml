@@ -1,0 +1,32 @@
+<meta>
+    <info author="Brawl Roleplay"/>
+
+    <!-- Core Scripts -->
+    <script src="server.lua" type="server"/>
+    <script src="client.lua" type="client"/>
+
+    <!-- MOTD System -->
+    <script src="motd/motd_s.lua" type="server"/>
+    <script src="motd/motd_c.lua" type="client"/>
+    <script src="motd/motd_frontend_s.lua" type="server"/>
+    <script src="motd/motd_frontend_c.lua" type="client"/>
+    <script src="motd/motd_g.lua" type="shared"/>
+
+    <!-- OPM System -->
+    <script src="opm/opm_s.lua" type="server"/>
+    <script src="opm/opm_c.lua" type="client"/>
+
+    <!-- Notification System -->
+    <script src="notif/notification_s.lua" type="server"/>
+    <script src="notif/notification_c.lua" type="client"/>
+
+    <!-- Assets -->
+    <file src="announcement.mp3"/>
+    <file src="opm/opm.png"/>
+
+    <!-- Exported Functions -->
+    <export function="canPlayerAccessMotdManager" type="server" http="true"/>
+    <export function="canPlayerAccessMotdManager" type="client"/>
+    <export function="makePlayerNotification" type="server" http="true"/>  <!--
+	    makePlayerNotification(player, title, details) -->
+</meta>

@@ -1,0 +1,106 @@
+<meta>
+	<info author="OWL MTA Scripting Team" type="script" description="Item System" />
+
+	<script src="s_item_management.lua" type="server" />
+	<export function="deleteAllItemsWithinInt" type="server" />
+	<export function="loadItems" type="server" />
+	<export function="clearItems" type="server" />
+	<export function="sendItems" type="server" />
+	<export function="giveItem" type="server" />
+	<export function="takeItem" type="server" />
+	<export function="takeItemFromSlot" type="server" />
+	<export function="updateItemValue" type="server" />
+	<export function="moveItem" type="server" />
+	<export function="hasItem" type="server" />
+	<export function="hasSpaceForItem" type="server" />
+	<export function="countItems" type="server" />
+	<export function="getItems" type="server" />
+	<export function="deleteAll" type="server" />
+
+	<script src="c_item_management.lua" type="client" />
+	<export function="hasItem" type="client" />
+	<export function="hasSpaceForItem" type="client" />
+	<export function="getItems" type="client" />
+
+	<script src="g_items.lua" type="client" />
+	<script src="g_items.lua" type="server" />
+	<script src="g_item_functions.lua" type="server" />
+	<script src="g_item_functions.lua" type="client" />
+	<export function="getItemName" type="shared" />
+	<export function="getItemValue" type="shared" />
+	<export function="getItemRotInfo" type="shared" />
+	<export function="getItemModel" type="shared" />
+	<export function="getBadges" type="shared" />
+	<export function="getMasks" type="shared" />
+	<export function="getItemDescription" type="shared" />
+	<export function="getItemWeight" type="shared" />
+	<export function="getCarriedWeight" type="shared" />
+	<export function="getMaxWeight" type="shared" />
+	<export function="getItemScale" type="shared" />
+	<export function="getItemTexture" type="shared" />
+	<export function="getItemPreventSpawn" type="shared" />
+	<export function="getItemDoubleSided" type="shared" />
+	<export function="getItemUseNewPickupMethod" type="shared" />
+	<export function="getItemHideItemValue" type="shared" />
+	<export function="isStorageItem" type="shared" />
+	<export function="matchingMetadata" type="shared" />
+
+	<script src="s_item_system.lua" type="server" />
+	<export function="isBadge" type="server" />
+	<export function="isWearingBadge" type="server" />
+	<export function="npcUseItem" type="server" />
+
+	<script src="s_world_items.lua" type="server" />
+	<script src="s_commands.lua" type="server" />
+	<script src="c_item_system.lua" type="client" />
+	<script src="c_inventory.lua" type="client" />
+	<export function="getImage" type="client" />
+
+	<script src="ItemCreator/c_item_creator.lua" type="client" />
+	<script src="ItemCreator/s_item_creator.lua" type="server" />
+
+	<script src="c_drug_system.lua" type="client" />
+	<script src="s_drug_system.lua" type="server" />
+
+	<script src="s_split_item.lua" type="server" />
+
+	<script src="c_books.lua" type="client" />
+	<script src="s_books.lua" type="server" />
+	<script src="c_itemchange.lua" type="client" />
+
+	<script src="c_safes_system.lua" type="client" />
+	<export function="updateSafeItems" type="server" />
+
+	<script src="s_item_admin.lua" type="server" />
+
+	<file src="books/*.xml" />
+
+	<file src="books/*.png" />
+
+	<script src="ghettoblaster/c_ghettoblaster.lua" type="client" />
+	<script src="ghettoblaster/s_ghettoblaster.lua" type="server" />
+
+	<script src="s_move_items.lua" type="server" />
+	<script src="c_move_items.lua" type="client" />
+
+	<script src="c_shellcasings.lua" type="client"/>
+	<script src="s_shellcasings.lua" type="server"/>
+
+	<script src="s_vehicle_upgrades.lua" type="server" />
+
+	<script src="g_item_metadata.lua" type="shared" />
+	<script src="c_metadata_editor.lua" type="client" />
+
+	<script src="anticheat/s_anti-weapon-duplicate.lua" type="server" />
+
+	<export function="doItemGiveawayChecks" type="server" />
+
+	<export function="playSoundInvOpen" type="client" />
+	<export function="playSoundInvClose" type="client" />
+
+	<export function="isItem" type="shared" />
+
+	<file src="images/*.png"/>
+
+	<min_mta_version server="1.3.4-0.00000"/>
+</meta>

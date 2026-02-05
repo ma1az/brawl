@@ -1,0 +1,26 @@
+<meta>
+        <info author="Brawl Roleplay MTA Server Development Team" type="script" description=""/>
+		<oop>true</oop>
+
+    	<script src="s_server_global_maintenance.lua" type="server"/>
+		<script src="lazyquery.lua" type="server"/>
+		<export function="lazyQuery" type="server" http="false" />
+
+		<script src="mysql.lua" type="server"/>
+		<export function="getConn" type="server" http="false" />
+		<export function="query" 			type="server" http="false" />
+		<export function="query_free" 			type="server" http="false" />
+		<export function="fetch_assoc" 		type="server" http="false" />
+		<export function="free_result" 		type="server" http="false" />
+		<export function="num_rows" 		type="server" http="false" />
+		<export function="query_fetch_assoc" type="server" http="false" />
+		<export function="insert_id" 		type="server" http="false" />
+		<export function="query_insert_free" type="server" http="false" />
+		<export function="escape_string"    type="server" http="false" />
+		<export function="getSmallestID"    type="server" http="false" />
+
+		<!-- custom mysql functions -->
+		<export function="select_one" />
+		<export function="insert"  type="server" http="false" />
+		<export function="update"  type="server" http="false" />
+</meta>
