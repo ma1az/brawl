@@ -1,5 +1,0 @@
-addEvent("furniture:takeMoney",true)
-addEventHandler("furniture:takeMoney",root,function(player,money)
-	exports["global"]:takeMoney(player,money)
-	outputChatBox("[!]#ffffff Congratulations, you have successfully purchased the furniture!",player,0,255,0,true)
-end)

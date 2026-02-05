@@ -86,13 +86,10 @@ function orderFurniture()
 			outputChatBox("[!]#ffffff You can buy a maximum of 10 furniture items!",255,0,0,true)
 			return
 		end
-		if exports["global"]:hasMoney(localPlayer,furnitures[selectedCategory][key].price) then
-			triggerServerEvent("furniture:takeMoney",localPlayer,localPlayer,furnitures[selectedCategory][key].price)
-			triggerServerEvent("Furnitures->insert", localPlayer, getElementData(localPlayer, "dbid"), furnitures[selectedCategory][key].model)
-			myFurnitures[#myFurnitures + 1] = {}
-		else
-			outputChatBox("[!]#ffffff You don't have enough money to buy this furniture!",255,0,0,true)
-		end
+		
+		triggerServerEvent("Furnitures->buy", localPlayer, localPlayer, selectedCategory, key)
+		myFurnitures[#myFurnitures + 1] = {}
+		-- Note: Success/Failure message is now handled by the server
 end
 
 function backCategory()
@@ -205,13 +202,9 @@ function clickShop(button, state)
 				outputChatBox("[!]#ffffff Maximum 10 mobilya alabilirsin!",255,0,0,true)
 				return
 			end
-			if exports["global"]:hasMoney(localPlayer,furnitures[selectedCategory][key].price) then
-				triggerServerEvent("furniture:takeMoney",localPlayer,localPlayer,furnitures[selectedCategory][key].price)
-				triggerServerEvent("Furnitures->insert", localPlayer, getElementData(localPlayer, "dbid"), furnitures[selectedCategory][key].model)
-				myFurnitures[#myFurnitures + 1] = {}
-			else
-				outputChatBox("[!]#ffffff You don't have enough money to buy this furniture!",255,0,0,true)
-			end
+			
+			triggerServerEvent("Furnitures->buy", localPlayer, localPlayer, selectedCategory, key)
+			myFurnitures[#myFurnitures + 1] = {}
 			return
 		end
 		if isInSlot(x+w/2-200/2+200,y+h-50,200,30) then

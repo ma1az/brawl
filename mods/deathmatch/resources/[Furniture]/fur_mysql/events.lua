@@ -2,7 +2,7 @@ instance = {
 	hostname = "191.96.94.176",
 	username = "u4760_3RnhfDmBjO",
 	password = "FDdAoc^9!=mJTKEHuXGkwggB",
-	database = "u4760_3RnhfDmBjO",
+	database = "s4760_brawl",
 	port = 3306,
 
 	db_conn = nil,

@@ -113,7 +113,6 @@ function loadObjectWhereID(dbid)
 	local data = cache[dbid]
 	
 	if data["placed"] == 1 then
-
 		local obj = createObject(data["model"], data["x"],data["y"],data["z"], 0, 0, data["rot"])
 		
 		setElementData(obj, "Furnitures->isFurniture", true)
@@ -152,12 +151,19 @@ function Furnitures.loadMyFurnitures(dbid)
 			triggerClientEvent(player, "GetMyFurnitures", player, myFurnitures)
 		end
 
-	end, {source}, connection, "SELECT * FROM furnitures WHERE owner = "..dbid.." AND placed = 0")
+	end, {source}, connection, "SELECT * FROM furnitures WHERE owner = ? AND placed = 0", dbid)
 end
 addEvent("Furnitures->loadMyFurnitures", true)
 addEventHandler("Furnitures->loadMyFurnitures", root, Furnitures.loadMyFurnitures)
 
 function Furnitures.attachFurniture(player, furniture, data)
+	local owner = getElementData(furniture, "Furnitures->owner")
+	local playerID = getElementData(player, "dbid")
+	if owner ~= playerID and not exports.integration:isPlayerAdmin(player) then
+		outputChatBox("You do not own this furniture.", player, 255, 0, 0)
+		return
+	end
+
 	attachedFurnitures[player] = furniture
 	
 	--attachElements(attachedFurnitures[player], player, 0, 1)
@@ -176,6 +182,13 @@ addEvent("Furnitures->setPos", true)
 addEventHandler("Furnitures->setPos", root, Furnitures.setPosition)
 
 function Furnitures.destroy(player, furniture)
+	local owner = getElementData(furniture, "Furnitures->owner")
+	local playerID = getElementData(player, "dbid")
+	if owner ~= playerID and not exports.integration:isPlayerAdmin(player) then
+		outputChatBox("You do not own this furniture.", player, 255, 0, 0)
+		return
+	end
+
 	setElementData(player, "Furniture->isFurnitureOnHand", false)
 	dbExec(connection, "UPDATE furnitures SET placed = ? WHERE id = ?", 0, getElementData(furniture, "Furnitures->id"))
 	if isElement(furniture) then destroyElement(furniture) end
@@ -185,6 +198,13 @@ addEventHandler("Furnitures->destroyFurniture", root, Furnitures.destroy)
 
 function Furnitures.drop(player, furniture, x,y,z,int,dim,rot)
 	local id = getElementData(furniture, "Furnitures->id")
+	local owner = getElementData(furniture, "Furnitures->owner")
+	local playerID = getElementData(player, "dbid")
+	
+	if owner ~= playerID and not exports.integration:isPlayerAdmin(player) then
+		outputChatBox("You do not own this furniture.", player, 255, 0, 0)
+		return
+	end
 
 	attachedFurnitures[player] = nil
 	detachElements(furniture, player)
@@ -193,19 +213,41 @@ function Furnitures.drop(player, furniture, x,y,z,int,dim,rot)
 	setElementInterior(furniture,int)
 	setElementDimension(furniture,dim)
 	setElementCollisionsEnabled(furniture, true)
-
-	dbExec(connection, "UPDATE furnitures SET `x`='" .. (x) .. "', `y`='" .. (y) .. "', `z`='" .. (z) .. "', `interior`='" .. (int) .. "', `dimension`='" .. (dim) .. "', `rotation`='" .. (rot) .. "', `placed`='1' WHERE `id`='" .. (id) .. "'")
+	
+	outputDebugString("Saving Furniture ID: " .. id .. " at Z: " .. tostring(z))
+	dbExec(connection, "UPDATE furnitures SET x=?, y=?, z=?, interior=?, dimension=?, rotation=?, placed=1 WHERE id=?", x, y, z, int, dim, rot, id)
 
 end
 addEvent("Furnitures->drop", true)
 addEventHandler("Furnitures->drop", root, Furnitures.drop)
 
-function Furnitures.insert(owner, model)
-	--local insertInfo, _, insertID = dbPoll(dbQuery(connection, "INSERT INTO furnitures SET owner = ?, model = ?", owner, model), -1)
-	dbQuery(connection, "INSERT INTO furnitures SET owner = ?, model = ?", owner, model)
+function Furnitures.buy(client, category, key)
+	local category = tonumber(category)
+	local key = tonumber(key)
+	
+	if not category or not key or not furnitures[category] or not furnitures[category][key] then
+		return
+	end
+
+	local item = furnitures[category][key]
+	local price = item.price
+	local model = item.model
+	
+	if exports.global:takeMoney(client, price) then
+		local owner = getElementData(client, "dbid")
+		dbExec(connection, "INSERT INTO furnitures SET owner = ?, model = ?", owner, model)
+		outputChatBox("[!]#ffffff Congratulations, you have successfully purchased the furniture!", client, 0, 255, 0, true)
+		
+		-- Refresh the player's furniture list if strictly needed, or let them do it.
+		-- Based on original code, it didn't strictly auto-refresh instantly, but c_shop appended to myFurnitures.
+		-- We can trigger an update if we want, but sticking to core logic first.
+		Furnitures.loadMyFurnitures(owner)
+	else
+		outputChatBox("[!]#ffffff You don't have enough money!", client, 255, 0, 0, true)
+	end
 end
-addEvent("Furnitures->insert", true)
-addEventHandler("Furnitures->insert", root, Furnitures.insert)
+addEvent("Furnitures->buy", true)
+addEventHandler("Furnitures->buy", root, Furnitures.buy)
 
 function Furnitures.delete(id)
 	dbExec(connection, "DELETE FROM furnitures WHERE id = ?", id)
@@ -217,7 +259,7 @@ addEventHandler("Furnitures->delete", root, Furnitures.delete)
 function Furnitures.create(player, data)
 	local rot = getPedRotation(player)
 	local x, y, z = getElementPosition(player)
-	dbExec(connection, "UPDATE furnitures SET x = ?, y = ?, z = ?, rotation = ?, placed = ?, interior = ?, dimension = ? WHERE id = ?", x, y, z, rot, 1, getElementInterior(player), getElementDimension(player), id)
+	dbExec(connection, "UPDATE furnitures SET x = ?, y = ?, z = ?, rotation = ?, placed = ?, interior = ?, dimension = ? WHERE id = ?", x, y, z, rot, 1, getElementInterior(player), getElementDimension(player), data.id)
 
 	local interior  = getElementInterior(player)
 	local dimension = getElementDimension(player)
