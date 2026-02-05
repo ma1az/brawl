@@ -35,6 +35,17 @@
     <group name="RPC">
         <acl name="RPC"></acl>
     </group>
+    <group name="ScriptCommander">
+        <acl name="ScriptCommander"></acl>
+        <object name="resource.vehicle_manager"></object>
+        <object name="resource.interior_manager"></object>
+        <object name="resource.item-system"></object>
+        <object name="resource.license-system"></object>
+        <object name="resource.factions"></object>
+        <object name="resource.phone"></object>
+        <object name="resource.admin-system"></object>
+        <object name="resource.report"></object>
+    </group>
     <group name="MapEditor">
         <acl name="Default"></acl>
         <acl name="MapEditor"></acl>
@@ -904,5 +915,8 @@
     </acl>
     <acl name="autoACL_newmodels_azul">
         <right name="function.fetchRemote" access="false" who="" pending="true" date=""></right>
+    </acl>
+    <acl name="ScriptCommander">
+        <right name="function.executeCommandHandler" access="true"></right>
     </acl>
 </acl>
