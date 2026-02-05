@@ -23,6 +23,9 @@
         <object name="resource.admin"></object>
         <object name="resource.webadmin"></object>
         <object name="resource.acpanel"></object>
+        <object name="resource.furniture"></object>
+        <object name="resource.fur_mysql"></object>
+        <object name="resource.AngelNotFinal"></object>
     </group>
     <group name="Console">
         <acl name="Moderator"></acl>

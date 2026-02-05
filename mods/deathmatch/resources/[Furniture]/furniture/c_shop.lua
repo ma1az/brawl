@@ -1,11 +1,11 @@
 
 local font1 = dxCreateFont("files/gtahero.ttf", 10)
 
-local shopPed = createPed(240, 1925.400390625, -1769.9150390625, 13.546875)
-setElementRotation(shopPed, 0, 0, 180.97779846191)
+local shopPed = createPed(240, 1878.3759765625, -2457.3212890625, 13.579086303711)
+setElementRotation(shopPed, 0, 0, 87.861724853516)
 setElementFrozen(shopPed,true)	
-setElementDimension(shopPed, 0)
-setElementInterior(shopPed, 0)
+setElementDimension(shopPed, 205)
+setElementInterior(shopPed, 27)
 setElementData(shopPed,"furniture:ped",true)
 
 addEventHandler("onClientRender", getRootElement(), 
