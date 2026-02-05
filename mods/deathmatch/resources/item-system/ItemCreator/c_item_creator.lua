@@ -3,7 +3,7 @@ wItemList, bItemListClose, isTargetPlayerValid, targetPlayer , targetPlayerID, f
 itemButton = {}
 local localPlayer = getLocalPlayer()
 function showItemList()
-	if (exports.integration:isPlayerTrialAdmin(localPlayer) or exports.integration:isPlayerSupporter(localPlayer) or exports.integration:isPlayerScripter(localPlayer)) then
+	if (exports.integration:isPlayerSeniorAdmin(localPlayer) or exports.integration:isPlayerScripter(localPlayer)) then
 		if not (wItemsList) then
 			local width, height = 800,600
 			local scrWidth, scrHeight = guiGetScreenSize()
