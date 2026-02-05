@@ -329,6 +329,17 @@ function Furnitures.click(button, state, _, _, _, _, _, element)
 			moveHandle = false
 			
 			return
+		elseif button == "right" and state == "down" and selectedFurniture then
+			-- Logic from 'F' key to Finish/Drop
+			local _x, _y, _z = getElementPosition(selectedFurniture)
+			local _, _, _rot = getElementRotation(selectedFurniture)
+			local _int, _dim = getElementInterior(selectedFurniture),getElementDimension(selectedFurniture)
+			triggerServerEvent("Furnitures->drop", localPlayer, localPlayer, selectedFurniture, _x,_y,_z,_int,_dim,_rot)
+			setElementData(selectedFurniture, "Furniture->used", false)
+			setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
+			selectedFurniture = nil
+			activeKeys = {}
+			return
 		end
 	end
 	if button == "left" and state == "down" and showEditInterface then
