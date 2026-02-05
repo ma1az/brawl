@@ -245,7 +245,7 @@ local label = guiCreateLabel( 0, 0, screenX, 15, "Brawl V"..exports.global:getSc
 guiSetSize( label, guiLabelGetTextExtent( label ) + 5, 14, false )
 guiSetPosition( label, screenX - guiLabelGetTextExtent( label ) - 5, screenY - 27, false )
 guiSetAlpha( label, 0.8 )
-guiLabelSetColor(label, 0, 170, 255 )
+guiLabelSetColor(label, 190, 135, 255 )
 
 addEventHandler('onClientMouseEnter', label, function()
 	guiSetAlpha(label, 1)

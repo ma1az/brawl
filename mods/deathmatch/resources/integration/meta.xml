@@ -36,6 +36,12 @@
 	<export function="isPlayerLeadAdmin" type="server"/>
 	<export function="isPlayerLeadAdmin" type="client"/>
 
+	<export function="isPlayerOwner" type="server"/>
+	<export function="isPlayerOwner" type="client"/>
+
+	<export function="isPlayerGeneralManager" type="server"/>
+	<export function="isPlayerGeneralManager" type="client"/>
+
 	<export function="isPlayerHeadAdmin" type="server"/>
 	<export function="isPlayerHeadAdmin" type="client"/>
 
