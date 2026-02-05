@@ -797,6 +797,15 @@ function setPlayerInsideInterior(theInterior, thePlayer, teleportTo, sameInt, el
 	--Alright, it's time to give admins some clues of what just happened
 	exports.logs:dbLog(thePlayer, 31, { theInterior, thePlayer } , enter and "ENTERED" or "EXITED")
 	exports["interior-manager"]:addInteriorLogs(dbid, enter and "Entered" or "Exited", thePlayer)
+
+    if enter then
+        local interiorStatus = getElementData(theInterior, "status")
+        local dbid = getElementData(thePlayer, "dbid")
+        if interiorStatus and interiorStatus.owner == dbid and interiorStatus.type ~= 2 then
+            outputChatBox("As the owner, you can use /editor to manage furniture or visit the furniture store in town.", thePlayer, 255, 194, 14)
+        end
+    end
+
 	return true
 end
 
