@@ -12,6 +12,22 @@ local internalAffairs = {
 	
 }
 
+function isPlayerOwner(player)
+	if not player or not isElement(player) or not getElementType(player) == "player" then
+		return false
+	end
+	local adminLevel = getElementData(player, "admin_level") or 0
+	return (adminLevel >= 7)
+end
+
+function isPlayerGeneralManager(player)
+	if not player or not isElement(player) or not getElementType(player) == "player" then
+		return false
+	end
+	local adminLevel = getElementData(player, "admin_level") or 0
+	return (adminLevel >= 6)
+end
+
 function isPlayerHeadAdmin(player)
 	if not player or not isElement(player) or not getElementType(player) == "player" then
 		return false

@@ -4,9 +4,19 @@ function updateNametagColor(thePlayer)
 		setPlayerNametagColor(thePlayer, 127, 127, 127)
 	elseif (exports.integration:isPlayerLeadScripter(thePlayer) and getElementData(thePlayer, "admin_level") == 10 ) and getElementData(thePlayer, "duty_admin") == 1 and getElementData(thePlayer, "hiddenadmin") == 0 then -- Scripter Duty
 		setPlayerNametagColor(thePlayer, 191, 94, 243)
-	elseif (exports.integration:isPlayerLeadAdmin(thePlayer) and getElementData(thePlayer, "admin_level") <= 5 ) and getElementData(thePlayer, "duty_admin") == 1 and getElementData(thePlayer, "hiddenadmin") == 0 then -- UAT Duty
+	elseif (exports.integration:isPlayerOwner(thePlayer) and getElementData(thePlayer, "admin_level") == 7 ) and getElementData(thePlayer, "duty_admin") == 1 and getElementData(thePlayer, "hiddenadmin") == 0 then -- Scripter Duty
+		setPlayerNametagColor(thePlayer, 191, 94, 243)
+	elseif (exports.integration:isPlayerGeneralManager(thePlayer) and getElementData(thePlayer, "admin_level") == 6 ) and getElementData(thePlayer, "duty_admin") == 1 and getElementData(thePlayer, "hiddenadmin") == 0 then -- Scripter Duty
+		setPlayerNametagColor(thePlayer, 191, 94, 243)
+	elseif (exports.integration:isPlayerHeadAdmin(thePlayer) and getElementData(thePlayer, "admin_level") == 5 ) and getElementData(thePlayer, "duty_admin") == 1 and getElementData(thePlayer, "hiddenadmin") == 0 then -- Scripter Duty
+		setPlayerNametagColor(thePlayer, 191, 94, 243)
+	elseif (exports.integration:isPlayerLeadAdmin(thePlayer) and getElementData(thePlayer, "admin_level") == 4 ) and getElementData(thePlayer, "duty_admin") == 1 and getElementData(thePlayer, "hiddenadmin") == 0 then -- UAT Duty
 		setPlayerNametagColor(thePlayer, 14, 194, 255)
-	elseif (exports.integration:isPlayerTrialAdmin(thePlayer) and getElementData(thePlayer, "admin_level") <= 5 ) and getElementData(thePlayer, "duty_admin") == 1 and getElementData(thePlayer, "hiddenadmin") == 0 then -- Admin on duty
+	elseif (exports.integration:isPlayerSeniorAdmin(thePlayer) and getElementData(thePlayer, "admin_level") == 3 ) and getElementData(thePlayer, "duty_admin") == 1 and getElementData(thePlayer, "hiddenadmin") == 0 then -- Admin on duty
+		setPlayerNametagColor(thePlayer, 255, 194, 14)
+	elseif (exports.integration:isPlayerAdmin(thePlayer) and getElementData(thePlayer, "admin_level") == 2 ) and getElementData(thePlayer, "duty_admin") == 1 and getElementData(thePlayer, "hiddenadmin") == 0 then -- Admin on duty
+		setPlayerNametagColor(thePlayer, 255, 194, 14)
+	elseif (exports.integration:isPlayerTrialAdmin(thePlayer) and getElementData(thePlayer, "admin_level") == 1 ) and getElementData(thePlayer, "duty_admin") == 1 and getElementData(thePlayer, "hiddenadmin") == 0 then -- Admin on duty
 		setPlayerNametagColor(thePlayer, 255, 194, 14)
 	elseif exports.integration:isPlayerSupporter(thePlayer) and (getElementData(thePlayer, "duty_supporter") == 1) and getElementData(thePlayer, "hiddenadmin") == 0 then
 		setPlayerNametagColor(thePlayer, 70, 200, 30)
