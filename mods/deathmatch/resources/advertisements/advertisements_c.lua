@@ -11,7 +11,7 @@ local AdvertisementsWindow = setmetatable({
     end;
 
     canViewAdvertisements = function (self)
-        return not getElementData(localPlayer, "adminjailed") 
+        return not getElementData(localPlayer, "adminjailed")
             and getElementData(localPlayer, "jailed") ~= 1
             and getElementData(localPlayer, "dbid")
     end;
@@ -22,15 +22,19 @@ local AdvertisementsWindow = setmetatable({
 
     initUserData = function (self)
         local factions = {}
-        for factionId in pairs(getElementData(localPlayer, "faction")) do
-            if exports.factions:hasMemberPermissionTo(localPlayer, factionId, "make_ads") then
-                factions[factionId] = exports.factions:getFactionName(factionId)
-            end	
+        local factionData = getElementData(localPlayer, "faction")
+        if type(factionData) == "table" then
+            for factionId in pairs(factionData) do
+                if exports.factions:hasMemberPermissionTo(localPlayer, factionId, "make_ads") then
+                    factions[factionId] = exports.factions:getFactionName(factionId)
+                end
+            end
         end
 
         local isAdmin = exports.integration:isPlayerTrialAdmin(localPlayer)
+        local dbid = getElementData(localPlayer, "dbid") or 0
 
-        self:executeJavascript("vm.initUserData('"..self.javascriptJsonEncode(factions, true).."', "..tostring(isAdmin)..", "..getElementData(localPlayer, "dbid")..");")
+        self:executeJavascript("vm.initUserData('"..self.javascriptJsonEncode(factions, true).."', "..tostring(isAdmin)..", "..dbid..");")
     end;
 
     pushCooldown = function (self)
@@ -40,65 +44,79 @@ local AdvertisementsWindow = setmetatable({
     __index = BrowserManager
 })
 
+-- /ads command handler
 addCommandHandler('ads', function ()
-    if getElementData(localPlayer, "loggedin") ~= 1 then return false end
+    if getElementData(localPlayer, "loggedin") ~= 1 then return end
 
-    -- Ensure the player should be able to see advertisements before opening.
+    -- Block opening if the player shouldn't see ads
     if not AdvertisementsWindow:isOpen() and not AdvertisementsWindow:canViewAdvertisements() then
         return
     end
 
-    -- Open or close the advertisement window.
+    -- Toggle the window
     AdvertisementsWindow:toggle()
 
     if AdvertisementsWindow:isOpen() then
         showCursor(true)
         guiSetInputMode('no_binds')
-        addEventHandler("onClientBrowserDocumentReady", AdvertisementsWindow.browser, function () 
+
+        local function onDocumentReady()
+            removeEventHandler("onClientBrowserDocumentReady", AdvertisementsWindow.browser, onDocumentReady)
             AdvertisementsWindow:initUserData()
             triggerServerEvent('advertisements:fetch-page', localPlayer)
-        end)
+        end
+        addEventHandler("onClientBrowserDocumentReady", AdvertisementsWindow.browser, onDocumentReady)
     else
         showCursor(false)
         guiSetInputMode('allow_binds')
     end
 end, false, false)
 
---[[
-    Server -> client events
-]]
+-- ========================
+-- Server -> Client events
+-- ========================
 addEvent('advertisements:receive-page', true)
 addEventHandler('advertisements:receive-page', root, function (results, page, totalPages)
-    AdvertisementsWindow:setResults(results, page, totalPages)
+    if AdvertisementsWindow:isOpen() then
+        AdvertisementsWindow:setResults(results, page, totalPages)
+    end
 end)
 
 addEvent('advertisements:close-browser', true)
 addEventHandler('advertisements:close-browser', root, function ()
+    if AdvertisementsWindow:isOpen() then
+        AdvertisementsWindow:close()
+    end
     showCursor(false)
     guiSetInputMode('allow_binds')
-    AdvertisementsWindow:close()
 end)
 
 addEvent('advertisements:push-insufficient-funds', true)
 addEventHandler('advertisements:push-insufficient-funds', root, function (isFaction)
-    AdvertisementsWindow:pushInsufficientFunds(isFaction)
+    if AdvertisementsWindow:isOpen() then
+        AdvertisementsWindow:pushInsufficientFunds(isFaction)
+    end
 end)
 
 addEvent('advertisements:push-cooldown', true)
 addEventHandler('advertisements:push-cooldown', root, function ()
-    AdvertisementsWindow:pushCooldown()
+    if AdvertisementsWindow:isOpen() then
+        AdvertisementsWindow:pushCooldown()
+    end
 end)
 
 addEvent('advertisements:receive-single', true)
 addEventHandler('advertisements:receive-single', root, function (result)
-    AdvertisementsWindow:setCurrentAdvertisement(result)
+    if AdvertisementsWindow:isOpen() then
+        AdvertisementsWindow:setCurrentAdvertisement(result)
+    end
 end)
 
---[[
-    Browser -> Client events
-]]
+-- ========================
+-- Browser -> Client events (forwarded to server)
+-- ========================
 addEvent('advertisements:fetch-page', true)
-addEventHandler('advertisements:fetch-page', root, function (page, section) 
+addEventHandler('advertisements:fetch-page', root, function (page, section)
     triggerServerEvent('advertisements:fetch-page', localPlayer, page, section)
 end)
 
@@ -109,9 +127,10 @@ end)
 
 addEvent('advertisements:post-advertisement', true)
 addEventHandler('advertisements:post-advertisement', root, function (advertisement)
-    local advertisement = fromJSON(advertisement)
-
-    triggerServerEvent('advertisements:post-advertisement', localPlayer, advertisement)
+    local parsed = fromJSON(advertisement)
+    if parsed then
+        triggerServerEvent('advertisements:post-advertisement', localPlayer, parsed)
+    end
 end)
 
 addEvent('advertisements:push', true)

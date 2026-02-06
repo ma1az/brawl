@@ -26,6 +26,7 @@
         <object name="resource.furniture"></object>
         <object name="resource.fur_mysql"></object>
         <object name="resource.AngelNotFinal"></object>
+        <object name="resource.discord_webhooks"></object>
     </group>
     <group name="Console">
         <acl name="Moderator"></acl>

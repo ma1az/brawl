@@ -5,12 +5,16 @@ local coolDown = {}
 local lastExpiryCheck = 0
 
 local function getSectionFromName(section)
-    local sections = {"Services", "Vehicles", "Real Estate", "Community", "Jobs", "Personals"}
+    local sections = {"Services", "Vehicles", "Real Estate", "Community", "Jobs", "Classifieds"}
 
     for sectionId, sectionName in ipairs(sections) do
         if section == sectionName then
             return sectionId
         end
+    end
+
+    if section == "Personals" then
+        return 6
     end
 
     return nil
@@ -49,6 +53,11 @@ local function canManageAdvertisement(player, advertisement)
 end
 
 function createAdvertisement(sender, advertisement, onComplete)
+    local sectionId = getSectionFromName(advertisement.section)
+    if not sectionId then
+        return
+    end
+
     local handle = exports.mysql:getConn():query(
         function (handle, sender)
             local _, _, lastInsertId = handle:poll(0)
@@ -59,7 +68,7 @@ function createAdvertisement(sender, advertisement, onComplete)
         "INSERT INTO advertisements (advertisement, name, section, phone, address, start, expiry, created_by, faction) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
         advertisement.advertisement,
         advertisement.name,
-        getSectionFromName(advertisement.section),
+        sectionId,
         advertisement.phone,
         advertisement.address,
         advertisement.start,
@@ -70,8 +79,17 @@ function createAdvertisement(sender, advertisement, onComplete)
 end
 
 local function updateAdvertisement(sender, advertisement, onComplete)
+    local sectionId = getSectionFromName(advertisement.section)
+    if not sectionId then
+        return
+    end
+
     exports.mysql:getConn():query(function (handle, sender)
         local result = handle:poll(0)
+
+        if not result or not result[1] then
+            return
+        end
 
         if not canManageAdvertisement(sender, result[1]) then
             return
@@ -81,7 +99,7 @@ local function updateAdvertisement(sender, advertisement, onComplete)
             "UPDATE advertisements SET advertisement = ?, name = ?, section = ?, phone = ?, address = ?, start = ?, expiry = ?, faction = ? WHERE id = ?",
             advertisement.advertisement,
             advertisement.name,
-            getSectionFromName(advertisement.section),
+            sectionId,
             advertisement.phone,
             advertisement.address,
             advertisement.start,
@@ -126,7 +144,11 @@ addEventHandler('advertisements:fetch-single', root, function (id)
     exports.mysql:getConn():query(function (handle, receiver)
         local result = handle:poll(0)
 
-        triggerClientEvent(receiver, 'advertisements:receive-single', receiver, result[1]) -- todo: handle not found id.
+        if not result or not result[1] then
+            return
+        end
+
+        triggerClientEvent(receiver, 'advertisements:receive-single', receiver, result[1])
     end, {receiver}, [[
         SELECT advertisements.*, characters.charactername, factions.name as faction_name
         FROM advertisements
@@ -238,6 +260,10 @@ addEvent('advertisements:delete', true)
 addEventHandler('advertisements:delete', root, function (id)
     exports.mysql:getConn():query(function (handle, sender)
         local result = handle:poll(0)
+
+        if not result or not result[1] then
+            return
+        end
 
         if not canManageAdvertisement(sender, result[1]) then
             return
