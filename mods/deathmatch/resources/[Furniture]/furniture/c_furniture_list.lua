@@ -171,7 +171,8 @@ function onClientClick(button, state)
 		end
 		if activeTab == "furn" then
 			for index, value in ipairs(myFurnitures) do
-				if isInBox(mx+25+((index-1)*86),my+114,84,20) then
+				-- Expanded hitbox to include image (y+30 to y+134, height 104)
+				if isInBox(mx+25+((index-1)*86),my+30,84,104) then
 					if selected_furniture ~= index then
 						selected_furniture = index
 					else
