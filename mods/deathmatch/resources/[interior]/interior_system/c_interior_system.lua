@@ -813,21 +813,12 @@ function purchasePropertyGUI(interior, cost, isHouse, isRentable, neighborhood)
 	purchaseProperty.label[6] = guiCreateLabel(20, 90, 93, 15, "Neighborhood:", false, purchaseProperty.window[1])
 	purchaseProperty.label[4] = guiCreateLabel(20, 110, 100, 15, "Cost:", false, purchaseProperty.window[1])
 	purchaseProperty.label[5] = guiCreateLabel(250, 110, 73, 15, "Tax:", false, purchaseProperty.window[1])
-	purchaseProperty.label[11] = guiCreateLabel(20, 130, 315, 15, "Would you like furniture to be enabled?", false, purchaseProperty.window[1]) -- Furniture
-
 	purchaseProperty.label[7] = guiCreateLabel(117, 70, 400, 15, "", false, purchaseProperty.window[1]) -- Name
 	purchaseProperty.label[9] = guiCreateLabel(117, 90, 400, 15, "", false, purchaseProperty.window[1]) -- Area
     purchaseProperty.label[8] = guiCreateLabel(117, 110, 91, 15, "", false, purchaseProperty.window[1]) -- Cost
     purchaseProperty.label[10] = guiCreateLabel(323, 110, 98, 15, "", false, purchaseProperty.window[1]) -- Tax
 
-    purchaseProperty.rad[1] = guiCreateRadioButton(245, 128, 50, 20, "Yes", false, purchaseProperty.window[1])
-    purchaseProperty.rad[2] = guiCreateRadioButton(295, 128, 50, 20, "No", false, purchaseProperty.window[1])
-    guiRadioButtonSetSelected(purchaseProperty.rad[1], true)
-
-    if incompatibleForFurniture[getElementData(interior, "exit")[4]] then
-    	guiSetEnabled(purchaseProperty.rad[1], false)
-    	guiSetEnabled(purchaseProperty.rad[2], false)
-    end
+	local furnitureEnabled = false
 
 	--guiSetFont(purchaseProperty.label[1], "default-bold-small")
 	guiSetFont(purchaseProperty.label[2], "default-bold-small")
@@ -844,10 +835,10 @@ function purchasePropertyGUI(interior, cost, isHouse, isRentable, neighborhood)
 	function()
 		local btnText = guiGetText(purchaseProperty.button[1])
 		if btnText == "Purchase using Cash" then
-			triggerServerEvent("buypropertywithcash", localPlayer, interior, cost, isHouse, isRentable, guiRadioButtonGetSelected(purchaseProperty.rad[1]))
+			triggerServerEvent("buypropertywithcash", localPlayer, interior, cost, isHouse, isRentable, furnitureEnabled)
 			closePropertyGUI()
 		elseif btnText == "Purchase via Token" then
-			triggerServerEvent("buypropertywithtoken", localPlayer, interior, guiRadioButtonGetSelected(purchaseProperty.rad[1]))
+			triggerServerEvent("buypropertywithtoken", localPlayer, interior, furnitureEnabled)
 			closePropertyGUI()
 		else
 			btnTextSet = {"Purchase using Cash", "Purchase via Bank", "Purchase via Token"}
@@ -867,13 +858,13 @@ function purchasePropertyGUI(interior, cost, isHouse, isRentable, neighborhood)
 	function()
 		local btnText = guiGetText(purchaseProperty.button[2])
 		if btnText == "Purchase via Bank" then
-			triggerServerEvent("buypropertywithbank", localPlayer, interior, cost, isHouse, isRentable, guiRadioButtonGetSelected(purchaseProperty.rad[1]))
+			triggerServerEvent("buypropertywithbank", localPlayer, interior, cost, isHouse, isRentable, furnitureEnabled)
 			closePropertyGUI()
 		else
 			if isRentable then
 				outputChatBox("Factions can not own rentable properties at the moment.", 255, 0, 0)
 			else
-				startBuyingForFaction(interior, cost, isHouse, guiRadioButtonGetSelected(purchaseProperty.rad[1]))
+				startBuyingForFaction(interior, cost, isHouse, furnitureEnabled)
 				--triggerServerEvent("buypropertyForFaction", localPlayer, interior, cost, isHouse, guiRadioButtonGetSelected(purchaseProperty.rad[1]), selectedFaction)
 				--closePropertyGUI()
 			end
@@ -887,7 +878,7 @@ function purchasePropertyGUI(interior, cost, isHouse, isRentable, neighborhood)
 			triggerServerEvent("viewPropertyInterior", localPlayer, intID)
 			closePropertyGUI()
 		else
-			triggerServerEvent("buypropertywithtoken", localPlayer, interior, guiRadioButtonGetSelected(purchaseProperty.rad[1]))
+			triggerServerEvent("buypropertywithtoken", localPlayer, interior, furnitureEnabled)
 			closePropertyGUI()
 		end
 	end, false)
