@@ -1,9 +1,111 @@
 gInteriorName, gOwnerName, gBuyMessage, gBizMessage = nil
 
+-- Configuration for disabling default interior furniture (Moved from furniture resource)
+local disabledFurnitureRooms = {
+    [2] = true,
+    [3] = true,
+    [4] = true,
+    -- Add more room IDs here as needed
+}
+
+-- Configuration for removing specific persistent objects (Stubborn furniture like toilets/bathtubs)
+-- The function applyObjectRemoval logic uses these tables.
+
+local commonRemovalModels = {
+    -- Bath
+    2097, 14494, 2515, 2526, 2528, 2516, 2519, 14481, 2522, 2520, 2521, 2525, 2527, 2741,
+    -- Toilets
+    2602, 2738, 14480, 2514,
+    -- Sink
+    2518, 2523, 2524, 2739,
+    -- Cabinet
+    2136, 2013, 2130, 2132, 2336, 2139, 2204
+}
+
+-- Format: {x, y, z, interiorID}
+local removalLocations = {
+    -- Burglary House 1, Sweet's House 1, Safe House 1
+    {289.7870, -35.7190, 1003.5160, 1},
+    {2525.0420, -1679.1150, 1015.4990, 1},
+    {2216.5400, -1076.2900, 1050.4840, 1},
+    -- Ryder's House 2, Burglary House 2, Safe House 2
+    {2464.2110, -1697.9520, 1013.5080, 2},
+    {225.756, 1240.000, 1082.149, 2},
+    {2237.5900, -1080.8699, 1049.0234, 2},
+    -- OG Loc's House 3, Johnson House 3, Helena's Place
+    {516.8890, -18.4120, 1001.5650, 3},
+    {2496.0500, -1693.9260, 1014.7420, 3},
+    {292.4459, 308.7790, 999.1484, 3},
+    -- Michelle's Place 4
+    {302.6404, 304.8048, 999.1484, 4},
+    -- Safe House 6
+    {2333.0330, -1073.9600, 1049.0230, 6},
+    {2194.2910, -1204.0150, 1049.0230, 6},
+    {2308.8710, -1210.7170, 1049.0230, 6},
+    -- Safe House 8 & Fuhrberger
+    {2365.2383, -1134.2969, 1050.875, 8},
+    {2807.8990, -1172.9210, 1025.5700, 8},
+    -- Hashbury safe house 10
+    {2264.5231, -1210.5229, 1049.0234, 10},
+    -- Safe/Modern House 12
+    {2324.3848, -1148.4805, 1050.7101, 12},
+    {2324.4990, -1147.0710, 1050.7100, 12},
+    -- Generic Burglary Houses
+    {447.470, 1398.348, 1084.305, 2},
+    {491.740, 1400.541, 1080.265, 2},
+    {234.733, 1190.391, 1080.258, 3},
+    {-262.91, 1454.966, 1084.367, 4},
+    {221.4296, 1142.423, 1082.609, 4},
+    {261.1168, 1286.519, 1080.258, 4},
+    {22.79996, 1404.642, 1084.43, 5},
+    {228.9003, 1114.477, 1080.992, 5},
+    {140.5631, 1369.051, 1083.864, 5},
+    {234.319, 1066.455, 1084.208, 6},
+    {-69.049, 1354.056, 1080.211, 6},
+    {-42.490, 1407.644, 1084.43, 8},
+    {85.32596, 1323.585, 1083.859, 9},
+    {260.3189, 1239.663, 1084.258, 9},
+    {21.241, 1342.153, 1084.375, 10},
+    {-285.711, 1470.697, 1084.375, 15},
+    {327.808, 1479.74, 1084.438, 15},
+    {375.572, 1417.439, 1081.328, 15},
+    {384.644, 1471.479, 1080.195, 15},
+    {295.467, 1474.697, 1080.258, 15}
+}
+
+function applyObjectRemoval(interiorID)
+    for _, loc in ipairs(removalLocations) do
+        -- Check if this location belongs to the requested interior
+        if loc[4] == interiorID then
+            for _, model in ipairs(commonRemovalModels) do
+                -- removeWorldModel(model, radius, x, y, z, interior)
+                local success = removeWorldModel(model, 100, loc[1], loc[2], loc[3], loc[4])
+            end
+        end
+    end
+end
+
 timer = nil
 
 intNameFont = guiCreateFont("intNameFont.ttf", 30 ) or "default-bold" --AngryBird
 BizNoteFont = guiCreateFont(":resources/fonts/BizNote.ttf", 21 ) or "default-bold"
+
+-- Add onClientResourceStart to apply settings immediately if restarted while inside
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    -- Apply furniture settings immediately
+    for i = 0, 4 do
+        if disabledFurnitureRooms[i] then
+            setInteriorFurnitureEnabled(i, false)
+        end
+    end
+
+    -- Delay object removal slightly to ensure streaming/world is ready
+    setTimer(function()
+        local currentInt = getElementInterior(localPlayer)
+        -- Apply object removals for current interior using the new function
+        applyObjectRemoval(currentInt)
+    end, 1000, 1)
+end)
 
 -- Message on enter
 function showIntName(name, ownerName, inttype, cost, ID, bizMsg)
@@ -472,7 +574,11 @@ addEventHandler( "setPlayerInsideInterior", getRootElement( ),
 		end, 2000, 1)
 
 		for i = 0, 4 do
-    		setInteriorFurnitureEnabled(i, furniture and true or false)
+			if disabledFurnitureRooms[i] then
+				setInteriorFurnitureEnabled(i, false)
+			else
+				setInteriorFurnitureEnabled(i, furniture and true or false)
+			end
 		end
 		--[[
 		local adminnote = tostring(getElementData(targetInterior, "adminnote"))
@@ -518,10 +624,18 @@ addEventHandler( "setPlayerInsideInterior2", getRootElement( ),
 		end
 
 		for i = 0, 4 do
-    		setInteriorFurnitureEnabled(i, furniture and true or false)
+			if disabledFurnitureRooms[i] then
+				setInteriorFurnitureEnabled(i, false)
+			else
+				setInteriorFurnitureEnabled(i, furniture and true or false)
+			end
 		end
 
 		inttimer = setTimer(onPlayerPutInInteriorSecond, 1000, 1, targetLocation.dim, targetLocation.int)
+
+
+		-- Apply world object removals if applicable for this interior
+		applyObjectRemoval(targetLocation.int)
 
 		if false and targetInterior then
 			local adminnote = tostring(getElementData(targetInterior, "adminnote"))

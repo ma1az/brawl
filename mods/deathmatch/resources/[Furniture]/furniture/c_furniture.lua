@@ -1,8 +1,30 @@
---!!!
-for i = 2, 4 do
-    setInteriorFurnitureEnabled(i, false)
-end
---!!!
+-- Configuration for disabling default interior furniture
+-- Note: 'roomID' usually corresponds to the main Interior ID (e.g., 3 for varied houses), but strictly refers to the Room ID parameter of setInteriorFurnitureEnabled.
+local disabledFurnitureRooms = {
+    [2] = true,
+    [3] = true,
+    [4] = true,
+    -- Add more room IDs here as needed, e.g.:
+    -- [5] = true,
+}
+
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    for roomID, _ in pairs(disabledFurnitureRooms) do
+        local result = setInteriorFurnitureEnabled(roomID, false)
+        outputConsole("Furniture: Disable Room ID " .. tostring(roomID) .. " = " .. tostring(result))
+    end
+end)
+
+-- Debug command to test specific room IDs live
+addCommandHandler("togglefurn", function(cmd, id)
+    local roomID = tonumber(id)
+    if roomID then
+        local result = setInteriorFurnitureEnabled(roomID, false)
+        outputChatBox("Furniture: Disabled Room ID " .. roomID .. " (Result: " .. tostring(result) .. ")", 255, 255, 0)
+    else
+        outputChatBox("Syntax: /togglefurn [RoomID]", 255, 0, 0)
+    end
+end)
 
 
 Furnitures = {}
