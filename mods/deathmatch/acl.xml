@@ -80,6 +80,10 @@
         <acl name="autoACL_mtasa-pAttach"></acl>
         <object name="resource.mtasa-pAttach"></object>
     </group>
+    <group name="autoGroup_3DEditor">
+        <acl name="autoACL_3DEditor"></acl>
+        <object name="resource.3DEditor"></object>
+    </group>
     <group name="autoGroup_newmodels_azul">
         <acl name="autoACL_newmodels_azul"></acl>
         <object name="resource.newmodels_azul"></object>
@@ -916,6 +920,9 @@
     </acl>
     <acl name="autoACL_mtasa-pAttach">
         <right name="function.fetchRemote" access="false" who="" pending="true" date=""></right>
+    </acl>
+    <acl name="autoACL_3DEditor">
+        <right name="function.fetchRemote" access="true"></right>
     </acl>
     <acl name="autoACL_newmodels_azul">
         <right name="function.fetchRemote" access="false" who="" pending="true" date=""></right>

@@ -3,6 +3,32 @@ local original = { pos = { 0, 0, 0 }, rot = { 0, 0, 0 },  }
 local wInfo, eInfo, bReset, bClose, bProtect = nil, {}
 local screenX, screenY = guiGetScreenSize( )
 local ignoreGUIInput, ignoreKeyInput = false, false
+local use3DEditor = true
+local editorResourceName = "3DEditor"
+
+local function is3DEditorAvailable()
+  local res = getResourceFromName(editorResourceName)
+  return res and getResourceState(res) == "running"
+end
+
+local function start3DEditorForObject(object)
+  if not isElement(object) or getElementType(object) ~= "object" then
+    return false
+  end
+
+  local itemID = getElementData(object, "itemID")
+  if itemID == 169 then
+    return false
+  end
+
+  if not is3DEditorAvailable() then
+    outputChatBox("[Item Move] 3DEditor is not running. Contact an admin.", 255, 0, 0)
+    return false
+  end
+
+  exports[editorResourceName]:startEdit(object, false, false, true)
+  return true
+end
 
 function getObjectName( model )
   str = ''
@@ -31,6 +57,10 @@ end
 addEvent('item:move', true)
 addEventHandler('item:move', root,
   function(object)
+    if use3DEditor then
+      start3DEditorForObject(object)
+      return
+    end
     if not object then return end
     local itemID = getElementData(object, "itemID")
     if itemID == 169 then --disable for keypadlock / maxime
@@ -130,6 +160,20 @@ addEventHandler('item:move', root,
       addEventHandler( 'onClientKey', root, captureKeys )
     end
   end, false
+)
+
+addEventHandler("3DEditor:savedObject", root,
+  function(res, object, cx, cy, cz, rx, ry, rz)
+    if res ~= resourceRoot or source ~= localPlayer then
+      return
+    end
+
+    if not isElement(object) then
+      return
+    end
+
+    triggerServerEvent("item:move:save", object, cx, cy, cz, rx, ry, rz)
+  end
 )
 
 function destroyed( )
