@@ -86,11 +86,25 @@ local sw, sh = guiGetScreenSize ( )
 local gui = { }
 localPlayer = getLocalPlayer()
 
+-- Helper function to check if an interior is government-owned (type 2)
+local function isGovernmentInterior(dimension)
+	if dimension <= 0 then return false end
+	local dbid, entrance, exit, interiorType, interiorElement = exports['interior_system']:findProperty(nil, dimension)
+	if interiorElement then
+		local interiorStatus = getElementData(interiorElement, "status")
+		return interiorStatus and interiorStatus.type == 2
+	end
+	return false
+end
+
 function frames_showTexGUI ( )
 	local interiorID = getElementDimension ( localPlayer )
 	
 	if interiorID >= 1 or (exports.integration:isPlayerSeniorAdmin(localPlayer) and exports.global:isAdminOnDuty(localPlayer)) or exports.integration:isPlayerScripter(localPlayer) then
-		if exports.global:hasItem ( localPlayer, 4, interiorID ) or exports.global:hasItem ( localPlayer, 5, interiorID ) or (exports.integration:isPlayerAdmin(localPlayer) and exports.global:isAdminOnDuty(localPlayer)) or (interiorID==0) then
+		local isGovInt = isGovernmentInterior(interiorID)
+		local isAdminOnDutyCheck = exports.integration:isPlayerAdmin(localPlayer) and exports.global:isAdminOnDuty(localPlayer)
+		
+		if exports.global:hasItem ( localPlayer, 4, interiorID ) or exports.global:hasItem ( localPlayer, 5, interiorID ) or isAdminOnDutyCheck or (interiorID==0) or (isGovInt and isAdminOnDutyCheck) then
 			if not gui.window then
 				addEventHandler("onClientRender",root,checkImage)
 				local width = 300
@@ -98,7 +112,7 @@ function frames_showTexGUI ( )
 				local x = ( sw - width ) / 2
 				local y = ( sh - height ) / 2
 				
-				local windowTitle = "Property Textures - Property ID: #" .. interiorID
+			local windowTitle = "Property Textures - Property ID: #" .. interiorID
 				if(not exports.global:hasItem(localPlayer, 4, interiorID) and not exports.global:hasItem(localPlayer, 5, interiorID)) then
 					windowTitle = "Property Textures - Property ID: #" .. interiorID.." (Authorized Permission)"
 				end

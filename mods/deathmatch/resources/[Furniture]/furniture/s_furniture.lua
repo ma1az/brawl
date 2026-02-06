@@ -12,6 +12,65 @@ addEventHandler("onResourceStart", root,
 Async:setPriority("low")
 --Async:setDebug(true)
 
+-- ============================================================================
+-- FURNITURE ACCESS SYSTEM - MUST BE DECLARED BEFORE canPlayerManageFurniture
+-- ============================================================================
+
+Furnitures = {}
+local attachedFurnitures = {}
+local cache = {}
+
+-- Furniture access list: furnitureAccessList[interiorDimension][playerDBID] = true
+-- Allows interior owners to grant furniture editing permissions to other players
+local furnitureAccessList = {}
+
+-- Check if player has granted furniture access for an interior
+function checkPlayerFurnitureAccess(player, interiorDim)
+    if not player or not interiorDim then return false end
+    local playerID = getElementData(player, "dbid")
+    if not playerID then return false end
+    interiorDim = tonumber(interiorDim)
+    if not interiorDim then return false end
+    if furnitureAccessList[interiorDim] and furnitureAccessList[interiorDim][tonumber(playerID)] then
+        return true
+    end
+    return false
+end
+
+-- Grant furniture access to a player for an interior
+function grantFurnitureAccess(interiorDim, playerDBID)
+    interiorDim = tonumber(interiorDim)
+    playerDBID = tonumber(playerDBID)
+    if not interiorDim or not playerDBID then return false end
+    if not furnitureAccessList[interiorDim] then
+        furnitureAccessList[interiorDim] = {}
+    end
+    furnitureAccessList[interiorDim][playerDBID] = true
+    return true
+end
+
+-- Revoke furniture access from a player for an interior
+function revokeFurnitureAccess(interiorDim, playerDBID)
+    interiorDim = tonumber(interiorDim)
+    playerDBID = tonumber(playerDBID)
+    if not interiorDim or not playerDBID then return false end
+    if furnitureAccessList[interiorDim] then
+        furnitureAccessList[interiorDim][playerDBID] = nil
+    end
+    return true
+end
+
+-- Get list of players with furniture access for an interior (for debugging/admin)
+function getFurnitureAccessList(interiorDim)
+    interiorDim = tonumber(interiorDim)
+    if not interiorDim then return {} end
+    return furnitureAccessList[interiorDim] or {}
+end
+
+-- ============================================================================
+-- PERMISSION CHECK FUNCTION
+-- ============================================================================
+
 function canPlayerManageFurniture(player, furniture)
     local playerID = getElementData(player, "dbid")
     local furnitureOwner = getElementData(furniture, "Furnitures->owner")
@@ -47,8 +106,13 @@ function canPlayerManageFurniture(player, furniture)
             if exports.factions:isPlayerInFaction(player, interiorStatus.faction) and exports.factions:hasMemberPermissionTo(player, interiorStatus.faction, "manage_interiors") then
                 return true
             end
+            
+            -- Check if player has been granted furniture access by the interior owner
+            if furnitureAccessList[dim] and furnitureAccessList[dim][tonumber(playerID)] then
+                return true
+            end
         end
-        -- STRICT INTERIOR RULE: If inside an interior, ONLY the interior owner (or faction/admin) can manage.
+        -- STRICT INTERIOR RULE: If inside an interior, ONLY the interior owner (or faction/admin/granted access) can manage.
         -- We do NOT fall back to checking the furniture item owner.
         return false
     else
@@ -72,10 +136,6 @@ end
 -- Örnek tablo verisi: {furnitures: {id,x,y,z,interior,dimension,rotation,model,owner,placed,texture} }
 --!!!!! !!!!!---
 --Jesse [LOG]
-
-Furnitures = {}
-local attachedFurnitures = {}
-local cache = {}
 -- tablo verisi start:
 -- cache[dbid]
 -- tablo verisi end:
@@ -436,3 +496,138 @@ addEventHandler("Furnitures->removeSound", root, function(_, data, object)
 	end
 	triggerClientEvent(getRootElement(), "Furnitures->removeSoundC", getRootElement(), data,object)
 end)
+
+-- ============================================================================
+-- FURNITURE ACCESS COMMANDS
+-- Allows interior owners to grant/revoke furniture editing permissions
+-- ============================================================================
+
+-- /furnadd [player] - Grant furniture access to a player
+addCommandHandler("furnadd", function(player, cmd, ...)
+    local targetName = table.concat({...}, " ")
+    
+    if not targetName or targetName == "" then
+        outputChatBox("SYNTAX: /" .. cmd .. " [player name/id]", player, 255, 194, 14)
+        outputChatBox("Grants furniture editing access to the specified player for this interior.", player, 255, 194, 14)
+        return
+    end
+    
+    -- Check if player is inside an interior
+    local dim = getElementDimension(player)
+    if dim <= 0 then
+        outputChatBox("You must be inside an interior to use this command.", player, 255, 0, 0)
+        return
+    end
+    
+    -- Get interior data
+    local dbid, entrance, exit, type, interiorElement = exports['interior_system']:findProperty(player, dim)
+    if not interiorElement then
+        outputChatBox("Error: Could not find interior data.", player, 255, 0, 0)
+        return
+    end
+    
+    -- Check if player is the interior owner
+    local interiorStatus = getElementData(interiorElement, "status")
+    local interiorOwner = tonumber(interiorStatus.owner)
+    local playerID = tonumber(getElementData(player, "dbid"))
+    
+    if interiorOwner ~= playerID and not exports.integration:isPlayerAdmin(player) then
+        outputChatBox("Only the interior owner can grant furniture access.", player, 255, 0, 0)
+        return
+    end
+    
+    -- Find target player
+    local targetPlayer, targetPlayerName = exports.global:findPlayerByPartialNick(player, targetName)
+    if not targetPlayer then
+        return -- findPlayerByPartialNick outputs its own error
+    end
+    
+    local targetDBID = tonumber(getElementData(targetPlayer, "dbid"))
+    if not targetDBID then
+        outputChatBox("Target player has no valid character.", player, 255, 0, 0)
+        return
+    end
+    
+    -- Check if already has access
+    if furnitureAccessList[dim] and furnitureAccessList[dim][targetDBID] then
+        outputChatBox(targetPlayerName .. " already has furniture access to this interior.", player, 255, 194, 14)
+        return
+    end
+    
+    -- Grant access
+    grantFurnitureAccess(dim, targetDBID)
+    
+    -- Sync to target player if they are in the same interior
+    if getElementDimension(targetPlayer) == dim then
+        triggerClientEvent(targetPlayer, "Furnitures->syncAccess", targetPlayer, true)
+        triggerClientEvent(targetPlayer, "Furnitures->syncAccessList", targetPlayer, true)
+    end
+    
+    outputChatBox("You have granted furniture access to " .. targetPlayerName .. ".", player, 0, 255, 0)
+    outputChatBox("You have been granted furniture editing access by " .. getPlayerName(player):gsub("_", " ") .. ".", targetPlayer, 0, 255, 0)
+end, false, false)
+
+-- /furnremove [player] - Revoke furniture access from a player
+addCommandHandler("furnremove", function(player, cmd, ...)
+    local targetName = table.concat({...}, " ")
+    
+    if not targetName or targetName == "" then
+        outputChatBox("SYNTAX: /" .. cmd .. " [player name/id]", player, 255, 194, 14)
+        outputChatBox("Revokes furniture editing access from the specified player for this interior.", player, 255, 194, 14)
+        return
+    end
+    
+    -- Check if player is inside an interior
+    local dim = getElementDimension(player)
+    if dim <= 0 then
+        outputChatBox("You must be inside an interior to use this command.", player, 255, 0, 0)
+        return
+    end
+    
+    -- Get interior data
+    local dbid, entrance, exit, type, interiorElement = exports['interior_system']:findProperty(player, dim)
+    if not interiorElement then
+        outputChatBox("Error: Could not find interior data.", player, 255, 0, 0)
+        return
+    end
+    
+    -- Check if player is the interior owner
+    local interiorStatus = getElementData(interiorElement, "status")
+    local interiorOwner = tonumber(interiorStatus.owner)
+    local playerID = tonumber(getElementData(player, "dbid"))
+    
+    if interiorOwner ~= playerID and not exports.integration:isPlayerAdmin(player) then
+        outputChatBox("Only the interior owner can revoke furniture access.", player, 255, 0, 0)
+        return
+    end
+    
+    -- Find target player
+    local targetPlayer, targetPlayerName = exports.global:findPlayerByPartialNick(player, targetName)
+    if not targetPlayer then
+        return -- findPlayerByPartialNick outputs its own error
+    end
+    
+    local targetDBID = tonumber(getElementData(targetPlayer, "dbid"))
+    if not targetDBID then
+        outputChatBox("Target player has no valid character.", player, 255, 0, 0)
+        return
+    end
+    
+    -- Check if player has access
+    if not furnitureAccessList[dim] or not furnitureAccessList[dim][targetDBID] then
+        outputChatBox(targetPlayerName .. " does not have furniture access to this interior.", player, 255, 194, 14)
+        return
+    end
+    
+    -- Revoke access
+    revokeFurnitureAccess(dim, targetDBID)
+    
+    -- Sync to target player if they are in the same interior
+    if getElementDimension(targetPlayer) == dim then
+        triggerClientEvent(targetPlayer, "Furnitures->syncAccess", targetPlayer, false)
+        triggerClientEvent(targetPlayer, "Furnitures->syncAccessList", targetPlayer, false)
+    end
+    
+    outputChatBox("You have revoked furniture access from " .. targetPlayerName .. ".", player, 0, 255, 0)
+    outputChatBox("Your furniture editing access has been revoked by " .. getPlayerName(player):gsub("_", " ") .. ".", targetPlayer, 255, 194, 14)
+end, false, false)

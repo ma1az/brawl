@@ -226,6 +226,17 @@ addEventHandler ( "onClientRender", root,
 		end
 	end )
 
+-- Helper function to check if an interior is government-owned (type 2)
+local function isGovernmentInterior(dimension)
+	if dimension <= 0 then return false end
+	local dbid, entrance, exit, interiorType, interiorElement = exports['interior_system']:findProperty(nil, dimension)
+	if interiorElement then
+		local interiorStatus = getElementData(interiorElement, "status")
+		return interiorStatus and interiorStatus.type == 2
+	end
+	return false
+end
+
 function  openTextureEditor( imgData,yOffset, pricee )
 	element = localPlayer
 	local integration = exports.integration
@@ -233,7 +244,10 @@ function  openTextureEditor( imgData,yOffset, pricee )
 	local dimension = getElementDimension ( element )
 		
 	if dimension >= 1 or (integration:isPlayerLeadAdmin(element) and global:isAdminOnDuty(element)) or integration:isPlayerScripter(element) then
-		if exports.global:hasItem ( element, 4, dimension ) or exports.global:hasItem ( element, 5, dimension ) or (integration:isPlayerAdmin(element) and global:isAdminOnDuty(element)) or (dimension==0) then
+		local isGovInt = isGovernmentInterior(dimension)
+		local isAdminOnDutyCheck = integration:isPlayerAdmin(element) and global:isAdminOnDuty(element)
+		
+		if exports.global:hasItem ( element, 4, dimension ) or exports.global:hasItem ( element, 5, dimension ) or isAdminOnDutyCheck or (dimension==0) or (isGovInt and isAdminOnDutyCheck) then
 			rendering = not rendering
 	
 			if rendering then

@@ -40,6 +40,9 @@ local realPos = {x=0, y=0, z=0}
 local snapEnabled = false
 local surfaceSnapEnabled = false
 
+-- Furniture access granted by interior owner (synced from server)
+local hasFurnitureAccess = false
+
 local font_bold = dxCreateFont("files/1.ttf",11)
 local font_default = dxCreateFont("files/2.ttf",8)
 local fontA = dxCreateFont("files/5.ttf",9)
@@ -393,8 +396,13 @@ function canClientManageFurniture(element)
                     return true
                 end
             end
+            
+            -- Check if granted furniture access by interior owner
+            if hasFurnitureAccess then
+                return true
+            end
         end
-        -- Inside interior but not owner - NO ACCESS (even if you placed it)
+        -- Inside interior but not owner/granted - NO ACCESS (even if you placed it)
         return false
     end
     
@@ -765,4 +773,22 @@ addEvent("Furnitures->allowEdit", true)
 addEventHandler("Furnitures->allowEdit", root, function()
     showEditInterface = false
     triggerEvent("Furnitures->ForceEditorState", localPlayer, true)
+end)
+
+-- Sync furniture access permission from server
+-- Called when entering an interior or when access is granted/revoked
+addEvent("Furnitures->syncAccess", true)
+addEventHandler("Furnitures->syncAccess", root, function(accessGranted)
+    hasFurnitureAccess = accessGranted or false
+end)
+
+-- Reset furniture access when leaving an interior (dimension changes to 0)
+addEventHandler("onClientElementDataChange", localPlayer, function(key, oldValue)
+    if key == "currentInteriorOwner" then
+        local newOwner = getElementData(localPlayer, "currentInteriorOwner")
+        -- If leaving interior (owner set to nil), reset access
+        if newOwner == nil then
+            hasFurnitureAccess = false
+        end
+    end
 end)

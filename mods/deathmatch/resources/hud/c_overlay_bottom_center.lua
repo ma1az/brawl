@@ -46,7 +46,7 @@ function drawOverlayBottomCenter(info, widthNew, woffsetNew, hoffsetNew, cooldow
 		end
 		
 		playSoundFrontEnd ( 101 )	
-		toBeDrawnWidth = dxGetTextWidth ( content[1][1] or "" , 1 , BizNoteFont18)
+		toBeDrawnWidth = dxGetTextWidth ( content[1][1] or "" , 1 , BizNoteFont18) or 0
 		
 		for i=1, #info do
 			outputConsole(info[i][1] or "")

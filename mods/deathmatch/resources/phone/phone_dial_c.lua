@@ -404,7 +404,7 @@ function answerToPhoneCall()
 		guiSetEnabled(bRingingDecline, false)
 		triggerServerEvent("phone:acceptPhoneCall", localPlayer)
 	else
-		outputDebugString("You can not use cellphone at the moment.", 255,0,0)
+		outputDebugString("You can not use cellphone at the moment.", 1)
 	end
 end
 addCommandHandler("pickup", answerToPhoneCall)

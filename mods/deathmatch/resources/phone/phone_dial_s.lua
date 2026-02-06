@@ -141,9 +141,9 @@ function startDialing(to, from)
 			exports.anticheat:changeProtectedElementDataEx(targetPlayer, "calling", tonumber(from), false)
 			exports.anticheat:changeProtectedElementDataEx(targetPlayer, "callingwith", tonumber(realTo), false)
 			exports.anticheat:changeProtectedElementDataEx(source, "called", false, false)
-			exports.anticheat:changeProtectedElementDataEx(targetPlayer, "called", true, false)
+			exports.anticheat:changeProtectedElementDataEx(targetPlayer, "called", true, true)
 			exports.anticheat:changeProtectedElementDataEx(source, "phonestate", 2, false)
-			exports.anticheat:changeProtectedElementDataEx(targetPlayer, "phonestate", 3, false)
+			exports.anticheat:changeProtectedElementDataEx(targetPlayer, "phonestate", 3, true)
 
 			killDialingTimers(from)
 

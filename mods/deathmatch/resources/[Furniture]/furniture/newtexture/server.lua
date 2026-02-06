@@ -3,6 +3,17 @@ savedTextures = {}
 integration = exports.integration
 global = exports.global
 
+-- Helper function to check if an interior is government-owned (type 2)
+function isGovernmentInterior(dimension)
+	if dimension <= 0 then return false end
+	local dbid, entrance, exit, interiorType, interiorElement = exports['interior_system']:findProperty(nil, dimension)
+	if interiorElement then
+		local interiorStatus = getElementData(interiorElement, "status")
+		return interiorStatus and interiorStatus.type == 2
+	end
+	return false
+end
+
 addEventHandler("onPlayerInteriorChange", getRootElement( ),
 	function( a, b, toDimension, toInterior)	
 		if toDimension then
@@ -47,7 +58,10 @@ addEvent("newtexture:delete", true)
 addEventHandler("newtexture:delete", resourceRoot,
 	function(id)
 		local interior = getElementDimension(client)
-		if global:hasItem(client, 4, interior) or global:hasItem(client, 5, interior) or (integration:isPlayerAdmin(client) and global:isAdminOnDuty(client)) or (interior==0) then
+		local isGovInt = isGovernmentInterior(interior)
+		local isAdminOnDutyCheck = integration:isPlayerAdmin(client) and global:isAdminOnDuty(client)
+		
+		if global:hasItem(client, 4, interior) or global:hasItem(client, 5, interior) or isAdminOnDutyCheck or (interior==0) or (isGovInt and isAdminOnDutyCheck) then
 			local data = savedTextures[interior]
 			if not data or not data[id] then
 				outputChatBox("This is not your texture.", client, 255, 0, 0)
@@ -82,12 +96,18 @@ addEventHandler("newtexture:loadInteriorTextures", root,
 	end
 )
 
+
+
 addEvent("newtexture:addOneTexture",true)
 function newTexture(source, url, texture,price)
 	local dimension = getElementDimension(source)
 
 	if dimension >= 1 or (integration:isPlayerLeadAdmin(source) and global:isAdminOnDuty(source)) or integration:isPlayerScripter(source) then
-		if global:hasItem(source, 4, dimension) or global:hasItem(source, 5, dimension) or (integration:isPlayerAdmin(source) and global:isAdminOnDuty(source)) or (dimension==0) then
+		-- For government interiors (type 2), allow any admin on duty regardless of hasItem
+		local isGovInt = isGovernmentInterior(dimension)
+		local isAdminOnDutyCheck = integration:isPlayerAdmin(source) and global:isAdminOnDuty(source)
+		
+		if global:hasItem(source, 4, dimension) or global:hasItem(source, 5, dimension) or isAdminOnDutyCheck or (dimension==0) or (isGovInt and isAdminOnDutyCheck) then
 			if savedTextures[dimension] then
 				for k, v in pairs(savedTextures[dimension]) do
 					if v.texture:lower() == texture:lower() then

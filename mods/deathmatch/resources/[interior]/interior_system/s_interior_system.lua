@@ -768,11 +768,33 @@ function setPlayerInsideInterior(theInterior, thePlayer, teleportTo, sameInt, el
 		-- Sync interior owner to player for client-side permission checks
 		setElementData(thePlayer, "currentInteriorOwner", intStatus.owner, true)
 		setElementData(thePlayer, "currentInteriorFaction", intStatus.faction, true)
+		
+		-- Sync furniture access permission from furniture resource
+		local furnitureDim = teleportTo.dim or teleportTo[INTERIOR_DIM]
+		local hasAccess = exports['furniture']:checkPlayerFurnitureAccess(thePlayer, furnitureDim)
+		triggerClientEvent(thePlayer, "Furnitures->syncAccess", thePlayer, hasAccess)
+		triggerClientEvent(thePlayer, "Furnitures->syncAccessList", thePlayer, hasAccess)
+		
+		-- Show furniture instruction message based on access level
+		local playerID = tonumber(getElementData(thePlayer, "dbid"))
+		local interiorOwner = tonumber(intStatus.owner)
+		if interiorOwner == playerID then
+			-- Message for interior owner
+			outputChatBox("As the owner, you can use /editor to manage furniture or visit the furniture store in town.", thePlayer, 255, 194, 14)
+			outputChatBox("Use /furnadd [player] to grant furniture access to others.", thePlayer, 255, 194, 14)
+		elseif hasAccess then
+			-- Message for players with granted access
+			outputChatBox("You have been granted furniture editing access. Use /editor to manage furniture.", thePlayer, 0, 255, 0)
+		end
+		
 		switchGroundSnow(thePlayer, false )
 	else
 		-- Leaving interior - clear the data
 		setElementData(thePlayer, "currentInteriorOwner", nil, true)
 		setElementData(thePlayer, "currentInteriorFaction", nil, true)
+		-- Clear furniture access when leaving
+		triggerClientEvent(thePlayer, "Furnitures->syncAccess", thePlayer, false)
+		triggerClientEvent(thePlayer, "Furnitures->syncAccessList", thePlayer, false)
 		switchGroundSnow(thePlayer, true)
 	end
 

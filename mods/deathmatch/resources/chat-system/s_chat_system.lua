@@ -1338,8 +1338,8 @@ function pmPlayer(thePlayer, commandName, who, ...)
 			local playerid = getElementData(thePlayer, "playerid")
 			local targetid = getElementData(targetPlayer, "playerid")
 			messageToTarget = "PM From (" .. playerid .. ") " .. playerName ..username..": " .. message
-			outputChatBox(messageToTarget, targetPlayer, 255, 255, 0)
-			outputChatBox("PM Sent to (" .. targetid .. ") " .. targetPlayerName ..targetUsername.. ": " .. message, thePlayer, 255, 255, 0)
+			outputChatBox(messageToTarget, targetPlayer, 201, 196, 255)
+			outputChatBox("PM Sent to (" .. targetid .. ") " .. targetPlayerName ..targetUsername.. ": " .. message, thePlayer, 201, 196, 255)
 
 			triggerClientEvent(targetPlayer,"pmClient",targetPlayer,messageToTarget)
 			triggerClientEvent(thePlayer,"pmClient",thePlayer)
@@ -1360,7 +1360,7 @@ function pmPlayer(thePlayer, commandName, who, ...)
 					local listening = getElementData( value, "bigears" )
 					if listening == thePlayer or listening == targetPlayer then
 						received[value] = true
-						outputChatBox("(" .. playerid .. ") " .. playerName .. " -> (" .. targetid .. ") " .. targetPlayerName .. ": " .. message, value, 255, 255, 0)
+						outputChatBox("(" .. playerid .. ") " .. playerName .. " -> (" .. targetid .. ") " .. targetPlayerName .. ": " .. message, value, 201, 196, 255)
 						triggerClientEvent(value,"pmClient",value)
 					end
 				end

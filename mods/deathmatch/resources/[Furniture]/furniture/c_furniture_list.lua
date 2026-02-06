@@ -40,6 +40,16 @@ local sellMenu = {
 }
 local lastSellTime = 0
 
+-- Furniture access granted by interior owner (synced from server)
+-- This is duplicated from c_furniture.lua because both files need to check access
+local hasFurnitureAccess = false
+
+-- Sync furniture access permission from server (also exists in c_furniture.lua)
+addEvent("Furnitures->syncAccessList", true)
+addEventHandler("Furnitures->syncAccessList", root, function(accessGranted)
+    hasFurnitureAccess = accessGranted or false
+end)
+
 local AlphaArray = {}
 for i=0, 99 do
 	AlphaArray[i] = 0
@@ -297,9 +307,28 @@ addEventHandler("onClientClick", root, onClientClick)
 
 
 
+-- Helper function to check if an interior is government-owned (type 2)
+local function isGovernmentInterior(dimension)
+	if dimension <= 0 then return false end
+	local dbid, entrance, exit, interiorType, interiorElement = exports['interior_system']:findProperty(nil, dimension)
+	if interiorElement then
+		local interiorStatus = getElementData(interiorElement, "status")
+		return interiorStatus and interiorStatus.type == 2
+	end
+	return false
+end
+
 addCommandHandler("editor", function(command)
 	dimension = getElementDimension(localPlayer)
-	if exports.global:hasItem ( localPlayer, 4, dimension ) then
+	local isGovInt = isGovernmentInterior(dimension)
+	local isAdminOnDutyCheck = exports.integration:isPlayerAdmin(localPlayer) and exports.global:isAdminOnDuty(localPlayer)
+	
+	-- Check if player has interior key, admin on duty, or granted furniture access
+	local hasInteriorKey = exports.global:hasItem(localPlayer, 4, dimension) or exports.global:hasItem(localPlayer, 5, dimension)
+	local hasFurnAccess = hasFurnitureAccess -- Variable synced from server when entering interior
+	
+	-- Allow if: has key item 4/5 OR admin on duty OR (government interior AND admin on duty) OR granted furniture access
+	if hasInteriorKey or isAdminOnDutyCheck or (isGovInt and isAdminOnDutyCheck) or hasFurnAccess then
 		x,y,z = getElementPosition(localPlayer)
 		interior,dimension = tonumber(getElementInterior(localPlayer)),tonumber(getElementDimension(localPlayer))
 		if not showed_myFurnitures then
@@ -320,6 +349,8 @@ addCommandHandler("editor", function(command)
 			if isElement(window) then destroyElement(window) end
 			if isElement(texW) then  destroyElement(texW) end
 		end
+	else
+		outputChatBox("You do not have access to the furniture editor in this interior.", 255, 0, 0)
 	end
 end)
 

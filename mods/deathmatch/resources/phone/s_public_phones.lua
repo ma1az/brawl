@@ -17,7 +17,7 @@ addEventHandler( "onResourceStart", getResourceRootElement( ),
 					
 				local dimension = tonumber(row["dimension"])
 				
-				local shape = createColSphere(x, y, z, 1)
+				local shape = createColSphere(x, y, z, 3)
 				exports.pool:allocateElement(shape)
 				setElementDimension(shape, dimension)
 				exports.anticheat:changeProtectedElementDataEx(shape, "dbid", id, false)
@@ -46,7 +46,7 @@ function addPhone(thePlayer, commandName)
 		
 		if (query) then
 			
-			local shape = createColSphere(x, y, z, 1)
+			local shape = createColSphere(x, y, z, 3)
 			exports.pool:allocateElement(shape)
 			setElementDimension(shape, dimension)
 			exports.anticheat:changeProtectedElementDataEx(shape, "dbid", id, false)
