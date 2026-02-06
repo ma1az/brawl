@@ -22,6 +22,7 @@ local key = 1--selectedRow
 local showShop = false
 local selectedCategory = 1
 local lastClick = 0
+local lastPurchaseTime = 0
 function pedDamage()
 	if(getElementData(source, "furniture:ped")) then
 		cancelEvent()
@@ -97,6 +98,12 @@ function orderFurniture()
 			return
 		end
 		
+        if (getTickCount() - lastPurchaseTime) < 5000 then
+            outputChatBox("[!]#ffffff You must wait 5 seconds before purchasing another item.", 255, 0, 0, true)
+            return
+        end
+        lastPurchaseTime = getTickCount()
+
 		triggerServerEvent("Furnitures->buy", localPlayer, localPlayer, selectedCategory, key)
 		myFurnitures[#myFurnitures + 1] = {}
 		-- Note: Success/Failure message is now handled by the server
@@ -262,6 +269,13 @@ function clickShop(button, state)
 				outputChatBox("[!]#ffffff You can only hold 10 unplaced items in your inventory!",255,0,0,true)
 				return
 			end
+            
+            if (getTickCount() - lastPurchaseTime) < 5000 then
+                outputChatBox("[!]#ffffff You must wait 5 seconds before purchasing another item.", 255, 0, 0, true)
+                return
+            end
+            lastPurchaseTime = getTickCount()
+
 			triggerServerEvent("Furnitures->buy", localPlayer, localPlayer, selectedCategory, key)
 			myFurnitures[#myFurnitures + 1] = {}
 			return

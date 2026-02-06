@@ -118,11 +118,10 @@ function draw()
 					dxDrawRectangle(mx+25+((index-1)*86),my+114,84,20,tocolor(20,20,20,160))
 					
 					if selected_furniture == index then
-						dxDrawText(value.price.."$",mx+25+((index-1)*86),my+114,84+(mx+25+((index-1)*86)),20+(my+114),tocolor(255,255,255,255),1,awesomeFontM,"center","center")
-						dxDrawText(value.price.."$",mx+25+((index-1)*86),my+114,84+(mx+25+((index-1)*86)),20+(my+114),tocolor(s_color[1],s_color[2],s_color[3]),1,awesomeFontM,"center","center")
+						dxDrawText("Buy ("..value.price.."$)",mx+25+((index-1)*86),my+114,84+(mx+25+((index-1)*86)),20+(my+114),tocolor(255,255,255,255),1,awesomeFontM,"center","center")
+						dxDrawText("Buy ("..value.price.."$)",mx+25+((index-1)*86),my+114,84+(mx+25+((index-1)*86)),20+(my+114),tocolor(s_color[1],s_color[2],s_color[3]),1,awesomeFontM,"center","center")
 					else
-						dxDrawText(value.price.."$",mx+25+((index-1)*86),my+114,84+(mx+25+((index-1)*86)),20+(my+114),tocolor(255,255,255,255),1,awesomeFontM,"center","center")
-						dxDrawText(value.price.."$",mx+25+((index-1)*86),my+114,84+(mx+25+((index-1)*86)),20+(my+114),tocolor(255,255,255,255),1,awesomeFontM,"center","center")
+						dxDrawText(value.name,mx+25+((index-1)*86),my+114,84+(mx+25+((index-1)*86)),20+(my+114),tocolor(255,255,255,255),1,awesomeFontM,"center","center")
 					end
 				end
 			end
@@ -131,6 +130,7 @@ function draw()
 end
 addEventHandler("onClientRender", root, draw)
 
+local lastPurchaseTime = 0
 function onClientClick(button, state)
 	if button == "left" and state == "down" and showed_myFurnitures then
 		
