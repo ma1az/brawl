@@ -763,9 +763,16 @@ function setPlayerInsideInterior(theInterior, thePlayer, teleportTo, sameInt, el
 		end
 	end
 	if ( teleportTo.dim or teleportTo[INTERIOR_DIM] ) ~= 0 then
-		furniture = getElementData(theInterior, "status").furniture
+		local intStatus = getElementData(theInterior, "status")
+		furniture = intStatus.furniture
+		-- Sync interior owner to player for client-side permission checks
+		setElementData(thePlayer, "currentInteriorOwner", intStatus.owner, true)
+		setElementData(thePlayer, "currentInteriorFaction", intStatus.faction, true)
 		switchGroundSnow(thePlayer, false )
 	else
+		-- Leaving interior - clear the data
+		setElementData(thePlayer, "currentInteriorOwner", nil, true)
+		setElementData(thePlayer, "currentInteriorFaction", nil, true)
 		switchGroundSnow(thePlayer, true)
 	end
 

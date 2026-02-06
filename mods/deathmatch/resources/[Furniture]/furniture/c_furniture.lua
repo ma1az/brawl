@@ -365,11 +365,52 @@ end
 addEventHandler("onClientRender", root, Furnitures.drawHifi)
 
 
+function canClientManageFurniture(element)
+    local playerID = getElementData(localPlayer, "dbid")
+    local furnitureOwner = getElementData(element, "Furnitures->owner")
+    
+    -- 1. Admin Check - always has access
+    if exports.integration:isPlayerAdmin(localPlayer) then
+        return true
+    end
+    
+    local dim = getElementDimension(element)
+    
+    -- 2. If inside an interior (dimension > 0), ONLY interior owner has access
+    if dim > 0 then
+        local playerDim = getElementDimension(localPlayer)
+        if playerDim == dim then
+            -- Check synced interior owner data
+            local interiorOwner = getElementData(localPlayer, "currentInteriorOwner")
+            if tonumber(interiorOwner) == tonumber(playerID) then
+                return true
+            end
+            
+            -- Check faction permission
+            local interiorFaction = getElementData(localPlayer, "currentInteriorFaction")
+            if interiorFaction and tonumber(interiorFaction) > 0 then
+                if exports.factions:hasMemberPermissionTo(localPlayer, interiorFaction, "manage_interiors") then
+                    return true
+                end
+            end
+        end
+        -- Inside interior but not owner - NO ACCESS (even if you placed it)
+        return false
+    end
+    
+    -- 3. If outside (dimension 0), furniture owner can access their own furniture
+    if tonumber(furnitureOwner) == tonumber(playerID) then
+        return true
+    end
+    
+    return false
+end
+
 function Furnitures.click(button, state, _, _, _, _, _, element)
 	if button == "right" and state == "down" then
 		if element and isElement(element) then
 			if getElementData(element, "Furnitures->isFurniture") then
-				 if getElementData(element, "Furnitures->owner") == getElementData(localPlayer, "dbid") then
+				 if canClientManageFurniture(element) then
 					showEditInterface = true
 					if #actions == 4 then
 						table.remove(actions, 4)
@@ -718,4 +759,10 @@ addEventHandler("onClientElementDataChange", localPlayer, function(key, oldValue
         toggleControl("fire", not isOn)
         toggleControl("aim_weapon", not isOn)
     end
+end)
+
+addEvent("Furnitures->allowEdit", true)
+addEventHandler("Furnitures->allowEdit", root, function()
+    showEditInterface = false
+    triggerEvent("Furnitures->ForceEditorState", localPlayer, true)
 end)
