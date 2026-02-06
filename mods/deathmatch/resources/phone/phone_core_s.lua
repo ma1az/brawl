@@ -323,6 +323,7 @@ function callSomeone(thePlayer, commandName, phoneNumber, withNumber)
 				-- Start public phone monitoring (hotline = already connected)
 				startPublicPhoneMonitor(thePlayer)
 				connectPublicPhoneCall(thePlayer)
+				triggerClientEvent(thePlayer, "phone:publicCallStatus", thePlayer, "connected", tostring(phoneNumber))
 
 			-- Otherwise find a fool to answer it
 			else
@@ -338,16 +339,19 @@ function callSomeone(thePlayer, commandName, phoneNumber, withNumber)
 				if bankMoney >= cost then
 					if not exports.donators:hasPlayerPerk(thePlayer, 6) and not exports.anticheat:changeProtectedElementDataEx(thePlayer, "bankmoney", tonumber(bankMoney) - cost, false) then
 						outputChatBox("You cannot afford a call.", thePlayer, 255, 0, 0)
+						if publicphone then setPedAnimation(thePlayer, nil) end
 						return
 					end
 				else
 					outputChatBox("You cannot afford a call.", thePlayer, 255, 0, 0)
+					if publicphone then setPedAnimation(thePlayer, nil) end
 					return
 				end
 
 				-- Yes, Is the target phone online or found at all?
 				if not found then
 					outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
+					if publicphone then setPedAnimation(thePlayer, nil) end
 					return
 				end
 
@@ -357,6 +361,7 @@ function callSomeone(thePlayer, commandName, phoneNumber, withNumber)
 				local contact = getPhoneContact(to, from)
 				if not contact then
 					if not tonumber(to) then
+						if publicphone then setPedAnimation(thePlayer, nil) end
 						return false
 					end
 					contact = { ["entryNumber"] = to }
@@ -371,20 +376,33 @@ function callSomeone(thePlayer, commandName, phoneNumber, withNumber)
 				if not t_powerOn then --not existed
 					outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
 					addPhoneHistory(displayedFrom, displayedTo, 2, isSecret)
+					if publicphone then setPedAnimation(thePlayer, nil) end
 					return false
 				elseif t_powerOn ~= 1 then --turned off
 					outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
 					addPhoneHistory(displayedFrom, displayedTo, 2, isSecret)
+					if publicphone then setPedAnimation(thePlayer, nil) end
 					return false
 				else
 					local foundInGame, targetPlayer = searchForPhone(to)
+					
+					-- Prevent calling yourself
+					if targetPlayer == thePlayer then
+						outputChatBox("You cannot call yourself.", thePlayer, 255, 0, 0)
+						if publicphone then
+							setPedAnimation(thePlayer, nil)
+						end
+						return false
+					end
 					if not foundInGame then
 						outputChatBox("You get a dead tone...", thePlayer, 255, 194, 14)
 						addPhoneHistory(displayedFrom, displayedTo, 2, isSecret)
+						if publicphone then setPedAnimation(thePlayer, nil) end
 						return false
 					else
 						if not canPlayerPhoneRing(targetPlayer) then
 							addPhoneHistory(displayedFrom, displayedTo, 2, isSecret)
+							if publicphone then setPedAnimation(thePlayer, nil) end
 							return false
 						end
 						addPhoneHistory(displayedFrom, displayedTo, 1, isSecret)
@@ -411,6 +429,10 @@ function callSomeone(thePlayer, commandName, phoneNumber, withNumber)
 						exports.anticheat:changeProtectedElementDataEx(targetPlayer, "called", true, true)
 						exports.anticheat:changeProtectedElementDataEx(thePlayer, "phonestate", 2, false)
 						exports.anticheat:changeProtectedElementDataEx(targetPlayer, "phonestate", 3, true)
+
+						-- Public phone call feedback
+						outputChatBox("Dialing #" .. tostring(to) .. "...", thePlayer, 155, 155, 255)
+						triggerClientEvent(thePlayer, "phone:publicCallStatus", thePlayer, "dialing", tostring(to))
 
 						-- Start public phone distance monitoring (billing starts on connect)
 						startPublicPhoneMonitor(thePlayer)
@@ -440,13 +462,18 @@ function callSomeone(thePlayer, commandName, phoneNumber, withNumber)
 							end
 						end
 
+						-- Public phone: tell caller the phone is ringing
+						if publicphone then
+							outputChatBox("The phone is ringing... waiting for an answer.", thePlayer, 155, 155, 255)
+							triggerClientEvent(thePlayer, "phone:publicCallStatus", thePlayer, "ringing", tostring(to))
+						end
 
-						local timer7 = setTimer(triggerEvent, 15000, 1, "phone:cancelPhoneCall", source) --Timer to make sure ringing will be killed at all the exceptional cases server sided
+						local timer7 = setTimer(triggerEvent, 15000, 1, "phone:cancelPhoneCall", thePlayer) --Timer to make sure ringing will be killed at all the exceptional cases server sided
 						local timer8 = setTimer(triggerEvent, 15000, 1, "phone:cancelPhoneCall", targetPlayer)
 						addDialingTimer(from, timer7)
 						addDialingTimer(contact.entryNumber, timer8)
 
-						exports['logs']:dbLog(source, 29, { source, "ph"..tostring(from), targetPlayer, "ph"..tostring(contact.entryNumber) }, "**Starting call - " .. (contact.entryName or contact.entryNumber) .. "**")
+						exports['logs']:dbLog(thePlayer, 29, { thePlayer, "ph"..tostring(from), targetPlayer, "ph"..tostring(contact.entryNumber) }, "**Starting call - " .. (contact.entryName or contact.entryNumber) .. "**")
 						return true
 					end
 				end

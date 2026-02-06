@@ -14,10 +14,10 @@
 			from channel settings -> Integrations -> Webhooks -> Your webhook -> Copy URL
 ]]
 WEB_HOOKS = {
-	["staff-webhook"] = "https://discord.com/api/webhooks/1347992202252652705/v9-D5bhVEdtE4JZdXVbRr75h4WA2YoW15K4dlTXSo2UZz7OLuAdiIMInFY1hG6weS_kR",
-	["manager-webhook"] = "https://discord.com/api/webhooks/1347992439042084915/T5kaXRFINftXzRqOhUueyuB_xIQhI8h_4H_3xqw5Eg9_QqfepEgUdM2SGEsmEttV2kW3",
-	["ads-webhook"] = "https://discord.com/api/webhooks/1347992610098380860/v-_E3gxPUrbz7xGkbScG0ReZz5_uON-H-wH0CuRBrgqXhnMwGcyRTnSijce0ssFpArQW",
-	["player-webhook"] = "https://discord.com/api/webhooks/1347992732672720958/I94GptcmIGY0RXSL03wj-81ZXo6gXWtB9-HXp0i6eBRuTKXFyQmeIcCct7MgS7HPkmt4",
+	["staff-webhook"] = "https://discord.com/api/webhooks/1469421011328827432/kMtMzaJet3140Z9TLTO_BOi7HWyLtXnJz6rU0ElsUeRB7g9uoulx-O5_XbuCTabUoMoI",
+	["manager-webhook"] = "https://discord.com/api/webhooks/1469420907469475934/_ODJ4rc6FhZl4NVQpTtApbM7s7ihBi1bQn25RLENiMu19Uy6pQnz61IZ3IR4pw8oJaM6",
+	["ads-webhook"] = "https://discord.com/api/webhooks/1469420111843561524/4YCMDQv8PaezOQDG8RhY_hxbbERYnoR71D_jMuVAw9WvLT31vREQCuYciwzZ6YAKMUTI",
+	["player-webhook"] = "https://discord.com/api/webhooks/1469420793141137479/tWEcjb4vJNJxDWNi1NeDsvs2fpWP03avjVhD3JJL-zuOUR7s9nsgYyfyWWxkkXovrNig",
 }
 
 -- Custom Log messages format (e.g. add prefix, etc.):

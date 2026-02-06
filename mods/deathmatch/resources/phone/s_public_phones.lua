@@ -261,3 +261,35 @@ addEventHandler("onResourceStop", getResourceRootElement(),
 	end
 )
 
+-- ============================================================
+-- SERVER EVENT: Dial from public phone UI
+-- ============================================================
+addEvent("phone:publicPhoneDial", true)
+addEventHandler("phone:publicPhoneDial", root, function(phoneNumber)
+	local thePlayer = source
+	if not thePlayer or not isElement(thePlayer) then return end
+	if not phoneNumber or phoneNumber == "" then return end
+
+	if not canPlayerCall(thePlayer) then
+		outputChatBox("You're unable to make a phone call at the moment.", thePlayer, 255, 0, 0)
+		return
+	end
+
+	-- Must be in a public phone colshape
+	local inCol = false
+	for k, v in ipairs(getElementsByType("colshape", getResourceRootElement())) do
+		if isElementWithinColShape(thePlayer, v) then
+			inCol = true
+			break
+		end
+	end
+
+	if not inCol then
+		outputChatBox("You must be near a public phone to make a call.", thePlayer, 255, 0, 0)
+		return
+	end
+
+	-- Use the same flow as /call command
+	callSomeone(thePlayer, "call", phoneNumber, -1)
+end)
+

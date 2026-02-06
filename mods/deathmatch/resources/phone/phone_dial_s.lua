@@ -271,11 +271,24 @@ function cancelPhoneCall(reason)
 	end
 
 	if col then
-		outputChatBox("You hung up.", caller1, 155, 155, 255)
+		-- Show appropriate message based on call state
+		local endReason = "You hung up."
+		if caller1Phonestate == 2 then
+			-- Was still ringing / waiting for answer
+			endReason = "No answer. You hung up."
+			outputChatBox(endReason, caller1, 255, 194, 14)
+		elseif caller1Phonestate == 4 or caller1Phonestate == 5 then
+			-- Was in an active call
+			outputChatBox("You hung up.", caller1, 155, 155, 255)
+		else
+			outputChatBox("You hung up.", caller1, 155, 155, 255)
+		end
 		setElementData(source, "cellphoneGUIStateSynced", 0)
 		setPedAnimation(source) -- Clear public phone animation
-		-- Calculate and show public phone call cost
-		endPublicPhoneCall(caller1)
+		-- Calculate and show public phone call cost (pcall to protect resetPhoneState flow)
+		local ok, err = pcall(endPublicPhoneCall, caller1)
+		if not ok then outputDebugString("[Phone] endPublicPhoneCall error: " .. tostring(err)) end
+		triggerClientEvent(caller1, "phone:publicCallStatus", caller1, "ended", "", endReason)
 	end
 
 
@@ -290,10 +303,19 @@ function cancelPhoneCall(reason)
 	end
 
 	if caller2col then
-		outputChatBox("They hung up.", caller2, 155, 155, 255)
+		local endReason2 = "They hung up."
+		if caller2Phonestate == 2 then
+			endReason2 = "No answer. Call ended."
+			outputChatBox(endReason2, caller2, 255, 194, 14)
+		else
+			outputChatBox(endReason2, caller2, 155, 155, 255)
+		end
 		setElementData(caller2, "cellphoneGUIStateSynced", 0)
-		-- Calculate and show public phone call cost for the other party
-		endPublicPhoneCall(caller2)
+		setPedAnimation(caller2) -- Clear public phone animation for caller2
+		-- Calculate and show public phone call cost for the other party (pcall to protect resetPhoneState flow)
+		local ok2, err2 = pcall(endPublicPhoneCall, caller2)
+		if not ok2 then outputDebugString("[Phone] endPublicPhoneCall error (caller2): " .. tostring(err2)) end
+		triggerClientEvent(caller2, "phone:publicCallStatus", caller2, "ended", "", endReason2)
 	end
 
 	if caller1Called then
@@ -376,12 +398,19 @@ function acceptPhoneCall()
 	killDialingTimers(callerNo)
 	triggerClientEvent(source,"phone:slidePhoneIn", source, calledNo, true)
 	local found, caller = searchForPhone(callerNo)
+	if not found or not caller or not isElement(caller) then
+		outputChatBox("The caller is no longer available.", source, 255, 0, 0)
+		resetPhoneState(source)
+		return false
+	end
 	if not getElementData(caller, "call.col") then
 		triggerClientEvent(caller, "phone:updateDialingScreen", caller, "connected", getElementData(caller,"callingContact"))
 	else
-		outputChatBox("They picked up the phone.", caller, 155, 155, 255)
+		outputChatBox("They picked up the phone. Use /p to talk, /hangup to end the call.", caller, 155, 155, 255)
 		-- Start billing clock now that the call is connected
 		connectPublicPhoneCall(caller)
+		local calledNumber = tostring(getElementData(caller, "calling") or "")
+		triggerClientEvent(caller, "phone:publicCallStatus", caller, "connected", calledNumber)
 	end
 	exports.anticheat:changeProtectedElementDataEx(caller, "phonestate", 4, false)
 	exports.anticheat:changeProtectedElementDataEx(source, "phonestate", 5, false)
