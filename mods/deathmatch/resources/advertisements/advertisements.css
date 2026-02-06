@@ -75,7 +75,7 @@ a { cursor: pointer; }
 }
 
 .ads-header {
-    background: #bf75ff;
+    background: #ac45ff;
     padding: 12px 18px;
     font-size: 16px;
     font-weight: 600;
@@ -165,7 +165,7 @@ a { cursor: pointer; }
 }
 
 .ads-list-title {
-    color: #bf75ff;
+    color: #ac45ff;
     font-weight: 500;
     margin-bottom: 2px;
     word-wrap: break-word;
@@ -253,9 +253,7 @@ a { cursor: pointer; }
 .ads-btn {
     display: inline-block;
     padding: 8px 16px;
-    background: #bf75ff;
-    color: #fff;
-    border: none;
+    background: #ac45ff;
     border-radius: 4px;
     cursor: pointer;
     font-size: 13px;
@@ -264,7 +262,7 @@ a { cursor: pointer; }
     text-align: center;
 }
 .ads-btn:hover {
-    background: #a855e0;
+    background: #9530e0;
 }
 .ads-btn:disabled {
     opacity: 0.5;
@@ -324,7 +322,7 @@ a { cursor: pointer; }
 }
 
 .ads-dropdown.open .ads-dropdown-toggle {
-    border-color: #bf75ff;
+    border-color: #ac45ff;
 }
 
 .ads-dropdown-toggle .caret {
@@ -356,10 +354,10 @@ a { cursor: pointer; }
     font-size: 13px;
 }
 .ads-dropdown-item:hover {
-    background: rgba(191, 117, 255, 0.25);
+    background: rgba(172, 69, 255, 0.25);
 }
 .ads-dropdown-item.active {
-    background: #bf75ff;
+    background: #ac45ff;
     color: #fff;
 }
 
@@ -404,7 +402,7 @@ a { cursor: pointer; }
     transition: border-color 0.15s;
 }
 .ads-input:focus {
-    border-color: #bf75ff;
+    border-color: #ac45ff;
 }
 .ads-input::placeholder {
     color: #6c757d;
@@ -480,7 +478,7 @@ a { cursor: pointer; }
     width: 36px;
     height: 36px;
     border: 3px solid rgba(255, 255, 255, 0.1);
-    border-top-color: #bf75ff;
+    border-top-color: #ac45ff;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
 }
