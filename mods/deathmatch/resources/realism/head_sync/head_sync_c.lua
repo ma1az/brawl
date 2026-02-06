@@ -67,13 +67,19 @@ end
 
 function getClosestPlayer()
 	for dbid, player in pairs( nearby_players ) do
-		local x,y,z = getElementPosition(player)			
-		local cx,cy,cz = getCameraMatrix()
-		local distance = getDistanceBetweenPoints3D(cx,cy,cz,x,y,z)
-		if distance <= viewDistance and (player~=localPlayer) and getElementAlpha(player) == 255 then --Within radius viewDistance
-			local px,py,pz = getScreenFromWorldPosition(x,y,z,0.05)
-			if px and isLineOfSightClear(cx, cy, cz, x, y, z, true, false, false, true, true, false, false) then	
-				return player
+		if not isElement(player) then
+			nearby_players[dbid] = nil
+		else
+			local cx,cy,cz = getCameraMatrix()
+			if cx then
+				local x,y,z = getElementPosition(player)
+				local distance = getDistanceBetweenPoints3D(cx,cy,cz,x,y,z)
+				if distance <= viewDistance and (player~=localPlayer) and getElementAlpha(player) == 255 then --Within radius viewDistance
+					local px,py,pz = getScreenFromWorldPosition(x,y,z,0.05)
+					if px and isLineOfSightClear(cx, cy, cz, x, y, z, true, false, false, true, true, false, false) then	
+						return player
+					end
+				end
 			end
 		end
 	end
@@ -99,13 +105,19 @@ end
 
 function getClosestVehicle()
 	for dbid, player in pairs( nearby_vehs ) do
-		local x,y,z = getElementPosition(player)			
-		local cx,cy,cz = getCameraMatrix()
-		local distance = getDistanceBetweenPoints3D(cx,cy,cz,x,y,z)
-		if distance <= viewDistance and (player~=localPlayer) then --Within radius viewDistance
-			local px,py,pz = getScreenFromWorldPosition(x,y,z,0.05)
-			if px and isLineOfSightClear(cx, cy, cz, x, y, z, true, false, false, true, true, false, false) then	
-				return player
+		if not isElement(player) then
+			nearby_vehs[dbid] = nil
+		else
+			local cx,cy,cz = getCameraMatrix()
+			if cx then
+				local x,y,z = getElementPosition(player)
+				local distance = getDistanceBetweenPoints3D(cx,cy,cz,x,y,z)
+				if distance <= viewDistance and (player~=localPlayer) then --Within radius viewDistance
+					local px,py,pz = getScreenFromWorldPosition(x,y,z,0.05)
+					if px and isLineOfSightClear(cx, cy, cz, x, y, z, true, false, false, true, true, false, false) then	
+						return player
+					end
+				end
 			end
 		end
 	end
