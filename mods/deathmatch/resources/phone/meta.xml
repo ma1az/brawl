@@ -4,6 +4,7 @@
 	<script src="s_public_phones.lua" type="server" />
 	<script src="s_hotlines.lua" type="server" />
 	<script src="s_gui_phone.lua" type="server" />
+	<script src="c_public_phones.lua" type="client" />
 	<!--<script src="s_ads.lua" type="server" />-->
 	
 	<script src="phone_core_s.lua" type="server" />

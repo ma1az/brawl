@@ -273,7 +273,9 @@ function cancelPhoneCall(reason)
 	if col then
 		outputChatBox("You hung up.", caller1, 155, 155, 255)
 		setElementData(source, "cellphoneGUIStateSynced", 0)
+		setPedAnimation(source) -- Clear public phone animation
 	end
+
 
 	if caller2No then
 		local found, caller = searchForPhone(caller2No)
@@ -543,15 +545,23 @@ function talkPhone(thePlayer, commandName, ...)
 	end
 
 	local translatedMessage = call(getResourceFromName("language-system"), "applyLanguage", thePlayer, target, call( getResourceFromName( "chat-system" ), "trunklateText", target, message ), language)
+	
+	-- Determine displayed name for the target
+	local remoteUsername = username
+	local _, _, isSecret = getPhoneSettings(callingNumberWith)
+	if isSecret == 1 or getElementData(thePlayer, "call.col") then 
+		remoteUsername = "Unknown"
+	end
+
 	if commandName == "plow" then
-		outputChatBox("[" .. languagename .. "] " .. username .. " whispers [Phone]: " .. translatedMessage, target)
+		outputChatBox("[" .. languagename .. "] " .. remoteUsername .. " whispers [Phone]: " .. translatedMessage, target)
 		outputChatBox("[" .. languagename .. "] " .. username .. " whispers [Phone]: " ..message, thePlayer)
 		if not theVehicle or not exports.vehicle:isVehicleWindowUp(theVehicle) then
 			sendLocalText(thePlayer, "[" .. languagename .. "] " .. username .. " whispers [Phone]: " .. translatedMessage, nil, nil, nil, 3, {[thePlayer] = true})
 		end	
 		triggerEvent("sendAme", thePlayer, "whispers into their phone.")
 	else
-		outputChatBox("[" .. languagename .. "] " .. username .. " [Phone]: " .. translatedMessage, target, 200, 255, 200)
+		outputChatBox("[" .. languagename .. "] " .. remoteUsername .. " [Phone]: " .. translatedMessage, target, 200, 255, 200)
 		outputChatBox("[" .. languagename .. "] " .. username .. " [Phone]: " ..message, thePlayer, 200, 255, 200)
 		if not theVehicle or not exports.vehicle:isVehicleWindowUp(theVehicle) then
 			sendLocalText(thePlayer, "[" .. languagename .. "] " .. username .. " [Phone]: " .. translatedMessage, nil, nil, nil, 10, {[thePlayer] = true})

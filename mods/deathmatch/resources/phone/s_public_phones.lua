@@ -20,7 +20,7 @@ addEventHandler( "onResourceStart", getResourceRootElement( ),
 				local shape = createColSphere(x, y, z, 3)
 				exports.pool:allocateElement(shape)
 				setElementDimension(shape, dimension)
-				exports.anticheat:changeProtectedElementDataEx(shape, "dbid", id, false)
+				exports.anticheat:changeProtectedElementDataEx(shape, "dbid", id, true)
 			end
 			mysql:free_result(result)
 		end
@@ -49,7 +49,7 @@ function addPhone(thePlayer, commandName)
 			local shape = createColSphere(x, y, z, 3)
 			exports.pool:allocateElement(shape)
 			setElementDimension(shape, dimension)
-			exports.anticheat:changeProtectedElementDataEx(shape, "dbid", id, false)
+			exports.anticheat:changeProtectedElementDataEx(shape, "dbid", id, true)
 			
 			outputChatBox("Public Phone spawned with ID #" .. id .. ".", thePlayer, 0, 255, 0)
 		else

@@ -293,6 +293,8 @@ function callSomeone(thePlayer, commandName, phoneNumber, withNumber)
 			callerphoneBoughtBy =  tonumber(phoneSettings["boughtby"]) or -1
 		end
 	end
+	
+	local isSecret = callerphoneIsSecretNumber
 
 	if callerphoneIsTurnedOn == 0 then
 		outputChatBox("Your phone is off.", thePlayer, 255, 0, 0)
@@ -307,6 +309,7 @@ function callSomeone(thePlayer, commandName, phoneNumber, withNumber)
 			-- /me it
 			if publicphone then
 				triggerEvent('sendAme', thePlayer, "reaches for the public phone.")
+				setPedAnimation(thePlayer, "PED", "phone_talk", -1, true, true, false)
 			end
 
 			-- If the number is a hotline aka automated machine, then..
@@ -325,9 +328,12 @@ function callSomeone(thePlayer, commandName, phoneNumber, withNumber)
 
 				-- Some basic checks.
 				-- Can we afford it?
+				-- Some basic checks.
+				-- Can we afford it?
 				local bankMoney = getElementData(thePlayer, "bankmoney") -- done by Anthony to take money from bank instead
-				if bankMoney >= 1 then
-					if not exports.donators:hasPlayerPerk(thePlayer, 6) and not exports.anticheat:changeProtectedElementDataEx(thePlayer, "bankmoney", tonumber(bankMoney) - 1, false) then
+				local cost = publicphone and 3 or 1
+				if bankMoney >= cost then
+					if not exports.donators:hasPlayerPerk(thePlayer, 6) and not exports.anticheat:changeProtectedElementDataEx(thePlayer, "bankmoney", tonumber(bankMoney) - cost, false) then
 						outputChatBox("You cannot afford a call.", thePlayer, 255, 0, 0)
 						return
 					end
