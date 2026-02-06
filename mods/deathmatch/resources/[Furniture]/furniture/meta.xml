@@ -2,8 +2,8 @@
 	<script src="async.lua" type="shared" />
 	<script src="g_furniture.lua" type="shared" protected="true"/>
 	<script src="s_furniture.lua" type="server" />
-	<script src="c_furniture.lua" type="client" protected="true"/>
 	<script src="c_furniture_list.lua" type="client" protected="true"/>
+	<script src="c_furniture.lua" type="client" protected="true"/>
 	<script src="files/drawGUI.lua" type="client" protected="true"/>
 	<script src="files/drawCore.lua" type="client" protected="true"/>
 	<script src="files/drawButton.lua" type="client" protected="true"/>

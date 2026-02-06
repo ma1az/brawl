@@ -406,7 +406,11 @@ function Furnitures.click(button, state, _, _, _, _, _, element)
 		end
 	end
 	if button == "left" and state == "down" and showEditInterface then
-		local x, y, z = getElementPosition(selectedFurniture)
+		if not isElement(selectedFurniture) then
+            showEditInterface = false
+            return
+        end
+        local x, y, z = getElementPosition(selectedFurniture)
         if not x then return end
 		local wX, wY = getScreenFromWorldPosition(x, y, z)
         if not wX or not wY then return end -- Guard against off-screen clicks

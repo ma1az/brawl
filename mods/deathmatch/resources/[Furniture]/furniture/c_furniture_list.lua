@@ -31,6 +31,15 @@ local requested = false
 local selected_furniture = 0
 local lastClick = 0
 
+-- Sell Menu State
+local sellMenu = {
+    show = false,
+    x = 0,
+    y = 0,
+    itemIndex = 0
+}
+local lastSellTime = 0
+
 local AlphaArray = {}
 for i=0, 99 do
 	AlphaArray[i] = 0
@@ -127,19 +136,79 @@ function draw()
 			end
 		end
 	end
+    
+    -- Draw Sell Context Menu
+    if sellMenu.show and sellMenu.itemIndex > 0 and myFurnitures[sellMenu.itemIndex] then
+        local sx, sy = sellMenu.x, sellMenu.y
+        local item = myFurnitures[sellMenu.itemIndex]
+        local width, height = 150, 70
+        
+        -- Ensure menu stays on screen
+        if sx + width > mw + mx then sx = mw + mx - width end
+        if sy + height > mh + my then sy = mh + my - height end -- Clamped to panel area basically
+
+        dxDrawRectangle(sx, sy, width, height, tocolor(40, 40, 40, 255))
+        dxDrawRectangle(sx, sy, width, 25, tocolor(30, 30, 30, 255)) -- Title
+        dxDrawText("Options", sx, sy, sx+width, sy+25, tocolor(255,255,255), 1, awesomeFont, "center", "center")
+        
+        -- Sell Button
+        local hoverSell = isInBox(sx, sy+25, width, 20)
+        dxDrawRectangle(sx, sy+25, width, 20, hoverSell and tocolor(60, 60, 60, 255) or tocolor(50, 50, 50, 255))
+        dxDrawText("Sell (60%)", sx, sy+25, sx+width, sy+45, tocolor(200, 50, 50), 1, awesomeFontM, "center", "center")
+
+        -- Close Button
+        local hoverClose = isInBox(sx, sy+45, width, 20)
+        dxDrawRectangle(sx, sy+45, width, 20, hoverClose and tocolor(60, 60, 60, 255) or tocolor(50, 50, 50, 255))
+        dxDrawText("Close", sx, sy+45, sx+width, sy+65, tocolor(255, 255, 255), 1, awesomeFontM, "center", "center")
+    end
 end
 addEventHandler("onClientRender", root, draw)
 
 local lastPurchaseTime = 0
 function onClientClick(button, state)
-	if button == "left" and state == "down" and showed_myFurnitures then
+	if (button == "left" or button == "right") and state == "down" and showed_myFurnitures then
 		
 		mx,my,mw,mh = 0, sy-150, sx, 150
+        
+        -- Handle Sell Menu Clicks (Left click only for menu options)
+        if sellMenu.show and button == "left" then
+            local sx, sy = sellMenu.x, sellMenu.y
+            local width, height = 150, 70
+            
+            -- Sell Button Click
+             if isInBox(sx, sy+25, width, 20) then
+                local currently = getTickCount()
+                if (currently - lastSellTime) < 60000 then -- 60 seconds cooldown
+                    local remaining = math.ceil((60000 - (currently - lastSellTime)) / 1000)
+                    outputChatBox("You must wait " .. remaining .. " seconds before selling another item.", 255, 0, 0)
+                    return
+                end
+                
+                if myFurnitures[sellMenu.itemIndex] then
+                    triggerServerEvent("Furnitures->sell", localPlayer, localPlayer, myFurnitures[sellMenu.itemIndex].id)
+                    lastSellTime = getTickCount()
+                end
+                sellMenu.show = false
+                return
+            end
+            
+            -- Close Button Click
+            if isInBox(sx, sy+45, width, 20) then
+                sellMenu.show = false
+                return
+            end
+            
+            -- Click outside closes menu? Optional, but good UX.
+            if not isInBox(sx, sy, width, height) then
+                sellMenu.show = false
+            end
+        end
+		
 		tabRowHeight = 0
 		altTabHeight = 0
-        
+		
         -- Close (X) Click
-        if isInBox(mx+mw-30, my, 30, 30) then
+		if isInBox(mx+mw-30, my, 30, 30) then
             if getElementData(localPlayer, "Furniture->isFurnitureOnHand") then
                 triggerEvent("Furnitures->CancelEdit", localPlayer)
             end
@@ -173,25 +242,32 @@ function onClientClick(button, state)
 			for index, value in ipairs(myFurnitures) do
 				-- Expanded hitbox to include image (y+30 to y+134, height 104)
 				if isInBox(mx+25+((index-1)*86),my+30,84,104) then
-					if selected_furniture ~= index then
-						selected_furniture = index
-					else
-						if getElementData(localPlayer, "Furniture->isFurnitureOnHand") then
-							outputChatBox("You are already arranging a piece of furniture.", 255, 255, 255, true)
-							return
-						end
-						if tonumber(myFurnitures[selected_furniture].model) == 2224 and getFurnituresCount(2224, getElementDimension(localPlayer)) > 0 then
-							outputChatBox("You have reached the limit for placing this object!", 255, 255, 255, true)
-							return
-						end
-						if tonumber(myFurnitures[selected_furniture].model) == 2232 and getFurnituresCount(2232, getElementDimension(localPlayer)) + 1 > 4 then
-							outputChatBox("You have reached the limit for placing this object!", 255, 255, 255, true)
-							return
-						end
-						triggerServerEvent("Furnitures->create", localPlayer, localPlayer, myFurnitures[selected_furniture])
-						table.remove(myFurnitures, selected_furniture)
-						selected_furniture = -1
-					end
+                    if button == "right" or button == "extra" then
+                        sellMenu.show = true
+                        sellMenu.x = mx+25+((index-1)*86) + 40
+                        sellMenu.y = my+30 + 40
+                        sellMenu.itemIndex = index
+                    elseif button == "left" then
+                        if selected_furniture ~= index then
+                            selected_furniture = index
+                        else
+                            if getElementData(localPlayer, "Furniture->isFurnitureOnHand") then
+                                outputChatBox("You are already arranging a piece of furniture.", 255, 255, 255, true)
+                                return
+                            end
+                            if tonumber(myFurnitures[selected_furniture].model) == 2224 and getFurnituresCount(2224, getElementDimension(localPlayer)) > 0 then
+                                outputChatBox("You have reached the limit for placing this object!", 255, 255, 255, true)
+                                return
+                            end
+                            if tonumber(myFurnitures[selected_furniture].model) == 2232 and getFurnituresCount(2232, getElementDimension(localPlayer)) + 1 > 4 then
+                                outputChatBox("You have reached the limit for placing this object!", 255, 255, 255, true)
+                                return
+                            end
+                            triggerServerEvent("Furnitures->create", localPlayer, localPlayer, myFurnitures[selected_furniture])
+                            table.remove(myFurnitures, selected_furniture)
+                            selected_furniture = -1
+                        end
+                    end
 				end
 			end
 		elseif activeTab == "texs" and activeAltTab then

@@ -256,6 +256,50 @@ end
 addEvent("Furnitures->delete", true)
 addEventHandler("Furnitures->delete", root, Furnitures.delete)
 
+function findPriceByModel(model)
+	for i, category in ipairs(furnitures) do
+		for j, item in ipairs(category) do
+			if item.model == model then
+				return item.price
+			end
+		end
+	end
+	return 0
+end
+
+function Furnitures.sell(client, dbid)
+    local dbid = tonumber(dbid)
+    if not dbid or not cache[dbid] then return end
+    
+    local itemData = cache[dbid]
+    local owner = tonumber(itemData.owner)
+    
+    if owner ~= getElementData(client, "dbid") and not exports.integration:isPlayerAdmin(client) then
+        outputChatBox("You do not own this furniture.", client, 255, 0, 0)
+        return
+    end
+
+    local price = findPriceByModel(itemData.model)
+    local refund = math.floor(price * 0.6)
+
+    if exports.global:giveMoney(client, refund) then
+        outputChatBox("[Furniture] You sold the item for $" .. refund .. " (60% refund).", client, 0, 255, 0)
+        
+        -- Delete from DB and Cache
+        Furnitures.delete(dbid)
+        
+        -- Remove from cache
+        cache[dbid] = nil
+        
+        -- Refresh client
+        Furnitures.loadMyFurnitures(owner)
+    else
+        outputChatBox("Error processing refund.", client, 255, 0, 0)
+    end
+end
+addEvent("Furnitures->sell", true)
+addEventHandler("Furnitures->sell", root, Furnitures.sell)
+
 function Furnitures.create(player, data)
 	local rot = getPedRotation(player)
 	local x, y, z = getElementPosition(player)
