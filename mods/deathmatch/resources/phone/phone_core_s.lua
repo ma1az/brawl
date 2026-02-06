@@ -320,6 +320,9 @@ function callSomeone(thePlayer, commandName, phoneNumber, withNumber)
 				exports.anticheat:changeProtectedElementDataEx(thePlayer, "callingwith", outboundPhoneNumber, false)
 				handleEasyHotlines({ element = thePlayer, phone = tonumber(outboundPhoneNumber), called = tonumber(phoneNumber)}, tonumber(phoneNumber), true, "")
 				--applyPhone(thePlayer, 1, "phone_talk")
+				-- Start public phone monitoring (hotline = already connected)
+				startPublicPhoneMonitor(thePlayer)
+				connectPublicPhoneCall(thePlayer)
 
 			-- Otherwise find a fool to answer it
 			else
@@ -408,6 +411,9 @@ function callSomeone(thePlayer, commandName, phoneNumber, withNumber)
 						exports.anticheat:changeProtectedElementDataEx(targetPlayer, "called", true, true)
 						exports.anticheat:changeProtectedElementDataEx(thePlayer, "phonestate", 2, false)
 						exports.anticheat:changeProtectedElementDataEx(targetPlayer, "phonestate", 3, true)
+
+						-- Start public phone distance monitoring (billing starts on connect)
+						startPublicPhoneMonitor(thePlayer)
 
 						killDialingTimers(from)
 
@@ -532,7 +538,8 @@ addEventHandler("savePlayer", root,
 addEventHandler( "onColShapeLeave", getResourceRootElement(),
 	function( thePlayer )
 		if getElementData( thePlayer, "call.col" ) == source then
-			executeCommandHandler( "hangup", thePlayer )
+			-- Distance monitoring in s_public_phones.lua handles the 5-second
+			-- grace period and disconnect. Do NOT hang up instantly here.
 		end
 	end
 )

@@ -274,6 +274,8 @@ function cancelPhoneCall(reason)
 		outputChatBox("You hung up.", caller1, 155, 155, 255)
 		setElementData(source, "cellphoneGUIStateSynced", 0)
 		setPedAnimation(source) -- Clear public phone animation
+		-- Calculate and show public phone call cost
+		endPublicPhoneCall(caller1)
 	end
 
 
@@ -290,6 +292,8 @@ function cancelPhoneCall(reason)
 	if caller2col then
 		outputChatBox("They hung up.", caller2, 155, 155, 255)
 		setElementData(caller2, "cellphoneGUIStateSynced", 0)
+		-- Calculate and show public phone call cost for the other party
+		endPublicPhoneCall(caller2)
 	end
 
 	if caller1Called then
@@ -376,6 +380,8 @@ function acceptPhoneCall()
 		triggerClientEvent(caller, "phone:updateDialingScreen", caller, "connected", getElementData(caller,"callingContact"))
 	else
 		outputChatBox("They picked up the phone.", caller, 155, 155, 255)
+		-- Start billing clock now that the call is connected
+		connectPublicPhoneCall(caller)
 	end
 	exports.anticheat:changeProtectedElementDataEx(caller, "phonestate", 4, false)
 	exports.anticheat:changeProtectedElementDataEx(source, "phonestate", 5, false)
