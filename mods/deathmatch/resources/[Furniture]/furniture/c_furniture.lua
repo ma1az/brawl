@@ -14,6 +14,9 @@ local showEditInterface = false
 local show_hifi = false
 local selectedFurniture = nil
 local selectedHifi = nil
+local realPos = {x=0, y=0, z=0}
+local snapEnabled = false
+local surfaceSnapEnabled = false
 
 local font_bold = dxCreateFont("files/1.ttf",11)
 local font_default = dxCreateFont("files/2.ttf",8)
@@ -41,12 +44,16 @@ local font3 = dxCreateFont("files/5.ttf",12)
 function Furnitures.draw()
 	if getElementData(localPlayer, "Furniture->isFurnitureOnHand") and selectedFurniture then
 		-- New UI Overlay
-		local panelW, panelH = 250, 190
+		local panelW, panelH = 250, 250
 		local panelX = sX - panelW - 20
 		local panelY = sY * 0.1 -- Moved down 10%
 		
 		dxDrawRectangle(panelX, panelY, panelW, panelH, tocolor(0, 0, 0, 180))
 		dxDrawText("Controls", panelX, panelY + 10, panelX + panelW, panelY + 30, tocolor(255, 255, 255, 255), 1, font_bold, "center", "top")
+        
+		
+		-- X Close Button on Overlay REMOVED (Now in Editor Menu)
+		-- dxDrawText("X", panelX + panelW - 25, panelY + 5, panelX + panelW - 5, panelY + 25, tocolor(255, 100, 100, 200), 1, font_bold, "center", "center")
 		
 		local controls = {
 			{"Move", "W, A, S, D"},
@@ -54,6 +61,8 @@ function Furnitures.draw()
 			{"Rotate", "Scroll"},
 			{"Fast Rotate", "Shift + Scroll"},
 			{"Slow Move", "Alt + Move"},
+			{"Snap Grid ("..(snapEnabled and "On" or "Off")..")", "G"},
+			{"Snap Surface ("..(surfaceSnapEnabled and "On" or "Off")..")", "H"},
 			{"Place", "F"},
 			{"Cancel", "Right Click"}
 		}
@@ -93,15 +102,36 @@ function Furnitures.draw()
 
 	if not selectedFurniture then return end
 
+
+
+    -- Visual Grid
+    if snapEnabled then
+        local gx, gy, gz = getElementPosition(selectedFurniture)
+        local gridSize = 5
+        local step = 1.0
+        local startX, startY = math.floor(gx/step)*step - math.floor(gridSize/2)*step, math.floor(gy/step)*step - math.floor(gridSize/2)*step
+        
+        for i = 0, gridSize do
+            -- Vertical lines
+            local lx = startX + i * step
+            dxDrawLine3D(lx, startY, gz, lx, startY + gridSize * step, gz, tocolor(255, 255, 255, 100), 1)
+            -- Horizontal lines
+            local ly = startY + i * step
+            dxDrawLine3D(startX, ly, gz, startX + gridSize * step, ly, gz, tocolor(255, 255, 255, 100), 1)
+        end
+    end
+
 	-- New Movement Logic
 	local moveSpeed = 0.05
 	if activeKeys["lshift"] then moveSpeed = 0.1 end
 	if activeKeys["lalt"] then moveSpeed = 0.01 end
 
-	-- Debug Input
-	-- if getKeyState("w") then outputDebugString("W pressed") end
-
 	local x, y, z = getElementPosition(selectedFurniture)
+    -- Use realPos for accumulation if not initialized
+    if realPos.x == 0 and realPos.y == 0 and realPos.z == 0 then
+        realPos = {x=x, y=y, z=z}
+    end
+
 	local camX, camY, camZ, camTX, camTY, camTZ = getCameraMatrix()
 	
 	-- Calculate forward vector on XY plane
@@ -117,13 +147,13 @@ function Furnitures.draw()
 		
 		local moved = false
 		if activeKeys["w"] then
-			x = x + vecX * moveSpeed
-			y = y + vecY * moveSpeed
+			realPos.x = realPos.x + vecX * moveSpeed
+			realPos.y = realPos.y + vecY * moveSpeed
 			moved = true
 		end
 		if activeKeys["s"] then
-			x = x - vecX * moveSpeed
-			y = y - vecY * moveSpeed
+			realPos.x = realPos.x - vecX * moveSpeed
+			realPos.y = realPos.y - vecY * moveSpeed
 			moved = true
 		end
 		
@@ -131,35 +161,52 @@ function Furnitures.draw()
 		local rightY = -vecX
 		
 		if activeKeys["d"] then
-			x = x + rightX * moveSpeed
-			y = y + rightY * moveSpeed
+			realPos.x = realPos.x + rightX * moveSpeed
+			realPos.y = realPos.y + rightY * moveSpeed
 			moved = true
 		end
 		if activeKeys["a"] then
-			x = x - rightX * moveSpeed
-			y = y - rightY * moveSpeed
+			realPos.x = realPos.x - rightX * moveSpeed
+			realPos.y = realPos.y - rightY * moveSpeed
 			moved = true
 		end
 		
 		-- Vertical Movement
 		if activeKeys["e"] then
-			z = z + moveSpeed
+			realPos.z = realPos.z + moveSpeed
 			moved = true
 		end
 		if activeKeys["q"] then
-			z = z - moveSpeed
+			realPos.z = realPos.z - moveSpeed
 			moved = true
 		end
+        
+        -- Force update if snap keys are pressed (implicit update)
+        -- We handle this by checking if we are in edit mode
+        if getElementData(localPlayer, "Furniture->isFurnitureOnHand") then
+             -- Always calculate position to allow G/H toggle to update immediately
+            local finalX, finalY, finalZ = realPos.x, realPos.y, realPos.z
+            
+            if snapEnabled then
+                local step = 0.1
+                finalX = math.floor(finalX / step + 0.5) * step
+                finalY = math.floor(finalY / step + 0.5) * step
+                finalZ = math.floor(finalZ / step + 0.5) * step
+            end
 
-		if moved then
-			setElementPosition(selectedFurniture, x, y, z)
-			
-			-- Sync with server (Removed for smoothness, managed in onKey)
-			-- if lastClick + 50 <= getTickCount() then
-			-- 	lastClick = getTickCount()
-			-- 	triggerServerEvent("Furnitures->setPos", localPlayer, localPlayer, selectedFurniture, {x, y, z, Furnitures.getRotation()})
-			-- end
-		end
+            if surfaceSnapEnabled then
+                -- Raycast down to find floor (Start higher, scan deeper)
+                -- Corrected arguments: startX, startY, startZ, endX, endY, endZ, checkBuildings, checkVehicles, checkPeds, checkObjects, checkDummies, seeThroughStuff, ignoreSomeObjectForCamera, ignoredElement
+                local hit, hX, hY, hZ = processLineOfSight(finalX, finalY, finalZ + 2, finalX, finalY, finalZ - 100, true, true, false, true, true, false, false, selectedFurniture)
+                if hit then
+                     -- Get distance from center to base to place it ON the floor
+                    local distToBase = getElementDistanceFromCentreOfMassToBaseOfModel(selectedFurniture) or 0
+                    finalZ = hZ + distToBase
+                end
+            end
+
+			setElementPosition(selectedFurniture, finalX, finalY, finalZ)
+        end
 	end
 
 	--
@@ -167,19 +214,19 @@ function Furnitures.draw()
 	
 	local x, y, z = getElementPosition(selectedFurniture)
 	local wX, wY = getScreenFromWorldPosition(x, y, z)
-	if getDistanceFromElement(localPlayer, selectedFurniture) < 4 then
-		if wX and wY then
-			dxDrawRectangle(wX - 170/2, wY - 150/2, 170, 110, tocolor(0, 0, 0, 120))
-			dxDrawRectangle(wX - 170/2, wY - 150/2, 170, 20, tocolor(0, 0, 0, 170))
-			dxDrawRectangle(wX - 170/2, wY - 150/2+20, 170, 2, tocolor(unpack(color["rgb"])))
-			for i = 0, #actions - 1 do
-				dxDrawRectangle(wX - 170/2, wY - 150/2 + i * 24 + 26, 170, 20, tocolor(0, 0, 0, 120))
-		
-				dxDrawText(actions[i + 1][1], wX - 170/2+5, wY - 150/2 + i * 24 + 24, 170 + wX - 170/2+5, 20 + wY - 150/2 + i * 24 + 26, tocolor(255, 255, 255, 255), 1, fontA, "left", "center", false ,false, false, true)
-				dxDrawText("Furniture Management",wX - 170/2, wY - 150/2, 170 + wX - 170/2, 20 + wY - 150/2,tocolor(255,255,255,255),1,font_bold,"center","center",false,false,true,true)
-			end	
-		end
-	else
+	if wX and wY and (getDistanceFromElement(localPlayer, selectedFurniture) < 4 or getElementData(localPlayer, "Furniture->isFurnitureOnHand")) then
+        dxDrawRectangle(wX - 170/2, wY - 150/2, 170, 110, tocolor(0, 0, 0, 120))
+        dxDrawRectangle(wX - 170/2, wY - 150/2, 170, 20, tocolor(0, 0, 0, 170))
+        dxDrawRectangle(wX - 170/2, wY - 150/2+20, 170, 2, tocolor(unpack(color["rgb"])))
+        for i = 0, #actions - 1 do
+            dxDrawRectangle(wX - 170/2, wY - 150/2 + i * 24 + 26, 170, 20, tocolor(0, 0, 0, 120))
+    
+            dxDrawText(actions[i + 1][1], wX - 170/2+5, wY - 150/2 + i * 24 + 24, 170 + wX - 170/2+5, 20 + wY - 150/2 + i * 24 + 26, tocolor(255, 255, 255, 255), 1, fontA, "left", "center", false ,false, false, true)
+            dxDrawText("Furniture Management",wX - 170/2, wY - 150/2, 170 + wX - 170/2, 20 + wY - 150/2,tocolor(255,255,255,255),1,font_bold,"center","center",false,false,true,true)
+            -- X Close Button removed from here (moved to overlay)
+        end	
+	elseif not (getElementData(localPlayer, "Furniture->isFurnitureOnHand")) then
+        -- Only close if NOT in edit mode. If in edit mode, keep open even if far/offscreen (logic handled by wX check preventing draw, but not closing state)
 		setElementData(selectedFurniture, "Furniture->used", false)
 		selectedFurniture = nil
 		showEditInterface = false
@@ -204,7 +251,8 @@ function Furnitures.editFurniture()
 	--setFreecamDisabled()
 	--setCameraTarget(localPlayer)
 	triggerServerEvent("Furnitures->attachFurniture", localPlayer, localPlayer, selectedFurniture, data)
-	showEditInterface = false
+	showEditInterface = false -- Reverted: Menu hides when arranging
+    triggerEvent("Furnitures->ForceEditorState", localPlayer, true) -- Open Editor Menu
 end
 function Furnitures.closeMenu()
 		setElementData(selectedFurniture, "Furniture->used", false)
@@ -313,6 +361,8 @@ function Furnitures.click(button, state, _, _, _, _, _, element)
 						table.insert(actions, {"Shelf Management", false, "Furnitures.openWeaponController()"})
 					end
 					selectedFurniture = element
+                    local rx, ry, rz = getElementPosition(selectedFurniture)
+                    realPos = {x=rx, y=ry, z=rz} -- Init Real Pos
 					setElementData(selectedFurniture, "Furniture->used", true)
 					myFurnitures = {}
 					load_my_furnitures()
@@ -322,6 +372,19 @@ function Furnitures.click(button, state, _, _, _, _, _, element)
 	end
 	if getElementData(localPlayer, "Furniture->isFurnitureOnHand") then
 		if button == "left" and state == "down" and selectedFurniture then
+            -- Overlay X button check REMOVED (Handled by Editor Menu)
+            -- if isInBox(panelX + panelW - 25, panelY + 5, 20, 20) then
+            --     local _x, _y, _z = getElementPosition(selectedFurniture)
+            --     local _, _, _rot = getElementRotation(selectedFurniture)
+            --     local _int, _dim = getElementInterior(selectedFurniture),getElementDimension(selectedFurniture)
+            --     triggerServerEvent("Furnitures->drop", localPlayer, localPlayer, selectedFurniture, _x,_y,_z,_int,_dim,_rot)
+            --     setElementData(selectedFurniture, "Furniture->used", false)
+            --     setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
+            --     selectedFurniture = nil
+            --     activeKeys = {}
+            --     return
+            -- end
+
 			moveHandle = true
 			return
 			
@@ -344,13 +407,16 @@ function Furnitures.click(button, state, _, _, _, _, _, element)
 	end
 	if button == "left" and state == "down" and showEditInterface then
 		local x, y, z = getElementPosition(selectedFurniture)
+        if not x then return end
 		local wX, wY = getScreenFromWorldPosition(x, y, z)
+        if not wX or not wY then return end -- Guard against off-screen clicks
+        
 		for i = 0, #actions - 1 do
 			if isInBox(wX - 170/2, wY - 150/2 + i * 24 + 26, 170, 20) then
 				loadstring(actions[i + 1][3])()
 				return
 			end
-		end	
+        end	
 	
 	end
 	if button == "left" and state == "down" and show_hifi and selectedHifi then
@@ -452,9 +518,17 @@ function Furnitures.onKey(key, state)
 	if not state and getElementData(localPlayer, "Furniture->isFurnitureOnHand") and selectedFurniture then
 		if key == "w" or key == "a" or key == "s" or key == "d" or key == "q" or key == "e" then
 			local x, y, z = getElementPosition(selectedFurniture)
-			triggerServerEvent("Furnitures->setPos", localPlayer, localPlayer, selectedFurniture, {x, y, z, Furnitures.getRotation()})
+            local _, _, rot = getElementRotation(selectedFurniture)
+			triggerServerEvent("Furnitures->setPos", localPlayer, localPlayer, selectedFurniture, {x, y, z, rot})
 		end
 	end
+
+    if key == "g" and state then
+        snapEnabled = not snapEnabled
+    end
+    if key == "h" and state then
+        surfaceSnapEnabled = not surfaceSnapEnabled
+    end
 
 	if show_hifi then
 		if key == "mouse_wheel_down" or key == "pgdn" then
@@ -475,10 +549,12 @@ function Furnitures.onKey(key, state)
 			if activeKeys["lshift"] then
 				plus = 5
 			end
+            if snapEnabled then plus = 45 end
 			setElementRotation(selectedFurniture, rx, ry, rz + plus)
 			-- Sync rotation immediately as it is distinct event
 			local x, y, z = getElementPosition(selectedFurniture)
-			triggerServerEvent("Furnitures->setPos", localPlayer, localPlayer, selectedFurniture, {x, y, z, Furnitures.getRotation()})
+            local _, _, newRot = getElementRotation(selectedFurniture)
+			triggerServerEvent("Furnitures->setPos", localPlayer, localPlayer, selectedFurniture, {x, y, z, newRot})
 		end	
 		if key == "mouse_wheel_down" and state then
 			local rx, ry, rz = getElementRotation(selectedFurniture)
@@ -486,10 +562,12 @@ function Furnitures.onKey(key, state)
 			if activeKeys["lshift"] then
 				plus = 5
 			end
+            if snapEnabled then plus = 45 end
 			setElementRotation(selectedFurniture,rx, ry, rz - plus)
 			-- Sync rotation immediately
 			local x, y, z = getElementPosition(selectedFurniture)
-			triggerServerEvent("Furnitures->setPos", localPlayer, localPlayer, selectedFurniture, {x, y, z, Furnitures.getRotation()})
+            local _, _, newRot = getElementRotation(selectedFurniture)
+			triggerServerEvent("Furnitures->setPos", localPlayer, localPlayer, selectedFurniture, {x, y, z, newRot})
 		end
 	end
 	if key == "f" and state and selectedFurniture and getElementData(localPlayer, "Furniture->isFurnitureOnHand") then
@@ -526,9 +604,26 @@ function isInBox(xS,yS,wS,hS)
 	end	
 end
 
+function Furnitures.cancelEdit()
+    if selectedFurniture and getElementData(localPlayer, "Furniture->isFurnitureOnHand") then
+        local _x, _y, _z = getElementPosition(selectedFurniture)
+        local _, _, _rot = getElementRotation(selectedFurniture)
+        local _int, _dim = getElementInterior(selectedFurniture),getElementDimension(selectedFurniture)
+        triggerServerEvent("Furnitures->drop", localPlayer, localPlayer, selectedFurniture, _x,_y,_z,_int,_dim,_rot)
+        setElementData(selectedFurniture, "Furniture->used", false)
+        setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
+        selectedFurniture = nil
+        activeKeys = {}
+    end
+end
+addEvent("Furnitures->CancelEdit", true)
+addEventHandler("Furnitures->CancelEdit", root, Furnitures.cancelEdit)
+
 addEvent("Furnitures->receiveElement", true)
 addEventHandler("Furnitures->receiveElement", root, function(element)
 	selectedFurniture = element
+    local rx, ry, rz = getElementPosition(selectedFurniture)
+    realPos = {x=rx, y=ry, z=rz} -- Init Real Pos
 	setElementRotation(selectedFurniture,0,0,Furnitures.getRotation())
 end)
 
@@ -588,3 +683,13 @@ function Furnitures.openWeaponController()
 		outputChatBox("AK-47 branded gun was successfully left on the table.", 255, 255, 255, true)
 	end
 end
+
+-- Disable Jump/Fire/Aim while editing
+addEventHandler("onClientElementDataChange", localPlayer, function(key, oldValue)
+    if key == "Furniture->isFurnitureOnHand" then
+        local isOn = getElementData(source, key)
+        toggleControl("jump", not isOn)
+        toggleControl("fire", not isOn)
+        toggleControl("aim_weapon", not isOn)
+    end
+end)

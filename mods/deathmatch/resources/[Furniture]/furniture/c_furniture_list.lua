@@ -51,6 +51,11 @@ function draw()
 	mx,my,mw,mh = 0, sy-150, sx, 150
 	dxDrawRectangle(mx,my,mw,mh,tocolor(25,25,25,240))
 	dxDrawRectangle(mx,my,mw,30,tocolor(35,35,35,230))
+    
+    -- Close Button (X)
+    local closeHover = isInBox(mx+mw-30, my, 30, 30)
+    dxDrawRectangle(mx+mw-30, my, 30, 30, closeHover and tocolor(200, 50, 50, 255) or tocolor(200, 50, 50, 200))
+    dxDrawText("X", mx+mw-30, my, mx+mw, my+30, tocolor(255, 255, 255, 255), 1, awesomeFont, "center", "center")
 
 	tabRowHeight = 0
 	altTabHeight = 0
@@ -132,6 +137,19 @@ function onClientClick(button, state)
 		mx,my,mw,mh = 0, sy-150, sx, 150
 		tabRowHeight = 0
 		altTabHeight = 0
+        
+        -- Close (X) Click
+        if isInBox(mx+mw-30, my, 30, 30) then
+            if getElementData(localPlayer, "Furniture->isFurnitureOnHand") then
+                triggerEvent("Furnitures->CancelEdit", localPlayer)
+            end
+            showed_myFurnitures = false
+            selected_furniture = 0
+            myFurnitures = {}
+            if isElement(window) then destroyElement(window) end
+            if isElement(texW) then  destroyElement(texW) end
+            return
+        end
 
 		for k,v in pairs(activeTabS) do
 			text = v[1]
@@ -226,6 +244,23 @@ addCommandHandler("editor", function(command)
 			if isElement(texW) then  destroyElement(texW) end
 		end
 	end
+end)
+
+
+
+addEvent("Furnitures->ForceEditorState", true)
+addEventHandler("Furnitures->ForceEditorState", root, function(state)
+    showed_myFurnitures = state
+    if state then
+        myFurnitures = {}
+        load_my_furnitures()
+    else
+        showed_myFurnitures = false
+        selected_furniture = 0
+        myFurnitures = {}
+        if isElement(window) then destroyElement(window) end
+        if isElement(texW) then  destroyElement(texW) end
+    end
 end)
 
 addEvent("closeTexPanel",true)
