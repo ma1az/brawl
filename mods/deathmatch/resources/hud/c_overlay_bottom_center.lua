@@ -15,8 +15,17 @@ local function removeRender()
 	end
 end
 
+local function normalizeFont(font, fallback)
+	if isElement(font) or type(font) == "string" then
+		return font
+	end
+	return fallback
+end
+
 local function makeFonts()
-	BizNoteFont18 = BizNoteFont18 or dxCreateFont ( ":resources/BizNote.ttf" , 18 )
+	if not BizNoteFont18 or not isElement(BizNoteFont18) then
+		BizNoteFont18 = dxCreateFont(":resources/fonts/BizNote.ttf", 18) or "default-bold"
+	end
 end
 
 function isEventHandlerAdded( sEventName, pElementAttachedTo, func )
@@ -46,7 +55,7 @@ function drawOverlayBottomCenter(info, widthNew, woffsetNew, hoffsetNew, cooldow
 		end
 		
 		playSoundFrontEnd ( 101 )	
-		toBeDrawnWidth = dxGetTextWidth ( content[1][1] or "" , 1 , BizNoteFont18) or 0
+		toBeDrawnWidth = dxGetTextWidth(content[1][1] or "", 1, normalizeFont(BizNoteFont18, "default-bold")) or 0
 		
 		for i=1, #info do
 			outputConsole(info[i][1] or "")
@@ -73,8 +82,9 @@ function clientRender()
 		
 		for i=1, #content do
 			if content[i] then
-				local font = i == 1 and BizNoteFont18 or (content[i][7]) or "default"
-				local currentWidth = dxGetTextWidth ( content[i][1] or "" , 1 , font) + 30
+				local font = i == 1 and BizNoteFont18 or content[i][7]
+				font = normalizeFont(font, "default")
+				local currentWidth = dxGetTextWidth(content[i][1] or "", 1, font) + 30
 				if currentWidth > toBeDrawnWidth then
 					toBeDrawnWidth = currentWidth
 				end

@@ -10,6 +10,11 @@ local loadZones      = {}   -- colShape element → vehicle element
 local dumpCol        = nil  -- dump zone colshape
 local dumpTimers     = {}   -- vehicle element  → timer
 local pickupDebounce = {}   -- serial (string)  → getTickCount()
+local vehicleLastLoad = {}  -- vehicle element  → timestamp (last trash loaded)
+local loadCooldowns   = {}  -- vehicle element  → getTickCount() (10s cooldown between loads)
+
+local LOAD_COOLDOWN_MS = 10000  -- 10 seconds between loading trash
+local VEHICLE_INACTIVE_SECONDS = 3600  -- 1 hour = reset storage
 
 -- ============================================================
 -- Utility helpers
@@ -22,8 +27,10 @@ end
 
 local function isGarbageVehicle(vehicle)
 	if not isElement(vehicle) or getElementType(vehicle) ~= "vehicle" then return false end
-	return getElementModel(vehicle) == 408
-		and (tonumber(getElementData(vehicle, "job")) or 0) == GARBAGE_JOB_ID
+	if getElementModel(vehicle) ~= 408 then return false end
+	local jobData = getElementData(vehicle, "job")
+	if jobData == nil then return true end
+	return tonumber(jobData) == GARBAGE_JOB_ID
 end
 
 local function getPlayerGarbageCapacity(player)
@@ -122,7 +129,8 @@ local function clearPlayerCarry(player)
 		destroyElement(carryObj)
 	end
 
-	-- Stop any active animation
+	-- Stop any active animation (direct MTA call + global wrapper)
+	setPedAnimation(player)
 	exports.global:removeAnimation(player)
 
 	-- Reset all carry-related element data
@@ -137,17 +145,17 @@ local function attachCarryObject(player)
 	local obj = createObject(GARBAGE_CARRY_MODEL, 0, 0, 0)
 	if not obj then return false end
 
-	setObjectScale(obj, 0.35)
+	setObjectScale(obj, 0.53)
 	setElementDimension(obj, getElementDimension(player))
 	setElementInterior(obj, getElementInterior(player))
-	setElementAlpha(obj, 255)
+	setElementCollisionsEnabled(obj, false)
 
 	local boneRes = getResourceFromName("bone_attach")
 	if boneRes and getResourceState(boneRes) == "running" then
-		-- Bone 4 = upper torso; offset forward + down so it sits in the arms
-		exports.bone_attach:attachElementToBone(obj, player, 4, 0.15, 0.25, -0.15, 0, 80, 0)
+		-- Bone 3 = spine; centered in front of body at chest level
+		exports.bone_attach:attachElementToBone(obj, player, 3, 0.0, 0.38, 0.22, 0, 0, 0)
 	else
-		attachElements(obj, player, 0.15, 0.25, -0.15, 0, 80, 0)
+		attachElements(obj, player, 0.0, 0.38, 0.22)
 	end
 
 	exports.anticheat:changeProtectedElementDataEx(player, "garbage:carryObject", obj,  false)
@@ -222,9 +230,13 @@ local function finalizeLoad(player, vehicle)
 	curLoad = curLoad + 1
 	exports.anticheat:changeProtectedElementDataEx(vehicle, "garbage:load", curLoad, true)
 
+	-- Track last load time for inactivity reset
+	vehicleLastLoad[vehicle] = getNow()
+	loadCooldowns[vehicle] = getTickCount()
+
 	-- RP action visible to nearby players
 	exports.global:sendLocalMeAction(player, "tosses a bag of garbage into the back of the Trashmaster.")
-	notifyPlayer(player, "Loaded: " .. curLoad .. "/" .. capacity .. " bags.")
+	notifyPlayer(player, "Loaded: " .. curLoad .. "/" .. capacity .. " bags. Drive to the green blip to dump & earn money.")
 end
 
 local function handleLoadZoneHit(hitElement, matchingDimension)
@@ -238,6 +250,15 @@ local function handleLoadZoneHit(hitElement, matchingDimension)
 	local vehicle = loadZones[source]
 	if not isGarbageVehicle(vehicle) then return end
 
+	-- 10 second cooldown between loads
+	local lastLoad = loadCooldowns[vehicle] or 0
+	local now = getTickCount()
+	if (now - lastLoad) < LOAD_COOLDOWN_MS then
+		local remaining = math.ceil((LOAD_COOLDOWN_MS - (now - lastLoad)) / 1000)
+		notifyPlayer(hitElement, "Wait " .. remaining .. " seconds before loading more trash.")
+		return
+	end
+
 	local capacity = getPlayerGarbageCapacity(hitElement)
 	local curLoad  = tonumber(getElementData(vehicle, "garbage:load")) or 0
 	if curLoad >= capacity then
@@ -247,7 +268,7 @@ local function handleLoadZoneHit(hitElement, matchingDimension)
 
 	-- Lock loading state & play put-down animation
 	exports.anticheat:changeProtectedElementDataEx(hitElement, "garbage:loading", true, false)
-	exports.global:applyAnimation(hitElement, "CARRY", "putdwn", 500, false, false, true)
+	setPedAnimation(hitElement, "CARRY", "putdwn", 500, false, false, false, false)
 
 	-- Capture player reference for timer closure
 	local player = hitElement
@@ -264,6 +285,8 @@ local function createLoadZone(vehicle)
 
 	local col = createColSphere(0, 0, 0, GARBAGE_LOAD_RADIUS)
 	attachElements(col, vehicle, GARBAGE_LOAD_OFFSET.x, GARBAGE_LOAD_OFFSET.y, GARBAGE_LOAD_OFFSET.z)
+	setElementDimension(col, getElementDimension(vehicle))
+	setElementInterior(col, getElementInterior(vehicle))
 	setElementData(col, "garbage:loadZone", true, false)
 	addEventHandler("onColShapeHit", col, handleLoadZoneHit)
 
@@ -291,6 +314,81 @@ local function refreshVehicleLoadZones()
 		end
 	end
 end
+
+-- Find the nearest garbage Trashmaster to a player (fallback when colshape doesn't fire)
+local function findNearestTrashmaster(player)
+	local px, py, pz = getElementPosition(player)
+	local dim = getElementDimension(player)
+	local int = getElementInterior(player)
+	local bestVeh  = nil
+	local bestDist = 8.0  -- generous range
+
+	for _, v in ipairs(getElementsByType("vehicle")) do
+		if isGarbageVehicle(v)
+			and getElementDimension(v) == dim
+			and getElementInterior(v) == int then
+			local vx, vy, vz = getElementPosition(v)
+			local dist = getDistanceBetweenPoints3D(px, py, pz, vx, vy, vz)
+			if dist < bestDist then
+				bestDist = dist
+				bestVeh  = v
+			end
+		end
+	end
+
+	return bestVeh
+end
+
+-- ============================================================
+-- Manual load request (client fallback when colshape doesn't fire)
+-- ============================================================
+
+addEvent("garbage:requestLoad", true)
+addEventHandler("garbage:requestLoad", root, function()
+	local player = client
+	if not isElement(player) then return end
+	if getPedOccupiedVehicle(player) then return end
+	if (tonumber(getElementData(player, "job")) or 0) ~= GARBAGE_JOB_ID then return end
+	if not getElementData(player, "garbage:carrying") then return end
+	if getElementData(player, "garbage:loading") then return end
+
+	local vehicle = findNearestTrashmaster(player)
+	if not vehicle then
+		notifyPlayer(player, "No Trashmaster nearby.")
+		return
+	end
+
+	-- 10 second cooldown between loads
+	local lastLoad = loadCooldowns[vehicle] or 0
+	local now = getTickCount()
+	if (now - lastLoad) < LOAD_COOLDOWN_MS then
+		local remaining = math.ceil((LOAD_COOLDOWN_MS - (now - lastLoad)) / 1000)
+		notifyPlayer(player, "Wait " .. remaining .. " seconds before loading more trash.")
+		return
+	end
+
+	-- Ensure this vehicle has a load zone (create one if missing)
+	if not getElementData(vehicle, "garbage:loadZone") then
+		createLoadZone(vehicle)
+	end
+
+	local capacity = getPlayerGarbageCapacity(player)
+	local curLoad  = tonumber(getElementData(vehicle, "garbage:load")) or 0
+	if curLoad >= capacity then
+		notifyPlayer(player, "The Trashmaster is full. Drive to the dump to unload.")
+		return
+	end
+
+	-- Lock loading state & play put-down animation
+	exports.anticheat:changeProtectedElementDataEx(player, "garbage:loading", true, false)
+	setPedAnimation(player, "CARRY", "putdwn", 500, false, false, false, false)
+
+	setTimer(function()
+		if not isElement(player) then return end
+		finalizeLoad(player, vehicle)
+		exports.anticheat:changeProtectedElementDataEx(player, "garbage:loading", false, false)
+	end, 700, 1)
+end)
 
 -- ============================================================
 -- Pickup request (triggered from client)
@@ -359,30 +457,16 @@ addEventHandler("garbage:requestPickup", root, function(trash)
 	exports.anticheat:changeProtectedElementDataEx(player, "garbage:carrying",     true,    true)
 	exports.anticheat:changeProtectedElementDataEx(player, "garbage:carryTrashId", trashId, false)
 
-	-- Brief pickup animation (600 ms, non-interruptable)
-	exports.global:applyAnimation(player, "CARRY", "liftup", 600, false, false, true)
-
-	-- After animation completes, attach carry prop
-	setTimer(function()
-		if not isElement(player) then return end
-
-		if (tonumber(getElementData(player, "job")) or 0) ~= GARBAGE_JOB_ID then
-			clearPlayerCarry(player)
-			return
-		end
-
-		if attachCarryObject(player) then
-			-- RP action visible to nearby players
-			exports.global:sendLocalMeAction(player, "bends over and picks up a bag of garbage.")
-			notifyPlayer(player, "Carry the garbage to the back of the Trashmaster.")
-
-			-- Carry pose — loops, doesn't lock movement (forced=false, updatePosition=false)
-			exports.global:applyAnimation(player, "CARRY", "crry_prtial", -1, true, false, false)
-		else
-			clearPlayerCarry(player)
-			notifyPlayer(player, "Failed to pick up garbage. Try again.")
-		end
-	end, 700, 1)
+	-- Attach bag and trigger client-side carry animation
+	if attachCarryObject(player) then
+		exports.global:sendLocalMeAction(player, "bends over and picks up a bag of garbage.")
+		notifyPlayer(player, "Garbage collected! Take it to the back of a Trashmaster (408).")
+		notifyPlayer(player, "Green blip on map = Dump location. Load trash first, then drive there.")
+		triggerClientEvent(player, "garbage:startCarryAnim", player)
+	else
+		clearPlayerCarry(player)
+		notifyPlayer(player, "Failed to pick up garbage. Try again.")
+	end
 end)
 
 -- ============================================================
@@ -452,6 +536,33 @@ local function handleDumpLeave(element, matchingDimension)
 end
 
 -- ============================================================
+-- Inactivity reset (1 hour of no activity resets vehicle storage)
+-- ============================================================
+
+local function checkVehicleInactivity()
+	local now = getNow()
+	for vehicle, lastActivity in pairs(vehicleLastLoad) do
+		if isElement(vehicle) then
+			local inactiveSeconds = now - lastActivity
+			if inactiveSeconds >= VEHICLE_INACTIVE_SECONDS then
+				local curLoad = tonumber(getElementData(vehicle, "garbage:load")) or 0
+				if curLoad > 0 then
+					exports.anticheat:changeProtectedElementDataEx(vehicle, "garbage:load", 0, true)
+					outputDebugString("[Garbage] Reset vehicle storage due to 1 hour inactivity.")
+				end
+				-- Clear tracking for this vehicle
+				vehicleLastLoad[vehicle] = nil
+				loadCooldowns[vehicle] = nil
+			end
+		else
+			-- Vehicle no longer exists, clean up
+			vehicleLastLoad[vehicle] = nil
+			loadCooldowns[vehicle] = nil
+		end
+	end
+end
+
+-- ============================================================
 -- Vehicle events
 -- ============================================================
 
@@ -459,6 +570,26 @@ addEventHandler("onElementDestroy", root, function()
 	if getElementType(source) == "vehicle" then
 		destroyLoadZone(source)
 		cancelDumpTimer(source)
+		-- Clean up inactivity tracking
+		vehicleLastLoad[source] = nil
+		loadCooldowns[source] = nil
+	end
+end)
+
+-- When a vehicle respawns, re-create the load zone (attached colshape gets destroyed)
+addEventHandler("onVehicleRespawn", root, function()
+	if isGarbageVehicle(source) then
+		local vehicle = source  -- capture for timer closure (source is invalid inside timers)
+		-- Destroy old first (if any), then create fresh
+		destroyLoadZone(vehicle)
+		-- Reset inactivity tracking on respawn
+		vehicleLastLoad[vehicle] = nil
+		loadCooldowns[vehicle] = nil
+		setTimer(function()
+			if isElement(vehicle) and isGarbageVehicle(vehicle) then
+				createLoadZone(vehicle)
+			end
+		end, 1000, 1)
 	end
 end)
 
@@ -520,28 +651,25 @@ addEventHandler("onPlayerWasted", root, function()
 end)
 
 -- ============================================================
--- GM / Owner trash relocation (3DEditor → item:move:save)
+-- GM / Owner trash relocation (direct 3DEditor save hook)
 -- ============================================================
 
-addEvent("item:move:save", true)
-addEventHandler("item:move:save", root, function(x, y, z, rx, ry, rz)
-	if getElementType(source) ~= "object" then return end
+-- Listen directly for 3DEditor's server-side save event.
+-- This bypasses item-move entirely (item-system's handler interferes with non-world-items).
+addEvent("3DEditor:savedObject", true)
+addEventHandler("3DEditor:savedObject", root, function(sourceResource, element, cx, cy, cz, rx, ry, rz, sx, sy, sz)
+	if not isElement(element) or getElementType(element) ~= "object" then return end
 
-	local trashId = getElementData(source, "garbage:trashId")
+	local trashId = getElementData(element, "garbage:trashId")
 	if not trashId then return end   -- not a garbage object → let other handlers deal with it
 
-	if not (exports.integration:isPlayerGeneralManager(client)
-		or exports.integration:isPlayerOwner(client)) then
-		outputChatBox("Only the Owner or General Manager can move garbage objects.", client, 255, 0, 0)
-		return
+	-- Save new position to database
+	setElementFrozen(element, true)
+	dbExec(mysql:getConn(), "UPDATE garbage_locations SET x=?, y=?, z=? WHERE id=?", cx, cy, cz, trashId)
+
+	if isElement(client) then
+		outputChatBox("Saved garbage location #" .. trashId .. ".", client, 0, 255, 0)
 	end
-
-	setElementPosition(source, x, y, z)
-	setElementRotation(source, rx, ry, rz)
-	setElementFrozen(source, true)
-
-	dbExec(mysql:getConn(), "UPDATE garbage_locations SET x=?, y=?, z=? WHERE id=?", x, y, z, trashId)
-	outputChatBox("Saved garbage location #" .. trashId .. ".", client, 0, 255, 0)
 end)
 
 -- ============================================================
@@ -582,17 +710,88 @@ addCommandHandler("deltrash", function(player, cmd, trashId)
 	if not exports.integration:isPlayerTrialAdmin(player) then return end
 
 	trashId = tonumber(trashId)
-	if not trashId then
-		outputChatBox("SYNTAX: /" .. cmd .. " [trash id]", player, 255, 194, 14)
+	if not trashId or trashId <= 0 then
+		outputChatBox("SYNTAX: /" .. cmd .. " [trash id]  (use /nearbytrash to find IDs)", player, 255, 194, 14)
 		return
 	end
 
 	local obj = trashObjects[trashId]
-	if isElement(obj) then destroyElement(obj) end
+	if not obj or not isElement(obj) then
+		outputChatBox("Garbage location #" .. trashId .. " does not exist or is not loaded.", player, 255, 0, 0)
+		return
+	end
+
+	destroyElement(obj)
 	trashObjects[trashId] = nil
 
-	mysql:query_free("DELETE FROM garbage_locations WHERE id=?", trashId)
+	dbExec(mysql:getConn(), "DELETE FROM garbage_locations WHERE id=?", trashId)
 	outputChatBox("Garbage location #" .. trashId .. " deleted.", player, 0, 255, 0)
+
+	local adminID = tonumber(getElementData(player, "account:id")) or 0
+	outputDebugString("[Garbage] Admin (ID:" .. adminID .. ") deleted trash location #" .. trashId)
+end, false, false)
+
+addCommandHandler("nearbytrash", function(player, cmd)
+	if not exports.integration:isPlayerTrialAdmin(player) then return end
+
+	local px, py, pz = getElementPosition(player)
+	local dim = getElementDimension(player)
+	local int = getElementInterior(player)
+	local found = 0
+
+	local results = {}
+	for id, obj in pairs(trashObjects) do
+		if isElement(obj)
+			and getElementDimension(obj) == dim
+			and getElementInterior(obj) == int then
+			local x, y, z = getElementPosition(obj)
+			local dist = getDistanceBetweenPoints3D(px, py, pz, x, y, z)
+			if dist <= 50 then
+				table.insert(results, { id = id, dist = dist })
+				found = found + 1
+			end
+		end
+	end
+
+	if found == 0 then
+		outputChatBox("No garbage locations within 50 units.", player, 255, 194, 14)
+		return
+	end
+
+	table.sort(results, function(a, b) return a.dist < b.dist end)
+	outputChatBox("=== Nearby Garbage Locations ===", player, 0, 255, 0)
+	for i = 1, math.min(#results, 10) do
+		local r = results[i]
+		outputChatBox("  #" .. r.id .. "  —  " .. string.format("%.1f", r.dist) .. " units away", player, 255, 255, 255)
+	end
+end, false, false)
+
+addCommandHandler("listtrash", function(player, cmd)
+	if not exports.integration:isPlayerTrialAdmin(player) then return end
+
+	local count = 0
+	for _ in pairs(trashObjects) do count = count + 1 end
+
+	if count == 0 then
+		outputChatBox("No garbage locations exist.", player, 255, 194, 14)
+		return
+	end
+
+	outputChatBox("=== Garbage Locations (" .. count .. " total) ===", player, 0, 255, 0)
+	local shown = 0
+	for id, obj in pairs(trashObjects) do
+		if shown >= 20 then
+			outputChatBox("  ... and " .. (count - shown) .. " more. Use /nearesttrash for nearby.", player, 255, 194, 14)
+			break
+		end
+		if isElement(obj) then
+			local x, y, z = getElementPosition(obj)
+			outputChatBox("  #" .. id .. "  —  (" .. string.format("%.1f, %.1f, %.1f", x, y, z) .. ")", player, 255, 255, 255)
+			shown = shown + 1
+		else
+			trashObjects[id] = nil
+		end
+	end
 end, false, false)
 
 -- ============================================================
@@ -614,6 +813,17 @@ addEventHandler("onResourceStart", resourceRoot, function()
 	-- Attach load zones to already-existing Trashmasters
 	refreshVehicleLoadZones()
 
+	-- Delayed re-scans to catch vehicles spawned by other resources that start later
+	setTimer(refreshVehicleLoadZones, 5000,  1)
+	setTimer(refreshVehicleLoadZones, 15000, 1)
+	setTimer(refreshVehicleLoadZones, 30000, 1)
+
+	-- Periodic re-scan every 60 seconds for any new Trashmasters
+	setTimer(refreshVehicleLoadZones, 60000, 0)
+
+	-- Check for inactive vehicles every 5 minutes and reset their storage
+	setTimer(checkVehicleInactivity, 300000, 0)
+
 	local count = 0
 	for _ in pairs(trashObjects) do count = count + 1 end
 	outputDebugString("[Garbage] System loaded — " .. count .. " trash locations.")
@@ -626,4 +836,7 @@ addEventHandler("onResourceStop", resourceRoot, function()
 	for vehicle in pairs(dumpTimers) do
 		cancelDumpTimer(vehicle)
 	end
+	-- Clean up tracking tables
+	vehicleLastLoad = {}
+	loadCooldowns = {}
 end)

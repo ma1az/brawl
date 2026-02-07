@@ -6,6 +6,7 @@ local localPlayer   = getLocalPlayer()
 local trashObjects  = {}      -- object element → true
 local garbageActive = false
 local dumpBlip      = nil
+local dumpMarker    = nil
 local lastAttempt   = 0       -- getTickCount of last E press
 
 local ATTEMPT_COOLDOWN = 2000 -- ms between pickup attempts (client-side)
@@ -23,8 +24,10 @@ end
 
 local function isGarbageVehicle(vehicle)
 	if not isElement(vehicle) or getElementType(vehicle) ~= "vehicle" then return false end
-	return getElementModel(vehicle) == 408
-		and (tonumber(getElementData(vehicle, "job")) or 0) == GARBAGE_JOB_ID
+	if getElementModel(vehicle) ~= 408 then return false end
+	local jobData = getElementData(vehicle, "job")
+	if jobData == nil then return true end
+	return tonumber(jobData) == GARBAGE_JOB_ID
 end
 
 local function getPlayerGarbageCapacity()
@@ -122,18 +125,18 @@ local function renderGarbageOverlay()
 	local jobLevel    = tonumber(getElementData(localPlayer, "jobLevel"))    or 1
 	local jobProgress = tonumber(getElementData(localPlayer, "jobProgress")) or 0
 
-	local boxW, boxH = 250, 80
+	local boxW, boxH = 300, 96  -- Increased by 20% from 250x80
 	local boxX, boxY = sx - boxW - 20, 200
 
 	dxDrawRectangle(boxX, boxY, boxW, boxH, tocolor(0, 0, 0, 160))
-	dxDrawText("Garbage Collector", boxX + 10, boxY + 8, boxX + boxW - 10, boxY + 24,
-		tocolor(255, 255, 255, 230), 1, "default-bold", "left", "top")
+	dxDrawText("Garbage Collector", boxX + 10, boxY + 8, boxX + boxW - 10, boxY + 28,
+		tocolor(255, 255, 255, 230), 1.2, "default-bold", "left", "top")
 	dxDrawText("Level: " .. jobLevel .. "  |  Progress: " .. jobProgress,
-		boxX + 10, boxY + 30, boxX + boxW - 10, boxY + 45,
-		tocolor(220, 220, 220, 220), 1, "default", "left", "top")
+		boxX + 10, boxY + 36, boxX + boxW - 10, boxY + 54,
+		tocolor(220, 220, 220, 220), 1.2, "default", "left", "top")
 	dxDrawText("Load: " .. load .. " / " .. capacity,
-		boxX + 10, boxY + 50, boxX + boxW - 10, boxY + 70,
-		tocolor(120, 220, 120, 220), 1, "default-bold", "left", "top")
+		boxX + 10, boxY + 60, boxX + boxW - 10, boxY + 84,
+		tocolor(120, 220, 120, 220), 1.2, "default-bold", "left", "top")
 end
 
 -- ============================================================
@@ -193,15 +196,26 @@ local function setGarbageJobActive(active)
 	if active then
 		refreshTrashObjects()
 		if not dumpBlip or not isElement(dumpBlip) then
+			-- Bulldozer icon on the map
 			dumpBlip = createBlip(
 				GARBAGE_DUMP_POSITION.x, GARBAGE_DUMP_POSITION.y, GARBAGE_DUMP_POSITION.z,
-				0, 2, 0, 255, 0, 255)
+				11, 2, 0, 255, 0, 255)
+		end
+		if not dumpMarker or not isElement(dumpMarker) then
+			-- Green circle marker on the ground at the dump location
+			dumpMarker = createMarker(
+				GARBAGE_DUMP_POSITION.x, GARBAGE_DUMP_POSITION.y, GARBAGE_DUMP_POSITION.z - 1,
+				"cylinder", 6.0, 100, 200, 50, 150)
 		end
 	else
 		if isElement(dumpBlip) then
 			destroyElement(dumpBlip)
 		end
 		dumpBlip = nil
+		if isElement(dumpMarker) then
+			destroyElement(dumpMarker)
+		end
+		dumpMarker = nil
 	end
 end
 
@@ -273,6 +287,86 @@ addEventHandler("onClientClick", root, function(button, state, _, _, _, _, _, el
 		triggerEvent("item:move", root, element)
 	end
 end)
+
+-- ============================================================
+-- Carry animation (applied client-side for smooth results)
+-- ============================================================
+
+local carryAnimTimer = nil
+
+local function stopCarryAnim()
+	if carryAnimTimer and isTimer(carryAnimTimer) then
+		killTimer(carryAnimTimer)
+	end
+	carryAnimTimer = nil
+end
+
+addEvent("garbage:startCarryAnim", true)
+addEventHandler("garbage:startCarryAnim", localPlayer, function()
+	stopCarryAnim()
+	setPedAnimation(localPlayer, "CARRY", "crry_prtial", 500, false, false, false, true)
+	-- Only re-apply if the player punches (FIGHT animation blocks). Walking/running is allowed.
+	carryAnimTimer = setTimer(function()
+		if not getElementData(localPlayer, "garbage:carrying") then
+			stopCarryAnim()
+			return
+		end
+		local block = getPedAnimation(localPlayer)
+		if block and (block == "FIGHT_B" or block == "FIGHT_C" or block == "FIGHT_D" or block == "FIGHT_E") then
+			setPedAnimation(localPlayer, "CARRY", "crry_prtial", 500, false, false, false, true)
+		end
+	end, 500, 0)
+end)
+
+-- Stop carry anim when carrying ends
+addEventHandler("onClientElementDataChange", localPlayer, function(dataName)
+	if dataName == "garbage:carrying" then
+		if not getElementData(localPlayer, "garbage:carrying") then
+			stopCarryAnim()
+		end
+	end
+end)
+
+-- ============================================================
+-- Auto-load: detect when carrying garbage near a Trashmaster
+-- ============================================================
+
+local lastLoadAttempt = 0
+
+local function checkNearbyTrashmaster()
+	if not garbageActive then return end
+	if not getElementData(localPlayer, "garbage:carrying") then return end
+	if getElementData(localPlayer, "garbage:loading") then return end
+	if getPedOccupiedVehicle(localPlayer) then return end
+
+	local now = getTickCount()
+	if (now - lastLoadAttempt) < 2000 then return end
+
+	local px, py, pz = getElementPosition(localPlayer)
+	local dim = getElementDimension(localPlayer)
+	local int = getElementInterior(localPlayer)
+
+	for _, v in ipairs(getElementsByType("vehicle")) do
+		if isGarbageVehicle(v)
+			and getElementDimension(v) == dim
+			and getElementInterior(v) == int then
+			local vx, vy, vz = getElementPosition(v)
+			local dist = getDistanceBetweenPoints3D(px, py, pz, vx, vy, vz)
+			if dist < 5.0 then
+				lastLoadAttempt = now
+				triggerServerEvent("garbage:requestLoad", localPlayer)
+				return
+			end
+		end
+	end
+end
+
+-- Check every 500ms while carrying
+setTimer(function()
+	if garbageActive and getElementData(localPlayer, "garbage:carrying") then
+		checkNearbyTrashmaster()
+	end
+end, 500, 0)
 
 -- ============================================================
 -- Key binding

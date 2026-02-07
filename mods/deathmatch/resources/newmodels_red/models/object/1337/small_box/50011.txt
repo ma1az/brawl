@@ -1,2 +1,0 @@
-#### Read the documentation to understand these settings ####
-settings=object/1337/boxes.txt

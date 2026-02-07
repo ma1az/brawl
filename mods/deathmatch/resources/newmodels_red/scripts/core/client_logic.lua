@@ -497,6 +497,8 @@ addEventHandler("newmodels_red:setElementCustomModel", root, function(id)
 end)
 
 addEventHandler("onClientElementStreamIn", root, function()
+    -- Quick hash lookup first (O(1)) before array iteration in isValidElement
+    if not elementModels[source] then return end
     if not isValidElement(source) then return end
     attemptApplyElementCustomModel(source)
 end)

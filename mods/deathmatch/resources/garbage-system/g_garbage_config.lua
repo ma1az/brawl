@@ -16,7 +16,7 @@ GARBAGE_TRASH_MODELS = {
 }
 
 -- Carry prop model (attached to player hand while carrying)
-GARBAGE_CARRY_MODEL = 1264   -- CJ_BINBAG
+GARBAGE_CARRY_MODEL = 1265   -- BinBag (small black trash bag)
 
 -- Pay range per bag (random between min-max)
 GARBAGE_PAY_MIN = 30

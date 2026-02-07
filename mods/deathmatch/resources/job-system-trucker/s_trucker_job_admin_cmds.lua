@@ -67,6 +67,7 @@ function printSetJobSyntax(thePlayer, commandName)
 	outputChatBox("ID#5: Mechanic", thePlayer)
 	outputChatBox("ID#6: Locksmith", thePlayer)
 	outputChatBox("ID#7: Long Haul Truck Driver", thePlayer)
+	outputChatBox("ID#8: Garbage Collector", thePlayer)
 end
 
 function setjobLevel(thePlayer, commandName, target, level, progress )

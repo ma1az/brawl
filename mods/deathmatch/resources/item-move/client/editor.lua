@@ -26,7 +26,7 @@ local function start3DEditorForObject(object)
     return false
   end
 
-  exports[editorResourceName]:startEdit(object, false, false, true)
+  exports[editorResourceName]:startEdit(object, false, false, true, resourceRoot)
   return true
 end
 

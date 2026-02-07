@@ -49,9 +49,17 @@ function startEdit(elementik, disableMoving, disableRotate, disableScale, source
 
 	local resolvedSource = sourceRes
 	if type(sourceRes) == "string" then
-		resolvedSource = getResourceFromName(sourceRes)
+		local res = getResourceFromName(sourceRes)
+		resolvedSource = res and getResourceRootElement(res) or nil
+	elseif isElement(sourceRes) then
+		-- Already an element (resource root), use it directly
+		resolvedSource = sourceRes
+	elseif sourceRes then
+		-- Might be a resource, try to get root element
+		local success, root = pcall(getResourceRootElement, sourceRes)
+		resolvedSource = success and root or nil
 	end
-	sourceResElement = resolvedSource or sourceResource or resourceRoot
+	sourceResElement = resolvedSource or resourceRoot
 	disabledMoving = disableMoving
 	disabledRotating = disableRotate
 	disabledScaling = disableScale

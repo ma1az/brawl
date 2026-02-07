@@ -1,3 +1,0 @@
-#### Read the documentation to understand these settings ####
-txd=object/1337/boxes.txd
-lodDistance=300

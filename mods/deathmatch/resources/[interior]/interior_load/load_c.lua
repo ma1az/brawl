@@ -25,6 +25,7 @@ INTERIOR_SUPPLIES = 6
 INTERIOR_FACTION = 7
 
 local streamdistance = 50
+local pickupStreamDistance = 250 -- Only create pickups for interiors within this distance
 local elevatorsSpawned = { }
 local interiorsSpawned = {}
 local intsToBeLoaded = {}
@@ -36,12 +37,49 @@ local pickupRefreshRate = 500
 
 function checkNearbyInteriorPickups()
     if getElementData(localPlayer, "account:id") then--== 1 or exports.account:screenStandBy("getState") then
+        local px, py, pz = getElementPosition(localPlayer)
+        local playerInt = getElementInterior(localPlayer)
+        local playerDim = getElementDimension(localPlayer)
+
+        -- Create pickups for nearby interiors
         for interior,_ in pairs(intsToBeLoaded) do
             local dbid = isElement(interior) and getElementData(interior, "dbid") or 0
             if dbid and not interiorsSpawned[ dbid ] then
-                interiorShowPickups( interior )
-                -- remove it from the table so it doesnt look again
-                intsToBeLoaded[ interior ] = nil
+                local entrance = isElement(interior) and getElementData(interior, "entrance")
+                if entrance then
+                    local ex = entrance.x or entrance[INTERIOR_X]
+                    local ey = entrance.y or entrance[INTERIOR_Y]
+                    local ez = entrance.z or entrance[INTERIOR_Z]
+                    if ex and ey and ez then
+                        local dist = getDistanceBetweenPoints3D(px, py, pz, ex, ey, ez)
+                        if dist <= pickupStreamDistance then
+                            interiorShowPickups( interior )
+                            intsToBeLoaded[ interior ] = nil
+                        end
+                    end
+                end
+            end
+        end
+
+        -- Remove pickups for far-away interiors to free elements
+        for dbid, pickups in pairs(interiorsSpawned) do
+            if pickups and type(pickups) == "table" and pickups[1] and isElement(pickups[1]) then
+                local ex, ey, ez = getElementPosition(pickups[1])
+                local dist = getDistanceBetweenPoints3D(px, py, pz, ex, ey, ez)
+                if dist > pickupStreamDistance * 1.5 then
+                    -- Find the interior element to re-queue it
+                    for _, int in ipairs(getElementsByType("interior")) do
+                        if getElementData(int, "dbid") == dbid then
+                            intsToBeLoaded[int] = true
+                            break
+                        end
+                    end
+                    -- Destroy the pickups
+                    if pickups[1] and isElement(pickups[1]) then destroyElement(pickups[1]) end
+                    if pickups[2] and isElement(pickups[2]) then destroyElement(pickups[2]) end
+                    interiorsSpawned[dbid] = nil
+                    done = done - 1
+                end
             end
         end
     end
@@ -51,11 +89,22 @@ setTimer(checkNearbyInteriorPickups, pickupRefreshRate, 1)
 
 function checkNearbyElevatorPickups()
     if getElementData(localPlayer, "account:id") then--== 1 or exports.account:screenStandBy("getState") then
+        local px, py, pz = getElementPosition(localPlayer)
         for elevator,_ in pairs(elevatorsToBeLoaded) do
-            if isElement(elevator) and getElementChildrenCount(elevator) ~= 2 then ---if not elevatorsSpawned[dbid] then
-                interiorShowPickups(elevator)
-                -- remove it from the table so it doesnt look again
-                elevatorsToBeLoaded[elevator] = nil
+            if isElement(elevator) and getElementChildrenCount(elevator) ~= 2 then
+                local entrance = getElementData(elevator, "entrance")
+                if entrance then
+                    local ex = entrance[1] or entrance[INTERIOR_X]
+                    local ey = entrance[2] or entrance[INTERIOR_Y]
+                    local ez = entrance[3] or entrance[INTERIOR_Z]
+                    if ex and ey and ez then
+                        local dist = getDistanceBetweenPoints3D(px, py, pz, ex, ey, ez)
+                        if dist <= pickupStreamDistance then
+                            interiorShowPickups(elevator)
+                            elevatorsToBeLoaded[elevator] = nil
+                        end
+                    end
+                end
             end
         end
     end
@@ -192,7 +241,7 @@ function interiorRemovePickups(element)
         end
 
         if interiorsSpawned[dbid][1] and isElement( interiorsSpawned[dbid][1] ) then
-            thendestroyElement( interiorsSpawned[dbid][1] )
+            destroyElement( interiorsSpawned[dbid][1] )
         end
         if interiorsSpawned[dbid][2] and isElement( interiorsSpawned[dbid][2] ) then
             destroyElement( interiorsSpawned[dbid][2] )
