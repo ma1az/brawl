@@ -261,8 +261,10 @@ addEventHandler ( "onClientElementDataChange", root, function(dataName)
 		-- play sound to driver and passengers
 		if getPedOccupiedVehicle(localPlayer) == source then
 			local sound = playSound(":resources/headlight_"..(new_state == 0 and 'up' or 'down')..'.mp3')
-			setElementInterior( sound, getElementInterior(source) )
-			setElementDimension( sound, getElementDimension(source) )
+			if isElement(sound) then
+				setElementInterior( sound, getElementInterior(source) )
+				setElementDimension( sound, getElementDimension(source) )
+			end
 		end
 		
 		if new_state > 0 and vehLiTable then

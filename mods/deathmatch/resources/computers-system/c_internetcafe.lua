@@ -4,6 +4,7 @@ ax, ay = nil
 closing = nil
 sent=false
 local models = {[2175]=true, [2190]=true,[2009]=true,[2008]=true,[11631]=true,[2198]=true,[2172]=true,[2193]=true,[2165]=true,[1998]=true,[1999]=true}
+local screenX, screenY = guiGetScreenSize()
 
 function isComputerModel(model)
 	return models[model] or false
@@ -63,8 +64,14 @@ function clickComputer(button, state, absX, absY, wx, wy, wz, element)
 		end
 	elseif not element then
 		local camX, camY, camZ = getCameraMatrix()
-		local cursorX, cursorY, endX, endY, endZ = getCursorPosition()
-		
+		local cursorX, cursorY = getCursorPosition()
+		if not cursorX or not cursorY then
+			return
+		end
+		local endX, endY, endZ = getWorldFromScreenPosition(cursorX * screenX, cursorY * screenY, 100)
+		if not endX or not endY or not endZ then
+			return
+		end
 		local x = {processLineOfSight(camX, camY, camZ, endX, endY, endZ, true, true, true, true, true, true, false, true, localPlayer, true)}
 		local hit, _, _, _, _, _, _, _, mat, _, _, buildingId, bx, by, bz = unpack(x)
 		

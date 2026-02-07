@@ -14,7 +14,7 @@ function createComputerGUI(computerName, websiteToStartOn)
 	end
 
 	-- which site do we want our computer to open up on?
-	websiteToStartOn = websiteToStartOn or 'www.google.sa'
+	websiteToStartOn = websiteToStartOn or 'www.google.com'
 
 	wComputer = guiCreateWindow(computerX, computerY, computerWidth, computerHeight + 29, computerName or "Computer", false)
 	guiWindowSetSizable(wComputer, false)

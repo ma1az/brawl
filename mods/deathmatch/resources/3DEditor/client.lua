@@ -47,7 +47,11 @@ function startEdit(elementik, disableMoving, disableRotate, disableScale, source
 		return false
 	end
 
-	sourceResElement = sourceRes or sourceResource
+	local resolvedSource = sourceRes
+	if type(sourceRes) == "string" then
+		resolvedSource = getResourceFromName(sourceRes)
+	end
+	sourceResElement = resolvedSource or sourceResource or resourceRoot
 	disabledMoving = disableMoving
 	disabledRotating = disableRotate
 	disabledScaling = disableScale
