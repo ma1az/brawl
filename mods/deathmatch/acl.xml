@@ -49,6 +49,10 @@
         <object name="resource.phone"></object>
         <object name="resource.admin-system"></object>
         <object name="resource.report"></object>
+        <object name="resource.job-system"></object>
+        <object name="resource.garbage-system"></object>
+        <object name="resource.interior-system"></object>
+        <object name="resource.account"></object>
     </group>
     <group name="MapEditor">
         <acl name="Default"></acl>
@@ -133,7 +137,7 @@
         <right name="command.aclrequest" access="false"></right>
         <right name="command.authserial" access="false"></right>
         <right name="command.reloadacl" access="false"></right>
-        <right name="function.executeCommandHandler" access="false"></right>
+        <right name="function.executeCommandHandler" access="true"></right>
         <right name="function.setPlayerMuted" access="false"></right>
         <right name="function.addAccount" access="false"></right>
         <right name="function.addBan" access="false"></right>

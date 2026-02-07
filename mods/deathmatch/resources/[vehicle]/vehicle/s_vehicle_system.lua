@@ -237,6 +237,7 @@ function createCivilianPermVehicle(thePlayer, commandName, ...)
 			outputChatBox("Job 1 = Delivery Driver", thePlayer, 255, 194, 14)
 			outputChatBox("Job 2 = Taxi Driver", thePlayer, 255, 194, 14)
 			outputChatBox("Job 3 = Bus Driver", thePlayer, 255, 194, 14)
+			outputChatBox("Job 8 = Garbage Collector", thePlayer, 255, 194, 14)
 		else
 			local vehicleID = tonumber(args[1])
 			local col1, col2, job
@@ -259,6 +260,11 @@ function createCivilianPermVehicle(thePlayer, commandName, ...)
 				col1 = tonumber(args[2])
 				col2 = tonumber(args[3])
 				job = tonumber(args[4])
+			end
+
+			if job == 8 and tonumber(vehicleID) ~= 408 then
+				outputChatBox("Garbage Collector vehicles must be Trashmaster (408).", thePlayer, 255, 0, 0)
+				return
 			end
 
 			local id = vehicleID

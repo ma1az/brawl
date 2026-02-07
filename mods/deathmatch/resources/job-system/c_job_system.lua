@@ -42,6 +42,10 @@ function showEmploymentWindow()
 		guiGridListSetItemText(jobList, rowmaintenance, column, "City Maintenance", false, false)
 	end
 
+	-- GARBAGE COLLECTOR
+	local rowgarbage = guiGridListAddRow(jobList)
+	guiGridListSetItemText(jobList, rowgarbage, column, "Garbage Collector", false, false)
+
 	-- MECHANIC
 	--[[local row = guiGridListAddRow(jobList)
 	guiGridListSetItemText(jobList, row, column, "Mechanic", false, false)]] -- Disabled, added mechanic faction type
@@ -75,7 +79,7 @@ function acceptJob(button, state)
 			local job = 0
 			local jobtext = guiGridListGetItemText(jobList, guiGridListGetSelectedItem(jobList), 1)
 
-			if ( jobtext=="Delivery Driver" or jobtext=="Taxi Driver" or jobtext=="Bus Driver" ) then  -- Driving job, requires the license
+			if ( jobtext=="Delivery Driver" or jobtext=="Taxi Driver" or jobtext=="Bus Driver" or jobtext=="Garbage Collector" ) then  -- Driving job, requires the license
 				local carlicense = getElementData(getLocalPlayer(), "license.car")
 				if (carlicense~=1) then
 					outputChatBox("You require a drivers license to do this job.", 255, 0, 0)
@@ -94,6 +98,8 @@ function acceptJob(button, state)
 				displayBusJob()
 			elseif (jobtext=="City Maintenance") then
 				job = 4
+			elseif (jobtext=="Garbage Collector") then
+				job = 8
 			elseif (jobtext=="Mechanic") then
 				displayMechanicJob()
 				job = 5

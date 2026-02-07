@@ -107,6 +107,8 @@ function startEnterVehJob(thePlayer, seat, jacked)
 			outputChatBox("You are not a taxi driver. Visit city hall to obtain this job.", thePlayer, 255, 0, 0)
 		elseif (vjob==3) then
 			outputChatBox("You are not a bus driver. Visit city hall to obtain this job.", thePlayer, 255, 0, 0)
+		elseif (vjob==8) then
+			outputChatBox("You are not a garbage collector. Visit city hall to obtain this job.", thePlayer, 255, 0, 0)
 		end
 		if isTimer(lockTimer) then
 			killTimer(lockTimer)

@@ -13,6 +13,8 @@ function getJobTitleFromID(jobID)
 		return "Locksmith"
 	elseif (tonumber(jobID)==7) then
 		return "Long Haul Truck Driver"
+	elseif (tonumber(jobID)==8) then
+		return "Garbage Collector"
 	else
 		return "Unemployed"
 	end

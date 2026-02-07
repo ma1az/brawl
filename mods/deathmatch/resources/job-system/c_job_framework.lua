@@ -23,6 +23,18 @@ function playerSpawn()
 		else
 			resetBusJob()
 		end
+
+		if (job==8) then -- GARBAGE COLLECTOR
+			local garbageRes = getResourceFromName("garbage-system")
+			if garbageRes and getResourceState(garbageRes) == "running" then
+				exports["garbage-system"]:displayGarbageJob()
+			end
+		else
+			local garbageRes = getResourceFromName("garbage-system")
+			if garbageRes and getResourceState(garbageRes) == "running" then
+				exports["garbage-system"]:resetGarbageJob()
+			end
+		end
 	end
 end
 addEventHandler("onClientPlayerSpawn", localPlayer, 
@@ -48,6 +60,12 @@ function quitJob(job)
 		outputChatBox("You have now quit your job as a mechanic.", 0, 255, 0)
 	elseif (job==6) then -- LOCKSMITH
 		outputChatBox("You have now quit your job as a locksmith.", 0, 255, 0)
+	elseif (job==8) then -- GARBAGE COLLECTOR
+		outputChatBox("You have now quit your job as a garbage collector.", 0, 255, 0)
+		local garbageRes = getResourceFromName("garbage-system")
+		if garbageRes and getResourceState(garbageRes) == "running" then
+			exports["garbage-system"]:resetGarbageJob()
+		end
 	end
 end
 addEvent("quitJob", true)
