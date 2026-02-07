@@ -9,8 +9,8 @@ GARBAGE_TRASH_MODELS = {
 	[1] = 1337,   -- wheelie bin
 	[2] = 1359,   -- bin bag pile
 	[3] = 1439,   -- rubbish pile
-	[4] = 1339,   -- bin
-	[5] = 1326,   -- bin / dumpster
+	[4] = 1339,   -- bin bag (small green)
+    [5] = 1340,   -- bin bag (small black)
 	[6] = 1409,   -- bin bags
 	[7] = 1430,   -- rubbish
 }
@@ -26,8 +26,8 @@ GARBAGE_PAY_MAX = 80
 GARBAGE_COOLDOWN_SECONDS = 5 * 60
 
 -- Vehicle load capacity (bags)
-GARBAGE_BASE_CAPACITY    = 15
-GARBAGE_CAPACITY_PER_LEVEL = 2
+GARBAGE_BASE_CAPACITY    = 10
+GARBAGE_CAPACITY_PER_LEVEL = 4
 
 -- Maximum distance to pick up trash (world units)
 GARBAGE_PICKUP_DISTANCE = 3.0

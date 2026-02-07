@@ -46,39 +46,56 @@ function checkNearbyInteriorPickups()
             local dbid = isElement(interior) and getElementData(interior, "dbid") or 0
             if dbid and not interiorsSpawned[ dbid ] then
                 local entrance = isElement(interior) and getElementData(interior, "entrance")
+                local exit = isElement(interior) and getElementData(interior, "exit")
                 if entrance then
                     local ex = entrance.x or entrance[INTERIOR_X]
                     local ey = entrance.y or entrance[INTERIOR_Y]
                     local ez = entrance.z or entrance[INTERIOR_Z]
+                    -- Also check exit position for players inside interiors
+                    local exitX = exit and (exit.x or exit[INTERIOR_X])
+                    local exitY = exit and (exit.y or exit[INTERIOR_Y])
+                    local exitZ = exit and (exit.z or exit[INTERIOR_Z])
+                    local nearEntrance = false
+                    local nearExit = false
                     if ex and ey and ez then
-                        local dist = getDistanceBetweenPoints3D(px, py, pz, ex, ey, ez)
-                        if dist <= pickupStreamDistance then
-                            interiorShowPickups( interior )
-                            intsToBeLoaded[ interior ] = nil
-                        end
+                        nearEntrance = getDistanceBetweenPoints3D(px, py, pz, ex, ey, ez) <= pickupStreamDistance
+                    end
+                    if exitX and exitY and exitZ and playerDim > 0 then
+                        nearExit = getDistanceBetweenPoints3D(px, py, pz, exitX, exitY, exitZ) <= pickupStreamDistance
+                    end
+                    if nearEntrance or nearExit then
+                        interiorShowPickups( interior )
+                        intsToBeLoaded[ interior ] = nil
                     end
                 end
             end
         end
 
         -- Remove pickups for far-away interiors to free elements
-        for dbid, pickups in pairs(interiorsSpawned) do
-            if pickups and type(pickups) == "table" and pickups[1] and isElement(pickups[1]) then
-                local ex, ey, ez = getElementPosition(pickups[1])
-                local dist = getDistanceBetweenPoints3D(px, py, pz, ex, ey, ez)
-                if dist > pickupStreamDistance * 1.5 then
-                    -- Find the interior element to re-queue it
-                    for _, int in ipairs(getElementsByType("interior")) do
-                        if getElementData(int, "dbid") == dbid then
-                            intsToBeLoaded[int] = true
-                            break
+        -- Skip cleanup if player is inside an interior (dim > 0) to preserve exit pickups
+        if playerDim == 0 then
+            for dbid, pickups in pairs(interiorsSpawned) do
+                if pickups and type(pickups) == "table" and pickups[1] and isElement(pickups[1]) then
+                    local pickupDim = getElementDimension(pickups[1])
+                    -- Only clean up pickups that are in the same dimension as the player (exterior)
+                    if pickupDim == 0 then
+                        local ex, ey, ez = getElementPosition(pickups[1])
+                        local dist = getDistanceBetweenPoints3D(px, py, pz, ex, ey, ez)
+                        if dist > pickupStreamDistance * 1.5 then
+                            -- Find the interior element to re-queue it
+                            for _, int in ipairs(getElementsByType("interior")) do
+                                if getElementData(int, "dbid") == dbid then
+                                    intsToBeLoaded[int] = true
+                                    break
+                                end
+                            end
+                            -- Destroy the pickups
+                            if pickups[1] and isElement(pickups[1]) then destroyElement(pickups[1]) end
+                            if pickups[2] and isElement(pickups[2]) then destroyElement(pickups[2]) end
+                            interiorsSpawned[dbid] = nil
+                            done = done - 1
                         end
                     end
-                    -- Destroy the pickups
-                    if pickups[1] and isElement(pickups[1]) then destroyElement(pickups[1]) end
-                    if pickups[2] and isElement(pickups[2]) then destroyElement(pickups[2]) end
-                    interiorsSpawned[dbid] = nil
-                    done = done - 1
                 end
             end
         end

@@ -107,9 +107,17 @@ function showNearbyProD()
 				fontElement = fontString
 				if fontElement == "BizNoteFont18" then
 					if not BizNoteFont18 then
-						BizNoteFont18 = dxCreateFont (":resources/fonts/BizNote.ttf" , 18 )
+						BizNoteFont18 = dxCreateFont(":resources/fonts/BizNote.ttf", 18)
 					end
 					fontElement = BizNoteFont18
+				end
+				if not fontElement or type(fontElement) == "boolean" then
+					fontString = "default"
+					fontElement = "default"
+				end
+				if not fontType[fontString] then
+					fontString = "default"
+					fontElement = "default"
 				end
 				addEventHandler("onClientRender", getRootElement(), showTextProD)
 			end
@@ -154,9 +162,17 @@ function togglePin()
 					fontElement = fontString
 					if fontElement == "BizNoteFont18" then
 						if not BizNoteFont18 then
-							BizNoteFont18 = dxCreateFont (":resources/fonts/BizNote.ttf" , 18 )
+							BizNoteFont18 = dxCreateFont(":resources/fonts/BizNote.ttf", 18)
 						end
 						fontElement = BizNoteFont18
+					end
+					if not fontElement or type(fontElement) == "boolean" then
+						fontString = "default"
+						fontElement = "default"
+					end
+					if not fontType[fontString] then
+						fontString = "default"
+						fontElement = "default"
 					end
 					addEventHandler("onClientRender", getRootElement(), showTextProD)
 				end
@@ -360,9 +376,17 @@ function showTextProD()
 					
 					--START DRAWING
 					local marg = 5
+					if not fontElement or type(fontElement) == "boolean" then
+						fontString = "default"
+						fontElement = "default"
+					end
+					if not fontType[fontString] then
+						fontString = "default"
+						fontElement = "default"
+					end
 					local oneLineHeight = dxGetFontHeight(1, fontElement)
 					local fontHeight = oneLineHeight * lines
-					fontWidth = fontWidth*fontType[fontString][2] --Fix custom fonts
+					fontWidth = fontWidth * fontType[fontString][2] -- Fix custom fonts
 					px = px-(fontWidth/2)
 					if getElementData(localPlayer, "bgPro") ~= "0" then
 						dxDrawRectangle(px-marg, py-marg, fontWidth+(marg*2), fontHeight+(marg*2), tocolor(0, 0, 0, 50))

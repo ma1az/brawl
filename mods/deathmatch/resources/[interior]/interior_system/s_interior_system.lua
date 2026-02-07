@@ -764,7 +764,7 @@ function setPlayerInsideInterior(theInterior, thePlayer, teleportTo, sameInt, el
 	end
 	if ( teleportTo.dim or teleportTo[INTERIOR_DIM] ) ~= 0 then
 		local intStatus = getElementData(theInterior, "status")
-		furniture = intStatus.furniture
+		furniture = false -- Always disable default GTA furniture; we use our custom furniture system
 		-- Sync interior owner to player for client-side permission checks
 		setElementData(thePlayer, "currentInteriorOwner", intStatus.owner, true)
 		setElementData(thePlayer, "currentInteriorFaction", intStatus.faction, true)
@@ -862,7 +862,7 @@ function setPlayerInsideInterior2(theInterior, thePlayer)
 	end
 
 	if teleportTo then
-		triggerClientEvent(thePlayer, "setPlayerInsideInterior2", theInterior, teleportTo, theInterior, interiorStatus.furniture)
+		triggerClientEvent(thePlayer, "setPlayerInsideInterior2", theInterior, teleportTo, theInterior, false) -- Always disable default GTA furniture
 		if teleportTo.dim == 0 then
 			switchGroundSnow(thePlayer, true)
 		else
@@ -938,7 +938,7 @@ function setPlayerInsideInterior3(theInterior, thePlayer, teleportTo, sameInt, e
 	end
 
 	if theInterior then
-		furniture = getElementData(theInterior, "status").furniture
+		furniture = false -- Always disable default GTA furniture; we use our custom furniture system
 		switchGroundSnow(thePlayer, false)
 	else
 		if theVehicle then

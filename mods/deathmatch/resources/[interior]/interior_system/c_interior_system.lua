@@ -1,5 +1,6 @@
 gInteriorName, gOwnerName, gBuyMessage, gBizMessage = nil
 
+--[[ COMMENTED OUT: Using our custom furniture system instead of this manual removal approach
 -- Configuration for disabling default interior furniture (Moved from furniture resource)
 local disabledFurnitureRooms = {
     [2] = true,
@@ -86,6 +87,7 @@ function applyObjectRemoval(interiorID)
         end
     end
 end
+--]] -- END COMMENTED OUT furniture removal block
 
 timer = nil
 
@@ -94,19 +96,10 @@ BizNoteFont = guiCreateFont(":resources/fonts/BizNote.ttf", 21 ) or "default-bol
 
 -- Add onClientResourceStart to apply settings immediately if restarted while inside
 addEventHandler("onClientResourceStart", resourceRoot, function()
-    -- Apply furniture settings immediately
-    for i = 0, 4 do
-        if disabledFurnitureRooms[i] then
-            setInteriorFurnitureEnabled(i, false)
-        end
+    -- Always disable default GTA interior furniture for all rooms
+    for i = 0, 18 do
+        setInteriorFurnitureEnabled(i, false)
     end
-
-    -- Delay object removal slightly to ensure streaming/world is ready
-    setTimer(function()
-        local currentInt = getElementInterior(localPlayer)
-        -- Apply object removals for current interior using the new function
-        applyObjectRemoval(currentInt)
-    end, 1000, 1)
 end)
 
 -- Message on enter
@@ -575,12 +568,9 @@ addEventHandler( "setPlayerInsideInterior", getRootElement( ),
 			end
 		end, 2000, 1)
 
-		for i = 0, 4 do
-			if disabledFurnitureRooms[i] then
-				setInteriorFurnitureEnabled(i, false)
-			else
-				setInteriorFurnitureEnabled(i, furniture and true or false)
-			end
+		-- Always disable default GTA interior furniture
+		for i = 0, 18 do
+			setInteriorFurnitureEnabled(i, false)
 		end
 		--[[
 		local adminnote = tostring(getElementData(targetInterior, "adminnote"))
@@ -625,19 +615,12 @@ addEventHandler( "setPlayerInsideInterior2", getRootElement( ),
 			setPedRotation( localPlayer, rot )
 		end
 
-		for i = 0, 4 do
-			if disabledFurnitureRooms[i] then
-				setInteriorFurnitureEnabled(i, false)
-			else
-				setInteriorFurnitureEnabled(i, furniture and true or false)
-			end
+		-- Always disable default GTA interior furniture
+		for i = 0, 18 do
+			setInteriorFurnitureEnabled(i, false)
 		end
 
 		inttimer = setTimer(onPlayerPutInInteriorSecond, 1000, 1, targetLocation.dim, targetLocation.int)
-
-
-		-- Apply world object removals if applicable for this interior
-		applyObjectRemoval(targetLocation.int)
 
 		if false and targetInterior then
 			local adminnote = tostring(getElementData(targetInterior, "adminnote"))
