@@ -15,6 +15,33 @@ local load_speed_multipler = 10
 local load_timeout = 60000 -- 1 minutes.
 local total
 
+local function isNewmodelsRedVehicle(id)
+	local res = getResourceFromName("newmodels_red")
+	if not res or getResourceState(res) ~= "running" then
+		return false
+	end
+	return exports["newmodels_red"]:isCustomModelCompatible(id, "vehicle")
+end
+
+local function isNewmodelsAzulVehicle(id)
+	local res = getResourceFromName("newmodels_azul")
+	return id and id > 611 and res and getResourceState(res) == "running"
+end
+
+local function createVehicleWithCustomModel(id, ...)
+	if isNewmodelsRedVehicle(id) then
+		return exports["newmodels_red"]:createVehicle(id, ...)
+	end
+	if isNewmodelsAzulVehicle(id) then
+		local veh = createVehicle(562, ...)
+		if veh then
+			exports["newmodels_azul"]:setElementModel(veh, id)
+		end
+		return veh
+	end
+	return createVehicle(id, ...)
+end
+
 local query_load = "SELECT v.*, (CASE WHEN ((protected_until IS NULL) OR (protected_until > NOW() = 0)) THEN -1 ELSE TO_SECONDS(protected_until) END) AS protected_until, "
 			.."TO_SECONDS(lastUsed) AS lastused_sec, (CASE WHEN lastlogin IS NOT NULL THEN TO_SECONDS(lastlogin) ELSE NULL END) AS owner_last_login, "
 			.."l.faction AS impounder, "
@@ -91,13 +118,7 @@ function loadOneVehicle(data, loadDeletedOne)
 		end
 
 		-- Spawn the vehicle
-		local veh
-		if data.model > 611 and getResourceFromName("newmodels_azul") and getResourceState(getResourceFromName("newmodels_azul")) == "running" then
-			veh = createVehicle(562, data.currx, data.curry, data.currz, data.currrx, data.currry, data.currrz, data.plate, false, var1, var2)
-			exports["newmodels_azul"]:setElementModel(veh, data.model)
-		else
-			veh = createVehicle(data.model, data.currx, data.curry, data.currz, data.currrx, data.currry, data.currrz, data.plate, false, var1, var2)
-		end
+		local veh = createVehicleWithCustomModel(data.model, data.currx, data.curry, data.currz, data.currrx, data.currry, data.currrz, data.plate, false, var1, var2)
 		if veh then
 			-- pool allocation.
 			exports.anticheat:setEld( veh, "dbid", data.id, 'all' )

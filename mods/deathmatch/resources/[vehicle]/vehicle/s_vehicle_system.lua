@@ -15,6 +15,33 @@ local loadedVehicles = 0
 local initializeSoFarDetector = 0
 local null = nil
 
+local function isNewmodelsRedVehicle(id)
+	local res = getResourceFromName("newmodels_red")
+	if not res or getResourceState(res) ~= "running" then
+		return false
+	end
+	return exports["newmodels_red"]:isCustomModelCompatible(id, "vehicle")
+end
+
+local function isNewmodelsAzulVehicle(id)
+	local res = getResourceFromName("newmodels_azul")
+	return id and id > 611 and res and getResourceState(res) == "running"
+end
+
+local function createVehicleWithCustomModel(id, x, y, z, rx, ry, rz, plate)
+	if isNewmodelsRedVehicle(id) then
+		return exports["newmodels_red"]:createVehicle(id, x, y, z, rx, ry, rz, plate)
+	end
+	if isNewmodelsAzulVehicle(id) then
+		local veh = createVehicle(562, x, y, z, rx, ry, rz, plate)
+		if veh then
+			exports["newmodels_azul"]:setElementModel(veh, id)
+		end
+		return veh
+	end
+	return createVehicle(id, x, y, z, rx, ry, rz, plate)
+end
+
 function SmallestID( ) -- finds the smallest ID in the SQL instead of auto increment
 	local result = mysql:query_fetch_assoc("SELECT MIN(e1.id+1) AS nextID FROM vehicles AS e1 LEFT JOIN vehicles AS e2 ON e1.id +1 = e2.id WHERE e2.id IS NULL")
 	if result then
@@ -120,12 +147,7 @@ function createPermanentVehicle(player, command, ...)
 
 		-- create a vehicle temporarily so we can get its name, colors and validate that it is an actual vehicle.
 		local veh
-		if id > 611 and getResourceFromName("newmodels_azul") and getResourceState(getResourceFromName("newmodels_azul")) == "running" then
-			veh = createVehicle(562, x, y, z, 0, 0, r, plate)
-			exports["newmodels_azul"]:setElementModel(veh, id)
-		else
-			veh = createVehicle(id, x, y, z, 0, 0, r, plate)
-		end
+		veh = createVehicleWithCustomModel(id, x, y, z, 0, 0, r, plate)
 		if not veh then
 			outputChatBox("Invalid MTA vehicle model specified in vehlib.", player, 255, 100, 100)
 			return
@@ -252,7 +274,7 @@ function createCivilianPermVehicle(thePlayer, commandName, ...)
 			local letter2 = string.char(math.random(65,90))
 			local plate = letter1 .. letter2 .. math.random(0, 9) .. " " .. math.random(1000, 9999)
 
-			local veh = exports["newmodels_azul"]:createVehicle(id, x, y, z, 0, 0, r, plate)
+			local veh = createVehicleWithCustomModel(id, x, y, z, 0, 0, r, plate)
 			if not (veh) then
 				outputChatBox("Invalid Vehicle ID.", thePlayer, 255, 0, 0)
 			else

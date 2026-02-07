@@ -13,6 +13,33 @@ function getVehicleName(vehicle)
 	return exports.global:getVehicleName(vehicle)
 end
 
+local function isNewmodelsRedVehicle(id)
+	local res = getResourceFromName("newmodels_red")
+	if not res or getResourceState(res) ~= "running" then
+		return false
+	end
+	return exports["newmodels_red"]:isCustomModelCompatible(id, "vehicle")
+end
+
+local function isNewmodelsAzulVehicle(id)
+	local res = getResourceFromName("newmodels_azul")
+	return id and id > 611 and res and getResourceState(res) == "running"
+end
+
+local function createVehicleWithCustomModel(id, x, y, z, rx, ry, rz, plate)
+	if isNewmodelsRedVehicle(id) then
+		return exports["newmodels_red"]:createVehicle(id, x, y, z, rx, ry, rz, plate)
+	end
+	if isNewmodelsAzulVehicle(id) then
+		local veh = createVehicle(562, x, y, z, rx, ry, rz, plate)
+		if veh then
+			exports["newmodels_azul"]:setElementModel(veh, id)
+		end
+		return veh
+	end
+	return createVehicle(id, x, y, z, rx, ry, rz, plate)
+end
+
 function respawnTheVehicle(vehicle)
 	setElementCollisionsEnabled( vehicle, true )
 	respawnVehicle( vehicle )
@@ -371,13 +398,7 @@ function createTempVehicle(thePlayer, commandName, vehShopID)
 		end
 
 
-		local veh
-		if vehicleID > 611 and getResourceFromName("newmodels_azul") and getResourceState(getResourceFromName("newmodels_azul")) == "running" then
-			veh = createVehicle(562, x, y, z, 0, 0, r, plate)
-			exports["newmodels_azul"]:setElementModel(veh, vehicleID)
-		else
-			veh = createVehicle(vehicleID, x, y, z, 0, 0, r, plate)
-		end
+		local veh = createVehicleWithCustomModel(vehicleID, x, y, z, 0, 0, r, plate)
 
 		if not (veh) then
 			outputDebugString("VEHICLE MANAGER / createTempVehicle / FAILED TO FETCH VEHSHOP DATA")

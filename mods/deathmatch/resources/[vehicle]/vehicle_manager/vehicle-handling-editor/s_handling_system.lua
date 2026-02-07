@@ -5,6 +5,33 @@ local driveTestTimeVehLibSec = 30*60 --SECONDS
 local vehLibTest = {}
 vehLibTest.int, vehLibTest.dim, vehLibTest.x, vehLibTest.y, vehLibTest.z, vehLibTest.rot =  0, 400, 1428.71484375, -2593.26953125, 13.273954391479, 270
 
+local function isNewmodelsRedVehicle(id)
+	local res = getResourceFromName("newmodels_red")
+	if not res or getResourceState(res) ~= "running" then
+		return false
+	end
+	return exports["newmodels_red"]:isCustomModelCompatible(id, "vehicle")
+end
+
+local function isNewmodelsAzulVehicle(id)
+	local res = getResourceFromName("newmodels_azul")
+	return id and id > 611 and res and getResourceState(res) == "running"
+end
+
+local function createVehicleWithCustomModel(id, x, y, z, rx, ry, rz, plate)
+	if isNewmodelsRedVehicle(id) then
+		return exports["newmodels_red"]:createVehicle(id, x, y, z, rx, ry, rz, plate)
+	end
+	if isNewmodelsAzulVehicle(id) then
+		local veh = createVehicle(562, x, y, z, rx, ry, rz, plate)
+		if veh then
+			exports["newmodels_azul"]:setElementModel(veh, id)
+		end
+		return veh
+	end
+	return createVehicle(id, x, y, z, rx, ry, rz, plate)
+end
+
 local dealerPlaces = {
 	["grotti"] = {},
 	["JeffersonCarShop"] = {},
@@ -482,13 +509,7 @@ function createTestVehicle(vehShopID, thePed, fromVehLib)
 	local x, y, z = destination.x, destination.y, destination.z --destination.rot---2063, -112.1552734375, 35.010520935059
 	local r = destination.rot
 
-	local veh
-	if vehicleID > 611 and getResourceFromName("newmodels_azul") and getResourceState(getResourceFromName("newmodels_azul")) == "running" then
-		veh = createVehicle(562, x, y, z , 0, 0, 180, plate)
-		exports["newmodels_azul"]:setElementModel(veh, vehicleID)
-	else
-		veh = createVehicle(vehicleID, x, y, z , 0, 0, 180, plate)
-	end
+	local veh = createVehicleWithCustomModel(vehicleID, x, y, z, 0, 0, 180, plate)
 	
 	if not (veh) then
 		outputChatBox("Invalid Vehicle ID.", client, 255, 0, 0)

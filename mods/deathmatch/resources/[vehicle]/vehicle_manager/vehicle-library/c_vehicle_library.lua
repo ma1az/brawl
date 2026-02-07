@@ -17,6 +17,32 @@ local sx, sy = guiGetScreenSize()
 local gui = {}
 local page = 1
 carshops = {}
+
+local function isNewmodelsRedVehicleId(id)
+	id = tonumber(id)
+	if not id then return false end
+	local res = getResourceFromName("newmodels_red")
+	if not res or getResourceState(res) ~= "running" then
+		return false
+	end
+	return exports["newmodels_red"]:isCustomModelCompatible(id, "vehicle")
+end
+
+local function isNewmodelsAzulVehicleId(id)
+	id = tonumber(id)
+	local res = getResourceFromName("newmodels_azul")
+	return id and id > 611 and res and getResourceState(res) == "running"
+end
+
+local function getCustomVehicleLabel(id)
+	if isNewmodelsRedVehicleId(id) then
+		return exports["newmodels_red"]:getCustomModelName(tonumber(id)) or "newmodels_red"
+	end
+	if isNewmodelsAzulVehicleId(id) then
+		return "newmodels_azul"
+	end
+	return nil
+end
 --[[
 {
 	[1] = {"grotti", "Grotti's Cars"},
@@ -45,8 +71,9 @@ local function updateLibraryGrid(vehs)
 		guiGridListSetItemText(VehLibGrid, row, col.id, vehs[i].id or "", false, true)
 		guiGridListSetItemText(VehLibGrid, row, col.enabled, ((vehs[i].enabled == 1) and "Yes" or "No"), false, true)
 		local vehMtaModel = "-"
-		if tonumber(vehs[i].vehmtamodel) > 611 then
-			vehMtaModel = "newmodels_azul"
+		local customLabel = getCustomVehicleLabel(vehs[i].vehmtamodel)
+		if customLabel then
+			vehMtaModel = customLabel
 		else
 			vehMtaModel = getVehicleNameFromModel(tonumber(vehs[i].vehmtamodel))
 		end
@@ -695,7 +722,11 @@ function validateCreateVehicle(data)
 		local input = guiGetText(edits[1])
 		local vehName = getVehicleNameFromModel(input) or "newmodels_azul"
 		local vehModel = getVehicleModelFromName(input) or "No Brand"
+		local customLabel = getCustomVehicleLabel(input)
 		if input == "584" or input == "611" or input == "606" or input == "607" or input == "608" or input == "450" then
+			guiSetText(labels[1], "MTA Vehicle Model (OK!):")
+			guiLabelSetColor(labels[1], 0, 255,0)
+		elseif customLabel then
 			guiSetText(labels[1], "MTA Vehicle Model (OK!):")
 			guiLabelSetColor(labels[1], 0, 255,0)
 		elseif vehName and vehName ~= "" then

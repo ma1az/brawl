@@ -14,6 +14,45 @@ local plane = 750
 local race = 75
 local minute = 10 -- CARSHOP UPDATE INTERVAL IN MINUTE
 local spawnedShopVehicles = {}
+
+local function isNewmodelsRedVehicle(id)
+	local res = getResourceFromName("newmodels_red")
+	if not res or getResourceState(res) ~= "running" then
+		return false
+	end
+	return exports["newmodels_red"]:isCustomModelCompatible(id, "vehicle")
+end
+
+local function isNewmodelsAzulVehicle(id)
+	local res = getResourceFromName("newmodels_azul")
+	return id and id > 611 and res and getResourceState(res) == "running"
+end
+
+local function createVehicleWithCustomModel(id, x, y, z, rx, ry, rz, plate)
+	if isNewmodelsRedVehicle(id) then
+		return exports["newmodels_red"]:createVehicle(id, x, y, z, rx, ry, rz, plate)
+	end
+	if isNewmodelsAzulVehicle(id) then
+		local veh = createVehicle(562, x, y, z, rx, ry, rz, plate)
+		if veh then
+			exports["newmodels_azul"]:setElementModel(veh, id)
+		end
+		return veh
+	end
+	return createVehicle(id, x, y, z, rx, ry, rz, plate)
+end
+
+local function getVehicleModelCustomAware(vehicle)
+	local resRed = getResourceFromName("newmodels_red")
+	if resRed and getResourceState(resRed) == "running" then
+		return exports["newmodels_red"]:getElementModel(vehicle)
+	end
+	local resAzul = getResourceFromName("newmodels_azul")
+	if resAzul and getResourceState(resAzul) == "running" then
+		return exports["newmodels_azul"]:getElementModel(vehicle)
+	end
+	return getElementModel(vehicle)
+end
 local vehicleTaxes = {
 	offroad, low, sport, truck, low, low, 1000, truck, truck, 200, -- dumper, stretch
 	low, sport, low, van, van, sport, truck, heli, van, low,
@@ -98,13 +137,7 @@ function carshop_updateVehicles( forceUpdate )
 					local plate = letter1 .. letter2 .. math.random(0, 9) .. " " .. math.random(1000, 9999)
 					local model = tonumber(vehicleData.vehmtamodel)
 					--getVehicleModelFromName(data[1]) or tonumber(data[1])
-					local vehicle
-					if model > 611 and getResourceFromName("newmodels_azul") and getResourceState(getResourceFromName("newmodels_azul")) == "running" then
-						vehicle = createVehicle( 562 , v[1], v[2], v[3], v[4], v[5], v[6], plate  )
-						exports["newmodels_azul"]:setElementModel(vehicle, model)
-					else
-						vehicle = createVehicle( model , v[1], v[2], v[3], v[4], v[5], v[6], plate  )
-					end
+					local vehicle = createVehicleWithCustomModel(model, v[1], v[2], v[3], v[4], v[5], v[6], plate)
 					local vehBrand = vehicleData["vehbrand"]
 					local vehModel = vehicleData["vehmodel"]
 					local vehPrice = tonumber(vehicleData["vehprice"])
@@ -313,7 +346,7 @@ function carshop_buyVehicle(paymentMethod)
 	end
 
 	local dbid = getElementData(client, "account:character:id")
-	local modelID = exports["newmodels_azul"]:getElementModel(source) or getElementModel(source)
+	local modelID = getVehicleModelCustomAware(source)
 	local x, y, z = getElementPosition(source)
 	local rx, ry, rz = getElementRotation(source)
 	local odometer = tonumber(getElementData(source, 'odometer')) * 1000

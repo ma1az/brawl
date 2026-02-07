@@ -88,6 +88,10 @@
         <acl name="autoACL_newmodels_azul"></acl>
         <object name="resource.newmodels_azul"></object>
     </group>
+    <group name="autoGroup_newmodels_red">
+        <acl name="autoACL_newmodels_red"></acl>
+        <object name="resource.newmodels_red"></object>
+    </group>
     <acl name="Default">
         <right name="general.ModifyOtherObjects" access="false"></right>
         <right name="general.http" access="false"></right>
@@ -926,6 +930,9 @@
     </acl>
     <acl name="autoACL_newmodels_azul">
         <right name="function.fetchRemote" access="false" who="" pending="true" date=""></right>
+    </acl>
+    <acl name="autoACL_newmodels_red">
+        <right name="function.fetchRemote" access="true"></right>
     </acl>
     <acl name="ScriptCommander">
         <right name="function.executeCommandHandler" access="true"></right>
