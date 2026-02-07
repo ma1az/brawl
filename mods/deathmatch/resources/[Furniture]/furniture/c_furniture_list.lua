@@ -26,6 +26,11 @@ local activeAltTabs = {
 local s_color = {84, 160, 255}
 local hex = "#54a0ff"
 
+-- 3D Preview state
+local previewObject = nil
+local previewRotation = 0
+local previewModel = -1
+
 local showed_myFurnitures = false
 local requested = false
 local selected_furniture = 0
@@ -103,19 +108,35 @@ function draw()
 	if activeTab == "homepage" then
 		dxDrawText("Furniture Management:\nYou can place the furniture you bought from the furniture store in your home here.\nYou can cover the walls, floor, ceiling and doors in your home.\nWhen placing the furniture, it is positioned where you click with the mouse.", mx+10, my+40, mw, mh, tocolor(255, 255, 255), 1, awesomeFont, "left", "top")
 	elseif activeTab == "furn" then
+		-- Name-only horizontal list
+		local itemW = 120
+		local itemH = 24
+		local itemPad = 6
+		local startY = my + 35
+		local cols = math.floor((mw - 30) / (itemW + itemPad))
 		for index, value in ipairs(myFurnitures) do
-			if fileExists("furnitures/"..(value.model)..".png") then
-				dxDrawImage(mx+25+((index-1)*86),my+30,84,84,"furnitures/"..(value.model)..".png")
-			end
-			dxDrawRectangle(mx+25+((index-1)*86),my+114,84,20,tocolor(20,20,20,160))
+			local col = (index - 1) % cols
+			local row = math.floor((index - 1) / cols)
+			local itemX = mx + 15 + col * (itemW + itemPad)
+			local itemY = startY + row * (itemH + itemPad)
+			local name = findNameByModel(tonumber(value.model)) or "Unknown"
 			
 			if selected_furniture == index then
-				dxDrawText(findNameByModel(tonumber(value.model)),mx+25+((index-1)*86),my+114,84+(mx+25+((index-1)*86)),20+(my+114),tocolor(255,255,255,255),1,awesomeFontM,"center","center")
-				dxDrawText(findNameByModel(tonumber(value.model)),mx+25+((index-1)*86),my+114,84+(mx+25+((index-1)*86)),20+(my+114),tocolor(s_color[1],s_color[2],s_color[3]),1,awesomeFontM,"center","center")
+				dxDrawRectangle(itemX, itemY, itemW, itemH, tocolor(s_color[1], s_color[2], s_color[3], 40))
+				dxDrawRectangle(itemX, itemY + itemH - 2, itemW, 2, tocolor(s_color[1], s_color[2], s_color[3]))
+				dxDrawText(name, itemX + 5, itemY, itemX + itemW - 5, itemY + itemH, tocolor(s_color[1], s_color[2], s_color[3]), 1, awesomeFontM, "center", "center", true)
 			else
-				dxDrawText(findNameByModel(tonumber(value.model)),mx+25+((index-1)*86),my+114,84+(mx+25+((index-1)*86)),20+(my+114),tocolor(255,255,255,255),1,awesomeFontM,"center","center")
-				dxDrawText(findNameByModel(tonumber(value.model)),mx+25+((index-1)*86),my+114,84+(mx+25+((index-1)*86)),20+(my+114),tocolor(255,255,255,255),1,awesomeFontM,"center","center")
+				dxDrawRectangle(itemX, itemY, itemW, itemH, tocolor(30, 30, 30, 180))
+				dxDrawText(name, itemX + 5, itemY, itemX + itemW - 5, itemY + itemH, tocolor(220, 220, 220), 1, awesomeFontM, "center", "center", true)
 			end
+		end
+
+		-- 3D Preview (no box, just the object in front of camera)
+		if selected_furniture > 0 and myFurnitures[selected_furniture] and not getElementData(localPlayer, "Furniture->isFurnitureOnHand") then
+			local pvModel = tonumber(myFurnitures[selected_furniture].model)
+			updateFurniturePreview(pvModel)
+		else
+			clearFurniturePreview()
 		end
 	elseif activeTab == "texs" then
 		if activeAltTab then
@@ -225,6 +246,7 @@ function onClientClick(button, state)
             showed_myFurnitures = false
             selected_furniture = 0
             myFurnitures = {}
+            clearFurniturePreview()
             if isElement(window) then destroyElement(window) end
             if isElement(texW) then  destroyElement(texW) end
             return
@@ -249,13 +271,21 @@ function onClientClick(button, state)
 			tabRowHeight = tabRowHeight + 15 + dxGetTextWidth(text,1,awesomeFont)
 		end
 		if activeTab == "furn" then
+			local itemW = 120
+			local itemH = 24
+			local itemPad = 6
+			local startY = my + 35
+			local cols = math.floor((mw - 30) / (itemW + itemPad))
 			for index, value in ipairs(myFurnitures) do
-				-- Expanded hitbox to include image (y+30 to y+134, height 104)
-				if isInBox(mx+25+((index-1)*86),my+30,84,104) then
+				local col = (index - 1) % cols
+				local row = math.floor((index - 1) / cols)
+				local hitX = mx + 15 + col * (itemW + itemPad)
+				local hitY = startY + row * (itemH + itemPad)
+				if isInBox(hitX, hitY, itemW, itemH) then
                     if button == "right" or button == "extra" then
                         sellMenu.show = true
-                        sellMenu.x = mx+25+((index-1)*86) + 40
-                        sellMenu.y = my+30 + 40
+                        sellMenu.x = hitX + 60
+                        sellMenu.y = hitY
                         sellMenu.itemIndex = index
                     elseif button == "left" then
                         if selected_furniture ~= index then
@@ -346,6 +376,7 @@ addCommandHandler("editor", function(command)
 			showed_myFurnitures = false
 			selected_furniture = 0
 			myFurnitures = {}
+			clearFurniturePreview()
 			if isElement(window) then destroyElement(window) end
 			if isElement(texW) then  destroyElement(texW) end
 		end
@@ -366,6 +397,7 @@ addEventHandler("Furnitures->ForceEditorState", root, function(state)
         showed_myFurnitures = false
         selected_furniture = 0
         myFurnitures = {}
+        clearFurniturePreview()
         if isElement(window) then destroyElement(window) end
         if isElement(texW) then  destroyElement(texW) end
     end
@@ -393,6 +425,69 @@ function getFurnituresCount(model, dimension)
 			end
 		end
 		return count
+	end
+end
+
+function clearFurniturePreview()
+	if isElement(previewObject) then
+		destroyElement(previewObject)
+	end
+	previewObject = nil
+	previewModel = -1
+end
+
+function updateFurniturePreview(model)
+	-- Create or recreate if model changed
+	if model ~= previewModel then
+		clearFurniturePreview()
+		local cx, cy, cz, tx, ty, tz = getCameraMatrix()
+		if not cx then return end
+		previewObject = createObject(model, cx, cy, cz)
+		if not isElement(previewObject) then return end
+		setElementCollisionsEnabled(previewObject, false)
+		setElementDimension(previewObject, getElementDimension(localPlayer))
+		setElementInterior(previewObject, getElementInterior(localPlayer))
+		setElementDoubleSided(previewObject, true)
+		setElementFrozen(previewObject, true)
+		setElementAlpha(previewObject, 240)
+		-- Auto-scale based on bounding box to fit nicely
+		local minX, minY, minZ, maxX, maxY, maxZ = getElementBoundingBox(previewObject)
+		if minX then
+			local sizeX = math.abs(maxX - minX)
+			local sizeY = math.abs(maxY - minY)
+			local sizeZ = math.abs(maxZ - minZ)
+			local maxSize = math.max(sizeX, sizeY, sizeZ)
+			if maxSize > 0 then
+				local targetSize = 0.22
+				local scale = targetSize / maxSize
+				setObjectScale(previewObject, scale)
+			end
+		end
+		previewModel = model
+	end
+
+	-- Update position each frame: place slightly right of center, close to camera
+	if isElement(previewObject) then
+		local cx, cy, cz, tx, ty, tz = getCameraMatrix()
+		if cx then
+			-- Forward vector
+			local fwdX, fwdY, fwdZ = tx - cx, ty - cy, tz - cz
+			local fwdLen = math.sqrt(fwdX*fwdX + fwdY*fwdY + fwdZ*fwdZ)
+			if fwdLen > 0 then
+				fwdX, fwdY, fwdZ = fwdX/fwdLen, fwdY/fwdLen, fwdZ/fwdLen
+				-- Right vector (cross forward with world up)
+				local rightX = fwdY
+				local rightY = -fwdX
+				-- Position: 1.5 forward, 0.5 right, 0.15 down from camera center
+				local dist = 1.5
+				local wx = cx + fwdX * dist + rightX * 0.5
+				local wy = cy + fwdY * dist + rightY * 0.5
+				local wz = cz + fwdZ * dist - 0.15
+				setElementPosition(previewObject, wx, wy, wz)
+			end
+		end
+		previewRotation = (previewRotation + 0.5) % 360
+		setElementRotation(previewObject, 350, 0, previewRotation)
 	end
 end
 

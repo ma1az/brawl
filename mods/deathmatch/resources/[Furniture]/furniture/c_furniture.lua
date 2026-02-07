@@ -39,6 +39,8 @@ local selectedHifi = nil
 local realPos = {x=0, y=0, z=0}
 local snapEnabled = false
 local surfaceSnapEnabled = false
+local editMode = nil -- "place" (from inventory) or "arrange" (existing furniture)
+local originalPos = nil -- {x, y, z, rot} stored before arranging
 
 -- Furniture access granted by interior owner (synced from server)
 local hasFurnitureAccess = false
@@ -222,7 +224,7 @@ function Furnitures.draw()
             if surfaceSnapEnabled then
                 -- Raycast down to find floor (Start higher, scan deeper)
                 -- Corrected arguments: startX, startY, startZ, endX, endY, endZ, checkBuildings, checkVehicles, checkPeds, checkObjects, checkDummies, seeThroughStuff, ignoreSomeObjectForCamera, ignoredElement
-                local hit, hX, hY, hZ = processLineOfSight(finalX, finalY, finalZ + 2, finalX, finalY, finalZ - 100, true, true, false, true, true, false, false, selectedFurniture)
+                local hit, hX, hY, hZ = processLineOfSight(finalX, finalY, finalZ + 2, finalX, finalY, finalZ - 100, true, true, false, true, true, false, false, false, selectedFurniture)
                 if hit then
                      -- Get distance from center to base to place it ON the floor
                     local distToBase = getElementDistanceFromCentreOfMassToBaseOfModel(selectedFurniture) or 0
@@ -272,9 +274,11 @@ function nearByID()
 end
 function Furnitures.editFurniture()
 	local data = {}
-	--setElementAlpha(localPlayer,255)
-	--setFreecamDisabled()
-	--setCameraTarget(localPlayer)
+	-- Store original position before arranging so we can restore on cancel
+	local ox, oy, oz = getElementPosition(selectedFurniture)
+	local _, _, orot = getElementRotation(selectedFurniture)
+	originalPos = {x=ox, y=oy, z=oz, rot=orot}
+	editMode = "arrange"
 	triggerServerEvent("Furnitures->attachFurniture", localPlayer, localPlayer, selectedFurniture, data)
 	showEditInterface = false -- Reverted: Menu hides when arranging
     triggerEvent("Furnitures->ForceEditorState", localPlayer, true) -- Open Editor Menu
@@ -415,6 +419,42 @@ function canClientManageFurniture(element)
 end
 
 function Furnitures.click(button, state, _, _, _, _, _, element)
+	-- If furniture is on hand, handle cancel/place FIRST (skip context menu)
+	if getElementData(localPlayer, "Furniture->isFurnitureOnHand") and button == "right" and state == "down" and selectedFurniture then
+		if editMode == "place" then
+			triggerServerEvent("Furnitures->cancelPlace", localPlayer, localPlayer, selectedFurniture)
+			setElementData(selectedFurniture, "Furniture->used", false)
+			setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
+			selectedFurniture = nil
+			activeKeys = {}
+			editMode = nil
+			originalPos = nil
+			outputChatBox("Furniture placement cancelled. Item returned to inventory.", 255, 194, 14)
+		elseif editMode == "arrange" and originalPos then
+			triggerServerEvent("Furnitures->cancelArrange", localPlayer, localPlayer, selectedFurniture, originalPos.x, originalPos.y, originalPos.z, originalPos.rot)
+			setElementPosition(selectedFurniture, originalPos.x, originalPos.y, originalPos.z)
+			setElementRotation(selectedFurniture, 0, 0, originalPos.rot)
+			setElementData(selectedFurniture, "Furniture->used", false)
+			setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
+			selectedFurniture = nil
+			activeKeys = {}
+			editMode = nil
+			originalPos = nil
+			outputChatBox("Furniture arrangement cancelled.", 255, 194, 14)
+		else
+			local _x, _y, _z = getElementPosition(selectedFurniture)
+			local _, _, _rot = getElementRotation(selectedFurniture)
+			local _int, _dim = getElementInterior(selectedFurniture),getElementDimension(selectedFurniture)
+			triggerServerEvent("Furnitures->drop", localPlayer, localPlayer, selectedFurniture, _x,_y,_z,_int,_dim,_rot)
+			setElementData(selectedFurniture, "Furniture->used", false)
+			setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
+			selectedFurniture = nil
+			activeKeys = {}
+			editMode = nil
+			originalPos = nil
+		end
+		return
+	end
 	if button == "right" and state == "down" then
 		if element and isElement(element) then
 			if getElementData(element, "Furnitures->isFurniture") then
@@ -464,15 +504,42 @@ function Furnitures.click(button, state, _, _, _, _, _, element)
 			
 			return
 		elseif button == "right" and state == "down" and selectedFurniture then
-			-- Logic from 'F' key to Finish/Drop
-			local _x, _y, _z = getElementPosition(selectedFurniture)
-			local _, _, _rot = getElementRotation(selectedFurniture)
-			local _int, _dim = getElementInterior(selectedFurniture),getElementDimension(selectedFurniture)
-			triggerServerEvent("Furnitures->drop", localPlayer, localPlayer, selectedFurniture, _x,_y,_z,_int,_dim,_rot)
-			setElementData(selectedFurniture, "Furniture->used", false)
-			setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
-			selectedFurniture = nil
-			activeKeys = {}
+			-- Cancel editing: behavior depends on how the furniture got into edit mode
+			if editMode == "place" then
+				-- Placed from inventory/shop: return item to inventory
+				triggerServerEvent("Furnitures->cancelPlace", localPlayer, localPlayer, selectedFurniture)
+				setElementData(selectedFurniture, "Furniture->used", false)
+				setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
+				selectedFurniture = nil
+				activeKeys = {}
+				editMode = nil
+				originalPos = nil
+				outputChatBox("Furniture placement cancelled. Item returned to inventory.", 255, 194, 14)
+			elseif editMode == "arrange" and originalPos then
+				-- Arranged existing furniture: restore original position, no changes
+				triggerServerEvent("Furnitures->cancelArrange", localPlayer, localPlayer, selectedFurniture, originalPos.x, originalPos.y, originalPos.z, originalPos.rot)
+				setElementPosition(selectedFurniture, originalPos.x, originalPos.y, originalPos.z)
+				setElementRotation(selectedFurniture, 0, 0, originalPos.rot)
+				setElementData(selectedFurniture, "Furniture->used", false)
+				setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
+				selectedFurniture = nil
+				activeKeys = {}
+				editMode = nil
+				originalPos = nil
+				outputChatBox("Furniture arrangement cancelled.", 255, 194, 14)
+			else
+				-- Fallback: just drop at current position
+				local _x, _y, _z = getElementPosition(selectedFurniture)
+				local _, _, _rot = getElementRotation(selectedFurniture)
+				local _int, _dim = getElementInterior(selectedFurniture),getElementDimension(selectedFurniture)
+				triggerServerEvent("Furnitures->drop", localPlayer, localPlayer, selectedFurniture, _x,_y,_z,_int,_dim,_rot)
+				setElementData(selectedFurniture, "Furniture->used", false)
+				setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
+				selectedFurniture = nil
+				activeKeys = {}
+				editMode = nil
+				originalPos = nil
+			end
 			return
 		end
 	end
@@ -645,6 +712,47 @@ function Furnitures.onKey(key, state)
 			triggerServerEvent("Furnitures->setPos", localPlayer, localPlayer, selectedFurniture, {x, y, z, newRot})
 		end
 	end
+	-- Right-click (mouse2) cancel - reliable via onClientKey, fires regardless of cursor state
+	if key == "mouse2" and state and selectedFurniture and getElementData(localPlayer, "Furniture->isFurnitureOnHand") then
+		if editMode == "place" then
+			-- Placed from inventory: return item to inventory
+			triggerServerEvent("Furnitures->cancelPlace", localPlayer, localPlayer, selectedFurniture)
+			setElementData(selectedFurniture, "Furniture->used", false)
+			setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
+			selectedFurniture = nil
+			activeKeys = {}
+			editMode = nil
+			originalPos = nil
+			outputChatBox("Furniture placement cancelled. Item returned to inventory.", 255, 194, 14)
+		elseif editMode == "arrange" and originalPos then
+			-- Arranged existing furniture: restore original position
+			triggerServerEvent("Furnitures->cancelArrange", localPlayer, localPlayer, selectedFurniture, originalPos.x, originalPos.y, originalPos.z, originalPos.rot)
+			setElementPosition(selectedFurniture, originalPos.x, originalPos.y, originalPos.z)
+			setElementRotation(selectedFurniture, 0, 0, originalPos.rot)
+			setElementData(selectedFurniture, "Furniture->used", false)
+			setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
+			selectedFurniture = nil
+			activeKeys = {}
+			editMode = nil
+			originalPos = nil
+			outputChatBox("Furniture arrangement cancelled.", 255, 194, 14)
+		else
+			-- Fallback: drop at current position
+			local _x, _y, _z = getElementPosition(selectedFurniture)
+			local _, _, _rot = getElementRotation(selectedFurniture)
+			local _int, _dim = getElementInterior(selectedFurniture),getElementDimension(selectedFurniture)
+			triggerServerEvent("Furnitures->drop", localPlayer, localPlayer, selectedFurniture, _x,_y,_z,_int,_dim,_rot)
+			setElementData(selectedFurniture, "Furniture->used", false)
+			setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
+			selectedFurniture = nil
+			activeKeys = {}
+			editMode = nil
+			originalPos = nil
+		end
+		cancelEvent()
+		return
+	end
+
 	if key == "f" and state and selectedFurniture and getElementData(localPlayer, "Furniture->isFurnitureOnHand") then
 		local _x, _y, _z = getElementPosition(selectedFurniture)
 		local _, _, _rot = getElementRotation(selectedFurniture)
@@ -655,6 +763,8 @@ function Furnitures.onKey(key, state)
 		setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
 		selectedFurniture = nil
 		activeKeys = {} -- Reset keys on drop
+		editMode = nil
+		originalPos = nil
 	end
 	if not selectedFurniture then return end
 	if key == "pgup" or key == "pgdn" and state then cancelEvent() end
@@ -681,14 +791,26 @@ end
 
 function Furnitures.cancelEdit()
     if selectedFurniture and getElementData(localPlayer, "Furniture->isFurnitureOnHand") then
-        local _x, _y, _z = getElementPosition(selectedFurniture)
-        local _, _, _rot = getElementRotation(selectedFurniture)
-        local _int, _dim = getElementInterior(selectedFurniture),getElementDimension(selectedFurniture)
-        triggerServerEvent("Furnitures->drop", localPlayer, localPlayer, selectedFurniture, _x,_y,_z,_int,_dim,_rot)
+        if editMode == "place" then
+            triggerServerEvent("Furnitures->cancelPlace", localPlayer, localPlayer, selectedFurniture)
+            outputChatBox("Furniture placement cancelled. Item returned to inventory.", 255, 194, 14)
+        elseif editMode == "arrange" and originalPos then
+            triggerServerEvent("Furnitures->cancelArrange", localPlayer, localPlayer, selectedFurniture, originalPos.x, originalPos.y, originalPos.z, originalPos.rot)
+            setElementPosition(selectedFurniture, originalPos.x, originalPos.y, originalPos.z)
+            setElementRotation(selectedFurniture, 0, 0, originalPos.rot)
+            outputChatBox("Furniture arrangement cancelled.", 255, 194, 14)
+        else
+            local _x, _y, _z = getElementPosition(selectedFurniture)
+            local _, _, _rot = getElementRotation(selectedFurniture)
+            local _int, _dim = getElementInterior(selectedFurniture),getElementDimension(selectedFurniture)
+            triggerServerEvent("Furnitures->drop", localPlayer, localPlayer, selectedFurniture, _x,_y,_z,_int,_dim,_rot)
+        end
         setElementData(selectedFurniture, "Furniture->used", false)
         setElementData(localPlayer, "Furniture->isFurnitureOnHand", false)
         selectedFurniture = nil
         activeKeys = {}
+        editMode = nil
+        originalPos = nil
     end
 end
 addEvent("Furnitures->CancelEdit", true)
@@ -698,8 +820,8 @@ addEvent("Furnitures->receiveElement", true)
 addEventHandler("Furnitures->receiveElement", root, function(element)
 	selectedFurniture = element
     local rx, ry, rz = getElementPosition(selectedFurniture)
-    realPos = {x=rx, y=ry, z=rz} -- Init Real Pos
-	setElementRotation(selectedFurniture,0,0,Furnitures.getRotation())
+    realPos = {x=rx, y=ry, z=rz} -- Init Real Pos	editMode = "place" -- Placed from inventory
+	originalPos = nil	setElementRotation(selectedFurniture,0,0,Furnitures.getRotation())
 end)
 
 function getDistanceFromElement(from, to)

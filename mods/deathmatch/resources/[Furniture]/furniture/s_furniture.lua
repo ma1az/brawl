@@ -242,8 +242,9 @@ function loadObjectWhereID(dbid)
 	end
 end
 
-function Furnitures.loadMyFurnitures(dbid)
+function Furnitures.loadMyFurnitures(dbid, targetPlayer)
 	if not dbid then return end
+	local playerForCallback = targetPlayer or source
 	local myFurnitures = {}
 	--insertQuery = dbPoll(dbQuery(connection,"SELECT * FROM furnitures WHERE owner = " .. dbid .. " AND placed = 0"),-1)
 	dbQuery(function(queryHandle, player)
@@ -264,9 +265,12 @@ function Furnitures.loadMyFurnitures(dbid)
 				myFurnitures[#myFurnitures + 1] = {id = id_, x = x_, y = y_, z = z_, rot = rot_, interior = interior_, dimension = dimension_, model = model_, owner = owner_, placed = placed_}
 			end         
 			triggerClientEvent(player, "GetMyFurnitures", player, myFurnitures)
+		else
+			-- Send empty list so client clears stale data
+			triggerClientEvent(player, "GetMyFurnitures", player, {})
 		end
 
-	end, {source}, connection, "SELECT * FROM furnitures WHERE owner = ? AND placed = 0", dbid)
+	end, {playerForCallback}, connection, "SELECT * FROM furnitures WHERE owner = ? AND placed = 0", dbid)
 end
 addEvent("Furnitures->loadMyFurnitures", true)
 addEventHandler("Furnitures->loadMyFurnitures", root, Furnitures.loadMyFurnitures)
@@ -318,6 +322,9 @@ function Furnitures.destroy(player, furniture)
 	end
 
 	if isElement(furniture) then destroyElement(furniture) end
+
+	-- Refresh the player's furniture inventory list immediately
+	Furnitures.loadMyFurnitures(playerID, player)
 end
 addEvent("Furnitures->destroyFurniture", true)
 addEventHandler("Furnitures->destroyFurniture", root, Furnitures.destroy)
@@ -345,6 +352,52 @@ function Furnitures.drop(player, furniture, x,y,z,int,dim,rot)
 end
 addEvent("Furnitures->drop", true)
 addEventHandler("Furnitures->drop", root, Furnitures.drop)
+
+-- Cancel placement (item was placed from inventory/shop) - return to inventory
+function Furnitures.cancelPlace(player, furniture)
+	if not isElement(furniture) then return end
+	local id = getElementData(furniture, "Furnitures->id")
+	if not id then return end
+
+	attachedFurnitures[player] = nil
+	setElementData(player, "Furniture->isFurnitureOnHand", false)
+
+	-- Set placed=0 to return to inventory
+	dbExec(connection, "UPDATE furnitures SET placed = 0 WHERE id = ?", id)
+
+	if cache[id] then
+		cache[id].placed = 0
+	end
+
+	if isElement(furniture) then destroyElement(furniture) end
+
+	-- Refresh the player's furniture inventory list immediately
+	local playerID = getElementData(player, "dbid")
+	if playerID then
+		Furnitures.loadMyFurnitures(playerID, player)
+	end
+end
+addEvent("Furnitures->cancelPlace", true)
+addEventHandler("Furnitures->cancelPlace", root, Furnitures.cancelPlace)
+
+-- Cancel arrangement (existing furniture was being moved) - restore original position
+function Furnitures.cancelArrange(player, furniture, origX, origY, origZ, origRot)
+	if not isElement(furniture) then return end
+	local id = getElementData(furniture, "Furnitures->id")
+
+	attachedFurnitures[player] = nil
+	setElementData(player, "Furniture->isFurnitureOnHand", false)
+
+	-- Restore original position/rotation
+	detachElements(furniture, player)
+	setElementPosition(furniture, origX, origY, origZ)
+	setElementRotation(furniture, 0, 0, origRot)
+	setElementCollisionsEnabled(furniture, true)
+
+	-- No DB update needed - position stays as it was before
+end
+addEvent("Furnitures->cancelArrange", true)
+addEventHandler("Furnitures->cancelArrange", root, Furnitures.cancelArrange)
 
 function Furnitures.buy(client, category, key)
 	local category = tonumber(category)
