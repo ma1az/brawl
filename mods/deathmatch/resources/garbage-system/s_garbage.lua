@@ -56,6 +56,9 @@ local function ensureTables()
 			`x`              FLOAT NOT NULL,
 			`y`              FLOAT NOT NULL,
 			`z`              FLOAT NOT NULL,
+			`rx`             FLOAT NOT NULL DEFAULT 0,
+			`ry`             FLOAT NOT NULL DEFAULT 0,
+			`rz`             FLOAT NOT NULL DEFAULT 0,
 			`interior`       INT NOT NULL DEFAULT 0,
 			`dimension`      INT NOT NULL DEFAULT 0,
 			`trash_type`     INT NOT NULL DEFAULT 1,
@@ -65,6 +68,10 @@ local function ensureTables()
 			PRIMARY KEY (`id`)
 		)
 	]])
+	-- Add rotation columns if the table already existed without them
+	dbExec(mysql:getConn(), "ALTER TABLE `garbage_locations` ADD COLUMN IF NOT EXISTS `rx` FLOAT NOT NULL DEFAULT 0")
+	dbExec(mysql:getConn(), "ALTER TABLE `garbage_locations` ADD COLUMN IF NOT EXISTS `ry` FLOAT NOT NULL DEFAULT 0")
+	dbExec(mysql:getConn(), "ALTER TABLE `garbage_locations` ADD COLUMN IF NOT EXISTS `rz` FLOAT NOT NULL DEFAULT 0")
 end
 
 -- ============================================================
@@ -78,11 +85,12 @@ local function spawnTrash(row)
 	local trashType = tonumber(row.trash_type) or 1
 	local model     = GARBAGE_TRASH_MODELS[trashType] or 1337
 	local x, y, z   = tonumber(row.x), tonumber(row.y), tonumber(row.z)
+	local rx, ry, rz = tonumber(row.rx) or 0, tonumber(row.ry) or 0, tonumber(row.rz) or 0
 	local interior   = tonumber(row.interior)  or 0
 	local dimension  = tonumber(row.dimension) or 0
 	local nextAvail  = tonumber(row.next_available) or 0
 
-	local obj = createObject(model, x, y, z)
+	local obj = createObject(model, x, y, z, rx, ry, rz)
 	if not obj then return nil end
 
 	setElementInterior(obj, interior)
@@ -662,10 +670,10 @@ addEventHandler("objectMover:onSaved", root, function(player, element, cx, cy, c
 	local trashId = getElementData(element, "garbage:trashId")
 	if not trashId then return end   -- not a garbage object → let other handlers deal with it
 
-	-- Save new position to database
+	-- Save new position and rotation to database
 	setElementFrozen(element, true)
 	setElementCollisionsEnabled(element, true)
-	dbExec(mysql:getConn(), "UPDATE garbage_locations SET x=?, y=?, z=? WHERE id=?", cx, cy, cz, trashId)
+	dbExec(mysql:getConn(), "UPDATE garbage_locations SET x=?, y=?, z=?, rx=?, ry=?, rz=? WHERE id=?", cx, cy, cz, rx, ry, rz, trashId)
 
 	if isElement(player) then
 		outputChatBox("Saved garbage location #" .. trashId .. ".", player, 0, 255, 0)
@@ -691,12 +699,13 @@ addCommandHandler("createtrash", function(player, cmd, trashType)
 	local createdBy  = tonumber(getElementData(player, "account:id")) or 0
 
 	local id = mysql:query_insert_free(
-		"INSERT INTO garbage_locations (x, y, z, interior, dimension, trash_type, next_available, created_by) VALUES (?, ?, ?, ?, ?, ?, 0, ?)",
+		"INSERT INTO garbage_locations (x, y, z, rx, ry, rz, interior, dimension, trash_type, next_available, created_by) VALUES (?, ?, ?, 0, 0, 0, ?, ?, ?, 0, ?)",
 		x, y, z, interior, dimension, trashType, createdBy)
 
 	if id then
 		spawnTrash({
 			id = id, x = x, y = y, z = z,
+			rx = 0, ry = 0, rz = 0,
 			interior = interior, dimension = dimension,
 			trash_type = trashType, next_available = 0,
 		})

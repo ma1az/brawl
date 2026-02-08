@@ -214,7 +214,7 @@ end
 renderLoop = function()
 	if not movingObject or not isElement(movingObject) then cleanup() return end
 
-	-- ---- Free-look: track mouse2 state every frame (like 3DEditor) ----
+	-- ---- Free-look: track mouse2 state every frame ---- --
 	local mouse2Down = getKeyState("mouse2")
 	if mouse2Down and not freeLookActive then
 		-- Right click pressed: hide the M-key cursor and enable free movement
