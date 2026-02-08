@@ -134,7 +134,22 @@ function dropItem(itemID, x, y, z, ammo, keepammo, cancelAnim)
 		return false
 	end
 
+	-- Validate coordinates from the client
+	x, y, z = tonumber(x), tonumber(y), tonumber(z)
+	if not x or not y or not z then
+		outputDebugString("[ITEM-SYSTEM] dropItem: invalid coordinates received from " .. getPlayerName(source), 2)
+		triggerClientEvent(source, "finishItemDrop", source)
+		return false
+	end
 
+	-- Sanity check: if Z is 0 or suspiciously far from the player, fallback to player position
+	local px, py, pz = getElementPosition(source)
+	if z == 0 or math.abs(z - pz) > 20 then
+		outputDebugString("[ITEM-SYSTEM] dropItem: Z coordinate (" .. z .. ") looks wrong for player at Z=" .. pz .. ". Using player Z.", 2)
+		z = pz - 0.5
+		x = px
+		y = py
+	end
 
 	local interior = getElementInterior(source)
 	local dimension = getElementDimension(source)
@@ -353,7 +368,24 @@ function dropItem(itemID, x, y, z, ammo, keepammo, cancelAnim)
 
 
 				local rx, ry, rz, zoffset = getItemRotInfo(itemID, itemValue)
+				zoffset = zoffset or 0
+
+				if not modelid then
+					outputDebugString("[ITEM-SYSTEM] dropItem: getItemModel returned nil for itemID=" .. tostring(itemID) .. " itemValue=" .. tostring(itemValue) .. ". Using fallback model 1271.", 2)
+					modelid = 1271
+				end
+
 				local obj = exports['item-world']:createItem(id, itemID, itemValue, modelid, x, y, z + zoffset - 0.05, rx, ry, rz+rz2)
+
+				if not isElement(obj) then
+					-- Object creation failed: rollback DB insert and inform the player
+					outputDebugString("[ITEM-SYSTEM] dropItem: createItem failed for dbID=" .. tostring(id) .. " itemID=" .. tostring(itemID) .. " model=" .. tostring(modelid), 1)
+					dbExec(exports.mysql:getConn('mta'), "DELETE FROM `worlditems` WHERE `id` = ?", id)
+					outputChatBox("Failed to place the item. Please try again.", source, 255, 0, 0)
+					triggerClientEvent(source, "finishItemDrop", source)
+					return
+				end
+
 				exports.pool:allocateElement(obj)
 
 				setElementInterior(obj, interior)
@@ -469,10 +501,21 @@ function dropItem(itemID, x, y, z, ammo, keepammo, cancelAnim)
 				elseif (itemID==42) then
 					modelid = 2690
 				else
-					modelid = weaponmodels[itemID]
+					modelid = weaponmodels[itemID] or 2969
 				end
 
 				local obj = exports['item-world']:createItem(id, -itemID, ammo, modelid, x, y, z - 0.4, 75, -10, rz2)
+
+				if not isElement(obj) then
+					-- Object creation failed: rollback DB insert and restore weapon
+					outputDebugString("[ITEM-SYSTEM] dropItem (weapon): createItem failed for dbID=" .. tostring(id) .. " weaponID=" .. tostring(itemID) .. " model=" .. tostring(modelid), 1)
+					dbExec(exports.mysql:getConn('mta'), "DELETE FROM `worlditems` WHERE `id` = ?", id)
+					exports.global:giveWeapon(source, itemID, ammo)
+					outputChatBox("Failed to place the weapon. Please try again.", source, 255, 0, 0)
+					triggerClientEvent(source, "finishItemDrop", source)
+					return
+				end
+
 				exports.pool:allocateElement(obj)
 
 				setElementInterior(obj, interior)

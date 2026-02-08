@@ -265,16 +265,17 @@ function getItemModel(id, value, metadata)
 		return weaponmodels[ tonumber(itemExploded[1]) ] or 1271
 	elseif id == 223 and value then
 		local itemExploded = explode(":", value)
-		return tonumber(itemExploded[2])
+		return tonumber(itemExploded[2]) or 1271
 	elseif ( id == 89 or id == 95 ) and value and value ~= 1 then
 		local parts = exports.global:explode(':', value)
 		if parts[2] then
-			return tonumber(parts[2])
+			return tonumber(parts[2]) or 1271
 		end
+		return ( g_items[id] or { nil, nil, nil, 1271 } )[4] or 1271
 	elseif dynamicModels[id] and tonumber(value) and tonumber(value) >= dynamicModels[id][1] then
 		return dynamicModels[id][2]
 	else
-		return ( g_items[id] or { nil, nil, nil, 1271 } )[4]
+		return ( g_items[id] or { nil, nil, nil, 1271 } )[4] or 1271
 	end
 end
 

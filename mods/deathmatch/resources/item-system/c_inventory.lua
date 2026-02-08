@@ -744,7 +744,21 @@ addEventHandler( "onClientClick", getRootElement( ),
 								local y = oldX * matrix[1][2] + oldY * matrix [2][2] + oldZ * matrix [3][2] + matrix [4][2]
 								local z = oldX * matrix[1][3] + oldY * matrix [2][3] + oldZ * matrix [3][3] + matrix [4][3]
 								
-								local z = getGroundPosition( x, y, z + 2 )
+								-- Use processLineOfSight for reliable ground detection in interiors,
+								-- falling back to getGroundPosition and then player Z
+								local hitZ
+								local hit, hitX2, hitY2, hitZ2 = processLineOfSight(x, y, z + 2, x, y, z - 50, true, true, true, true, true)
+								if hit then
+									hitZ = hitZ2
+								else
+									hitZ = getGroundPosition(x, y, z + 2)
+								end
+								-- Validate: if hitZ is 0 or too far from the player's Z, use the player's Z as fallback
+								local _, _, playerZ = getElementPosition(localPlayer)
+								if not hitZ or hitZ == 0 or math.abs(hitZ - playerZ) > 15 then
+									hitZ = playerZ - 0.5
+								end
+								local z = hitZ
 								
 								if itemID > 0 then
 									waitingForItemDrop = true

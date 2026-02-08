@@ -1,5 +1,5 @@
 <meta>
-    <oop>true</oop>
+    <min_mta_version server="1.5.8-9.20957"></min_mta_version>
     <info type="map" version="1.0.0"></info>
     <map src="AngelNotFinal.map" dimension="0"></map>
     <settings>
@@ -11,7 +11,7 @@
         <setting name="#waveheight" value="[ 0 ]"></setting>
         <setting name="#locked_time" value="[ true ]"></setting>
         <setting name="#weather" value="[ 0 ]"></setting>
-        <setting name="#time" value="0:0"></setting>
+        <setting name="#time" value="12:0"></setting>
     </settings>
     <script src="mapEditorScriptingExtension_s.lua" type="server"></script>
     <script src="mapEditorScriptingExtension_c.lua" type="client" validate="false"></script>
