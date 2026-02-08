@@ -37,8 +37,15 @@ local function startMoverForObject(object)
     onSave = function(obj, cx, cy, cz, rx, ry, rz)
       if isElement(obj) then
         setElementCollisionsEnabled(obj, true)
-        triggerServerEvent("item:move:save", obj, cx, cy, cz, rx, ry, rz)
-        outputChatBox("Item position saved.", 0, 255, 0)
+
+        -- Check if this is an object-system object (has object:dbid)
+        local objectDbId = getElementData(obj, "object:dbid")
+        if objectDbId then
+          -- Object-system object (interior custom objects) – send save event with dbid
+          triggerServerEvent("objectSystem:moveSave", localPlayer, objectDbId, cx, cy, cz, rx, ry, rz)
+        end
+        -- Item-world objects are saved automatically via the server-side
+        -- objectMover:onSaved handler in item-world – no client trigger needed.
       end
     end,
     onCancel = function(obj)

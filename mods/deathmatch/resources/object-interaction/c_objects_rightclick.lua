@@ -140,6 +140,16 @@ function clickObject(button, state, absX, absY, wx, wy, wz, element)
 						end, false)
 					end
 				end
+
+				-- Allow admins to move object-system objects (custom interior objects)
+				local objectDbId = getElementData(element, "object:dbid")
+				if objectDbId and exports.integration:isPlayerTrialAdmin(localPlayer, true) then
+					if not rcMenu then rcMenu = exports.rightclick:create("Object") end
+					row.move = exports.rightclick:addrow("Move")
+					addEventHandler("onClientGUIClick", row.move, function (button, state)
+						triggerEvent("item:move", root, element)
+					end, false)
+				end
 			end
 
 

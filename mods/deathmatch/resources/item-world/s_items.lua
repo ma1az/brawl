@@ -137,3 +137,48 @@ function deleteAll( id, value, no_sql )
 	end
 	return count
 end
+
+-- ============================================================
+-- objectMover:onSaved – persist moved item positions to DB
+-- This fires server-side when the object-mover confirms a save,
+-- so the DB update happens immediately without a client round-trip.
+-- ============================================================
+
+addEvent("objectMover:onSaved", true)
+addEventHandler("objectMover:onSaved", root, function(player, element, x, y, z, rx, ry, rz)
+	-- Only handle valid objects
+	if not isElement(element) or getElementType(element) ~= "object" then return end
+
+	-- Only handle item-world elements (check parent chain)
+	if getElementParent(getElementParent(element)) ~= getResourceRootElement(getThisResource()) then return end
+
+	local itemDbId = tonumber(getElementData(element, "id"))
+	if not itemDbId then
+		outputDebugString("[ITEM-WORLD] objectMover:onSaved – element has no 'id' data, skipping.")
+		return
+	end
+
+	-- Validate coordinates
+	x, y, z = tonumber(x), tonumber(y), tonumber(z)
+	rx, ry, rz = tonumber(rx), tonumber(ry), tonumber(rz)
+	if not (x and y and z and rx and ry and rz) then
+		outputDebugString("[ITEM-WORLD] objectMover:onSaved – invalid coordinates for item #" .. itemDbId)
+		return
+	end
+
+	-- Save to database with parameterized query
+	if dbExec(mysql:getConn('mta'), "UPDATE `worlditems` SET `x`=?, `y`=?, `z`=?, `rx`=?, `ry`=?, `rz`=?, `useExactValues`=1 WHERE `id`=?", x, y, z, rx, ry, rz, itemDbId) then
+		setElementPosition(element, x, y, z)
+		setElementRotation(element, rx, ry, rz)
+		setElementData(element, "useExactValues", true)
+
+		if isElement(player) then
+			outputChatBox("Saved item #" .. itemDbId .. " position.", player, 0, 255, 0)
+		end
+	else
+		outputDebugString("[ITEM-WORLD] DB update failed for item #" .. itemDbId)
+		if isElement(player) then
+			outputChatBox("Failed to save item position. Please try again.", player, 255, 0, 0)
+		end
+	end
+end)

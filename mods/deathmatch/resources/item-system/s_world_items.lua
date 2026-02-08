@@ -713,13 +713,46 @@ end
 addEvent("moveItem", true)
 addEventHandler("moveItem", getRootElement(), moveItem)
 
+-- Reverts an item's server element position back to what the database has.
+-- Called when a move save fails so the element doesn't desync from the DB.
+local function revertItemPositionFromDB(element, itemDbId)
+	if not isElement(element) or not itemDbId then return end
+	dbQuery(function(qh)
+		local rows = dbPoll(qh, 0)
+		if rows and #rows > 0 then
+			local row = rows[1]
+			if isElement(element) then
+				setElementPosition(element, tonumber(row.x) or 0, tonumber(row.y) or 0, tonumber(row.z) or 0)
+				setElementRotation(element, tonumber(row.rx) or 0, tonumber(row.ry) or 0, tonumber(row.rz) or 0)
+			end
+		end
+	end, exports.mysql:getConn('mta'), "SELECT `x`, `y`, `z`, `rx`, `ry`, `rz` FROM `worlditems` WHERE `id`=?", itemDbId)
+end
+
 addEvent('item:move:save', true)
 addEventHandler('item:move:save', root,
 	function(x, y, z, rx, ry, rz)
-		local reset = function()
-			setElementPosition(source, getElementPosition(source))
-			setElementRotation(source, getElementRotation(source))
+		-- Validate source element
+		if not isElement(source) then
+			outputDebugString("[ITEM-MOVE] item:move:save failed: source is not a valid element.")
+			return
 		end
+
+		local itemDbId = tonumber(getElementData(source, "id"))
+		if not itemDbId then
+			outputDebugString("[ITEM-MOVE] item:move:save failed: element has no 'id' data.")
+			return
+		end
+
+		-- Validate coordinates
+		if not (tonumber(x) and tonumber(y) and tonumber(z) and tonumber(rx) and tonumber(ry) and tonumber(rz)) then
+			outputDebugString("[ITEM-MOVE] item:move:save failed for item #" .. itemDbId .. ": invalid coordinates.")
+			revertItemPositionFromDB(source, itemDbId)
+			return
+		end
+
+		x, y, z, rx, ry, rz = tonumber(x), tonumber(y), tonumber(z), tonumber(rx), tonumber(ry), tonumber(rz)
+
 		--get int and dim from object
 		local dimension = getElementDimension(source)
 		local interior = getElementInterior(source)
@@ -727,33 +760,39 @@ addEventHandler('item:move:save', root,
 		if (dimension < 20000 and interior > 0 and hasItem(client, 4, dimension)) or (dimension < 20000 and interior > 0 and hasItem(client, 5, dimension)) or (dimension > 20000 and interior > 0 and hasItem(client, 3, dimension-20000)) or (exports.integration:isPlayerTrialAdmin(client) and exports.global:isAdminOnDuty(client)) or (exports.integration:isPlayerScripter(client) and exports.global:isStaffOnDuty(client)) or (dimension == 0) or (interior == 0) then
 			if not canMove(client, source) then
 				outputChatBox("You can not move this item. Contact an admin via F1.", client, 255, 0, 0)
-				reset()
+				revertItemPositionFromDB(source, itemDbId)
 				return
 			end
 
 			local itemID = getElementData(source, "itemID")
 			if itemID == 138 and not exports.integration:isPlayerAdmin(client) then
 				outputChatBox("Only a Lead+ admin can move this item.", client, 255, 0, 0)
-				reset()
+				revertItemPositionFromDB(source, itemDbId)
 				return
 			end
 
 			if itemID == 139 and not exports.integration:isPlayerTrialAdmin(client) then
 				outputChatBox("Only a Super+ admin can move this item.", client, 255, 0, 0)
-				reset()
+				revertItemPositionFromDB(source, itemDbId)
 				return
 			end
 
-
-			if mysql:query_free("UPDATE worlditems SET x = " .. x .. ", y = " .. y .. ", z = " .. z .. ", rx = " .. rx .. ", ry = " .. ry .. ", rz = " .. rz .. ", useExactValues = 1 WHERE id = " .. getElementData( source, "id" ) ) then
+			if dbExec(exports.mysql:getConn('mta'), "UPDATE `worlditems` SET `x`=?, `y`=?, `z`=?, `rx`=?, `ry`=?, `rz`=?, `useExactValues`=1 WHERE `id`=?", x, y, z, rx, ry, rz, itemDbId) then
 				setElementPosition(source, x, y, z)
 				setElementData(source, "useExactValues", true)
 				setElementRotation(source, rx, ry, rz)
 
-				outputChatBox('Saved item position for item #' .. getElementData( source, 'id' ) .. '.', client, 0, 255, 0)
+				outputChatBox('Saved item position for item #' .. itemDbId .. '.', client, 0, 255, 0)
+			else
+				outputChatBox("Failed to save item position. Please try again.", client, 255, 0, 0)
+				outputDebugString("[ITEM-MOVE] DB update failed for item #" .. itemDbId)
+				revertItemPositionFromDB(source, itemDbId)
 			end
 		else
-			reset()
+			if isElement(client) then
+				outputChatBox("You do not have permission to move this item here.", client, 255, 0, 0)
+			end
+			revertItemPositionFromDB(source, itemDbId)
 		end
 	end)
 

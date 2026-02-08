@@ -127,3 +127,55 @@ addCommandHandler("reloadinterior", function (player, command, dimension)
 		outputChatBox("You have successfully re-created the " .. objectCount .. " objects in dimension " .. dimension .. ".", player, 100, 255, 100)
 	end)
 end, false, false)
+
+-- ============================================================
+-- Object Move Save – persists moved objects back to the DB
+-- ============================================================
+
+addEvent("objectSystem:moveSave", true)
+addEventHandler("objectSystem:moveSave", root, function(dbid, x, y, z, rx, ry, rz)
+	-- Validate inputs
+	dbid = tonumber(dbid)
+	if not dbid then return end
+	x, y, z = tonumber(x), tonumber(y), tonumber(z)
+	rx, ry, rz = tonumber(rx), tonumber(ry), tonumber(rz)
+	if not (x and y and z and rx and ry and rz) then
+		outputDebugString("[OBJECT-SYSTEM] moveSave failed: invalid coordinates for object #" .. tostring(dbid))
+		return
+	end
+
+	-- Only admins can move interior objects
+	if not exports.integration:isPlayerTrialAdmin(client) then
+		outputChatBox("You need to be an admin to move interior objects.", client, 255, 0, 0)
+		return
+	end
+
+	-- Update DB
+	if dbExec(exports.mysql:getConn(), "UPDATE `objects` SET `posX`=?, `posY`=?, `posZ`=?, `rotX`=?, `rotY`=?, `rotZ`=? WHERE `id`=?", x, y, z, rx, ry, rz, dbid) then
+		-- Update in-memory cache so a restart or dimension reload reflects the change
+		local dimension = getElementDimension(client)
+		if objects[dimension] then
+			for i, obj in ipairs(objects[dimension]) do
+				if tostring(obj.id) == tostring(dbid) then
+					obj.x = x
+					obj.y = y
+					obj.z = z
+					obj.rot_x = rx
+					obj.rot_y = ry
+					obj.rot_z = rz
+					break
+				end
+			end
+		end
+
+		-- Re-sync the dimension to all players so the moved object is updated for everyone
+		syncDimension(dimension)
+
+		outputChatBox("Interior object #" .. dbid .. " position saved.", client, 0, 255, 0)
+	else
+		outputChatBox("Failed to save object position. Please try again.", client, 255, 0, 0)
+		outputDebugString("[OBJECT-SYSTEM] DB update failed for object #" .. dbid)
+		-- Re-sync to revert client-side position
+		syncDimension(getElementDimension(client))
+	end
+end)
