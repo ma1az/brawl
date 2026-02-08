@@ -9,9 +9,10 @@ local trashObjects   = {}   -- trashId (int)   → object element
 local loadZones      = {}   -- colShape element → vehicle element
 local dumpCol        = nil  -- dump zone colshape
 local dumpTimers     = {}   -- vehicle element  → timer
-local pickupDebounce = {}   -- serial (string)  → getTickCount()
-local vehicleLastLoad = {}  -- vehicle element  → timestamp (last trash loaded)
-local loadCooldowns   = {}  -- vehicle element  → getTickCount() (10s cooldown between loads)
+local pickupDebounce   = {}   -- serial (string)   → getTickCount()
+local trashPickupLocks = {}   -- trashId (int)     → true (lock while pickup is in progress)
+local vehicleLastLoad  = {}   -- vehicle element   → timestamp (last trash loaded)
+local loadCooldowns    = {}   -- vehicle element   → getTickCount() (10s cooldown between loads)
 
 local LOAD_COOLDOWN_MS = 10000  -- 10 seconds between loading trash
 local VEHICLE_INACTIVE_SECONDS = 3600  -- 1 hour = reset storage
@@ -454,10 +455,27 @@ addEventHandler("garbage:requestPickup", root, function(trash)
 		return
 	end
 
+	-- Per-trash lock: prevent two players from picking the same bin simultaneously
+	if trashPickupLocks[trashId] then
+		notifyPlayer(player, "Someone else is already collecting this garbage.")
+		return
+	end
+	trashPickupLocks[trashId] = true
+
+	-- Re-check cooldown after acquiring lock (another player may have just set it)
+	local nextAvailRecheck = tonumber(getElementData(trash, "garbage:nextAvailable")) or 0
+	local nowRecheck       = getNow()
+	if nextAvailRecheck > nowRecheck then
+		trashPickupLocks[trashId] = nil
+		local rem = nextAvailRecheck - nowRecheck
+		notifyPlayer(player, string.format("This garbage respawns in %02d:%02d.", math.floor(rem / 60), rem % 60))
+		return
+	end
+
 	-- ---- Execute pickup ----
 
-	-- Apply cooldown on the trash object
-	local newCooldown = now + GARBAGE_COOLDOWN_SECONDS
+	-- Apply cooldown on the trash object (synced to ALL players via element data)
+	local newCooldown = nowRecheck + GARBAGE_COOLDOWN_SECONDS
 	setElementData(trash, "garbage:nextAvailable", newCooldown, true)
 	dbExec(mysql:getConn(), "UPDATE garbage_locations SET next_available=? WHERE id=?", newCooldown, trashId)
 
@@ -473,8 +491,14 @@ addEventHandler("garbage:requestPickup", root, function(trash)
 		triggerClientEvent(player, "garbage:startCarryAnim", player)
 	else
 		clearPlayerCarry(player)
+		-- Rollback cooldown since pickup failed
+		setElementData(trash, "garbage:nextAvailable", 0, true)
+		dbExec(mysql:getConn(), "UPDATE garbage_locations SET next_available=0 WHERE id=?", trashId)
 		notifyPlayer(player, "Failed to pick up garbage. Try again.")
 	end
+
+	-- Release the per-trash lock
+	trashPickupLocks[trashId] = nil
 end)
 
 -- ============================================================

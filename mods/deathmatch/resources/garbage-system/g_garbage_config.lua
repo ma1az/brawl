@@ -23,14 +23,14 @@ GARBAGE_PAY_MIN = 30
 GARBAGE_PAY_MAX = 80
 
 -- Cooldown before the same trash object can be collected again (seconds)
-GARBAGE_COOLDOWN_SECONDS = 5 * 60
+GARBAGE_COOLDOWN_SECONDS = 10 * 60
 
 -- Vehicle load capacity (bags)
 GARBAGE_BASE_CAPACITY    = 10
-GARBAGE_CAPACITY_PER_LEVEL = 4
+GARBAGE_CAPACITY_PER_LEVEL = 3
 
 -- Maximum distance to pick up trash (world units)
-GARBAGE_PICKUP_DISTANCE = 3.0
+GARBAGE_PICKUP_DISTANCE = 2.8
 
 -- Dump location (drive here to unload)
 GARBAGE_DUMP_POSITION = { x = -1894.2470703125, y = -1671.7001953125, z = 23.015625 }
@@ -38,8 +38,8 @@ GARBAGE_DUMP_RADIUS   = 4
 GARBAGE_DUMP_WAIT_MS  = 3000
 
 -- Load zone (back of the Trashmaster – offset from vehicle origin)
-GARBAGE_LOAD_OFFSET = { x = 0, y = -4.2, z = 0.2 }
-GARBAGE_LOAD_RADIUS = 2.0
+GARBAGE_LOAD_OFFSET = { x = 0, y = -8, z = 0.2 }
+GARBAGE_LOAD_RADIUS = 1.0
 
 -- XP needed per level
 GARBAGE_LEVEL_REQUIREMENTS = {
