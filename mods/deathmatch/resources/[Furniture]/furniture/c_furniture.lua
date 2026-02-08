@@ -820,8 +820,10 @@ addEvent("Furnitures->receiveElement", true)
 addEventHandler("Furnitures->receiveElement", root, function(element)
 	selectedFurniture = element
     local rx, ry, rz = getElementPosition(selectedFurniture)
-    realPos = {x=rx, y=ry, z=rz} -- Init Real Pos	editMode = "place" -- Placed from inventory
-	originalPos = nil	setElementRotation(selectedFurniture,0,0,Furnitures.getRotation())
+    realPos = {x=rx, y=ry, z=rz} -- Init Real Pos
+	editMode = "place" -- Placed from inventory
+	originalPos = nil
+	setElementRotation(selectedFurniture, 0, 0, Furnitures.getRotation())
 end)
 
 function getDistanceFromElement(from, to)

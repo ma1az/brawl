@@ -651,13 +651,12 @@ addEventHandler("onPlayerWasted", root, function()
 end)
 
 -- ============================================================
--- GM / Owner trash relocation (direct 3DEditor save hook)
+-- GM / Owner trash relocation (object-mover save hook)
 -- ============================================================
 
--- Listen directly for 3DEditor's server-side save event.
--- This bypasses item-move entirely (item-system's handler interferes with non-world-items).
-addEvent("3DEditor:savedObject", true)
-addEventHandler("3DEditor:savedObject", root, function(sourceResource, element, cx, cy, cz, rx, ry, rz, sx, sy, sz)
+-- Listen for the object-mover's saved event.
+addEvent("objectMover:onSaved", true)
+addEventHandler("objectMover:onSaved", root, function(player, element, cx, cy, cz, rx, ry, rz)
 	if not isElement(element) or getElementType(element) ~= "object" then return end
 
 	local trashId = getElementData(element, "garbage:trashId")
@@ -665,10 +664,11 @@ addEventHandler("3DEditor:savedObject", root, function(sourceResource, element, 
 
 	-- Save new position to database
 	setElementFrozen(element, true)
+	setElementCollisionsEnabled(element, true)
 	dbExec(mysql:getConn(), "UPDATE garbage_locations SET x=?, y=?, z=? WHERE id=?", cx, cy, cz, trashId)
 
-	if isElement(client) then
-		outputChatBox("Saved garbage location #" .. trashId .. ".", client, 0, 255, 0)
+	if isElement(player) then
+		outputChatBox("Saved garbage location #" .. trashId .. ".", player, 0, 255, 0)
 	end
 end)
 

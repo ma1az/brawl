@@ -1,6 +1,8 @@
 <meta>
 	<info author="UG MTA Scripting Team" type="script" name="Garbage Collector" description="Garbage collector job system" />
 
+	<include resource="object-mover" />
+
 	<script src="g_garbage_config.lua" type="shared" />
 	<script src="s_garbage.lua" type="server" />
 	<script src="c_garbage.lua" type="client" />

@@ -1,0 +1,10 @@
+<meta>
+	<info author="UG MTA Scripting Team" type="script" name="Object Mover" description="Furniture-style object movement system – reusable by any resource" />
+
+	<script src="c_mover.lua" type="client" />
+	<script src="s_mover.lua" type="server" />
+
+	<export function="startObjectMove" type="client" />
+	<export function="isMoving"        type="client" />
+	<export function="stopObjectMove"  type="client" />
+</meta>

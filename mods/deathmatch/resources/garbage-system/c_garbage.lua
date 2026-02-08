@@ -274,7 +274,7 @@ addEventHandler("onClientElementDataChange", localPlayer, function(dataName)
 end)
 
 -- ============================================================
--- GM / Owner trash movement (right-click → 3DEditor)
+-- GM / Owner trash movement (right-click → object-mover)
 -- ============================================================
 
 addEventHandler("onClientClick", root, function(button, state, _, _, _, _, _, element)
@@ -284,7 +284,7 @@ addEventHandler("onClientClick", root, function(button, state, _, _, _, _, _, el
 
 	if exports.integration:isPlayerGeneralManager(localPlayer)
 		or exports.integration:isPlayerOwner(localPlayer) then
-		triggerEvent("item:move", root, element)
+		exports["object-mover"]:startObjectMove(element)
 	end
 end)
 
