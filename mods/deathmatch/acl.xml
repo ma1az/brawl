@@ -933,5 +933,6 @@
     </acl>
     <acl name="ScriptCommander">
         <right name="function.executeCommandHandler" access="true"></right>
+        <right name="function.restartResource" access="true"></right>
     </acl>
 </acl>

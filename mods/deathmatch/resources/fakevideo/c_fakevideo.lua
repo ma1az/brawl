@@ -4,8 +4,16 @@
 --Based upon iG texture-system (based on Exciter's uG/RPP texture-system), shader_cinema_fl by Ren712, and Brawl Roleplay/Cat's fixes to texture-system based on mabako-clothingstore. 
 
 --exports
-global = exports.global
-integration = exports.integration
+local function getResourceExports(resourceName)
+	local resource = getResourceFromName(resourceName)
+	if resource and getResourceState(resource) == "running" then
+		return exports[resourceName]
+	end
+	return nil
+end
+
+global = getResourceExports("global")
+integration = getResourceExports("integration")
 
 --settings
 theItemID = 165
@@ -435,7 +443,7 @@ addEventHandler('onClientResourceStart', resourceRoot, function(res)
 end)
 
 function refreshCalls(res)
-	global = exports.global
-	integration = exports.integration
+	global = getResourceExports("global")
+	integration = getResourceExports("integration")
 end
 addEventHandler("onClientResourceStart", getRootElement(), refreshCalls)

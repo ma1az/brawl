@@ -3,8 +3,16 @@
 --Created by Exciter, 23.06.2014 (DD.MM.YYYY).
 
 --exports
-global = exports.global
-integration = exports.integration
+local function getResourceExports(resourceName)
+	local resource = getResourceFromName(resourceName)
+	if resource and getResourceState(resource) == "running" then
+		return exports[resourceName]
+	end
+	return nil
+end
+
+global = getResourceExports("global")
+integration = getResourceExports("integration")
 
 --define vars
 resourceRoot = getResourceRootElement(getThisResource())
@@ -248,7 +256,7 @@ function vs1000_process()
 end
 
 function refreshCalls(res)
-	global = exports.global
-	integration = exports.integration
+	global = getResourceExports("global")
+	integration = getResourceExports("integration")
 end
 addEventHandler("onClientResourceStart", getRootElement(), refreshCalls)

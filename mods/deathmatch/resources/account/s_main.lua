@@ -38,7 +38,11 @@ function resourceStart(resource)
 
 	local appsRes = getResourceFromName("apps")
 	if appsRes then
-		restartResource(appsRes)
+		if hasObjectPermissionTo(resourceRoot, "function.restartResource", false) then
+			restartResource(appsRes)
+		else
+			outputDebugString("account: no permission to restart 'apps'", 2)
+		end
 	end
 end
 addEventHandler("onResourceStart", getResourceRootElement(getThisResource()), resourceStart)

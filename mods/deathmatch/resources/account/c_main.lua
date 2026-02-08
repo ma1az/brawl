@@ -241,7 +241,15 @@ whiteFemales = {31, 38, 39, 41, 53, 54, 77, 88, 89, 93, 129, 130, 151, 157, 172,
 asianFemales = {38, 53, 54, 88, 141, 224, 225}
 
 local screenX, screenY = guiGetScreenSize( )
-local label = guiCreateLabel( 0, 0, screenX, 15, "Brawl V"..exports.global:getScriptVersion().." based on OG", false )
+local function getGlobalScriptVersion()
+	local resource = getResourceFromName("global")
+	if resource and getResourceState(resource) == "running" then
+		return exports.global:getScriptVersion()
+	end
+	return "Unknown"
+end
+
+local label = guiCreateLabel( 0, 0, screenX, 15, "Brawl V"..getGlobalScriptVersion().." based on OG", false )
 guiSetSize( label, guiLabelGetTextExtent( label ) + 5, 14, false )
 guiSetPosition( label, screenX - guiLabelGetTextExtent( label ) - 5, screenY - 27, false )
 guiSetAlpha( label, 0.8 )

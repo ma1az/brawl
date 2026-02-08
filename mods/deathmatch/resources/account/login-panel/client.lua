@@ -20,6 +20,12 @@ local logoScale = 0.5
 local logoSize = { sw*logoScale, sw*455/1920*logoScale }
 local uFont
 
+local function safeUpdateSoundLabel(setting)
+	if type(updateSoundLabel) == "function" then
+		updateSoundLabel(setting)
+	end
+end
+
 function startLoginSound()
 	local setting = loadMusicSetting()
 	if setting == 0 then
@@ -30,7 +36,7 @@ function startLoginSound()
 		end
 		setElementData(localPlayer, "bgMusic", bgMusic , false)
 	end
-	updateSoundLabel(setting)
+	safeUpdateSoundLabel(setting)
 end
 
 function open_log_reg_pannel()
@@ -332,7 +338,7 @@ function saveMusicSetting(state)
 	xmlSaveFile(xmlFile)
 	xmlUnloadFile(xmlFile)
 
-	updateSoundLabel(state)
+	safeUpdateSoundLabel(state)
 end
 
 function loadMusicSetting()
