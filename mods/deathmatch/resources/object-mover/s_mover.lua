@@ -15,6 +15,11 @@ end)
 -- tells us.  We forward a custom event so the calling resource can react.
 addEvent("objectMover:saved", true)
 addEventHandler("objectMover:saved", root, function(object, x, y, z, rx, ry, rz)
+	-- Update the server element to the exact final position
+	if isElement(object) then
+		setElementPosition(object, x, y, z)
+		setElementRotation(object, rx, ry, rz)
+	end
 	-- Forward to all listening resources (server-side)
 	triggerEvent("objectMover:onSaved", root, client, object, x, y, z, rx, ry, rz)
 end)

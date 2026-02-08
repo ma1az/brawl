@@ -117,7 +117,10 @@ local function cleanup()
 	restoreControls()
 	freeLookActive = false
 
-	-- Always hide cursor on exit so the player isn't stuck
+	-- Always hide all cursors on exit so the player isn't stuck
+	if isCursorShowing() then
+		triggerEvent("cursorHide", root)
+	end
 	showCursor(false)
 
 	activeKeys = {}
@@ -216,12 +219,15 @@ renderLoop = function()
 	if mouse2Down and not freeLookActive then
 		-- Right click pressed: hide the M-key cursor and enable free movement
 		freeLookActive = true
+		if isCursorShowing() then
+			triggerEvent("cursorHide", root)
+		end
 		showCursor(false)
 		unlockMovementControls()
 	elseif not mouse2Down and freeLookActive then
 		-- Right click released: restore the M-key cursor and lock controls
 		freeLookActive = false
-		showCursor(true)
+		triggerEvent("cursorShow", root)
 		lockEditingControls()
 	end
 
@@ -494,7 +500,12 @@ function startObjectMove(object, options)
 	-- Lock controls for editing
 	lockEditingControls()
 
-	-- Don't touch cursor — we use the M-key cursor from the account resource
+	-- Hide the M-key cursor by telling the account resource to cancel its own cursor
+	-- (MTA cursor is per-resource, so we must ask the account resource to hide its own)
+	if isCursorShowing() then
+		triggerEvent("cursorHide", root)
+	end
+	showCursor(false)
 
 	addEventHandler("onClientRender", root, renderLoop)
 	addEventHandler("onClientKey",    root, keyHandler)

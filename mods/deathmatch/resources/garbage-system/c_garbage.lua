@@ -282,6 +282,9 @@ addEventHandler("onClientClick", root, function(button, state, _, _, _, _, _, el
 	if not isElement(element) or getElementType(element) ~= "object" then return end
 	if not getElementData(element, "garbage:trashId") then return end
 
+	-- Don't restart the mover if already editing (right-click is also free-look)
+	if exports["object-mover"]:isMoving() then return end
+
 	if exports.integration:isPlayerGeneralManager(localPlayer)
 		or exports.integration:isPlayerOwner(localPlayer) then
 		exports["object-mover"]:startObjectMove(element)
