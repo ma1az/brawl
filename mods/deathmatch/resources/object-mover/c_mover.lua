@@ -500,12 +500,11 @@ function startObjectMove(object, options)
 	-- Lock controls for editing
 	lockEditingControls()
 
-	-- Hide the M-key cursor by telling the account resource to cancel its own cursor
-	-- (MTA cursor is per-resource, so we must ask the account resource to hide its own)
-	if isCursorShowing() then
-		triggerEvent("cursorHide", root)
-	end
-	showCursor(false)
+	-- Show the cursor so the user can immediately interact with the editor
+	-- (left-click to cancel, right-click-hold for free-look).
+	-- This ensures the cursor is visible regardless of how editing was started
+	-- (right-click on object vs triggered event).
+	triggerEvent("cursorShow", root)
 
 	addEventHandler("onClientRender", root, renderLoop)
 	addEventHandler("onClientKey",    root, keyHandler)
