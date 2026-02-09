@@ -158,7 +158,18 @@ function dropItem(itemID, x, y, z, ammo, keepammo, cancelAnim)
 
 	if not ammo then
 		local itemSlot = itemID
-		local itemID, itemValue, itemIndex, itemProtected, metadata = unpack( getItems( source )[ itemSlot ] )
+
+		-- Ensure items are loaded before accessing them
+		loadItems(source)
+
+		local items = getItems( source )
+		if not items or not items[ itemSlot ] then
+			outputDebugString("[ITEM-SYSTEM] dropItem: invalid slot " .. tostring(itemSlot) .. " for player " .. getPlayerName(source) .. " (items count: " .. tostring(items and #items or 0) .. ")", 2)
+			triggerClientEvent( source, "finishItemDrop", source )
+			return false
+		end
+
+		local itemID, itemValue, itemIndex, itemProtected, metadata = unpack( items[ itemSlot ] )
 
 		--ANTI ALT-ALT
 		if not exports.global:isStaffOnDuty(source) then
@@ -375,7 +386,7 @@ function dropItem(itemID, x, y, z, ammo, keepammo, cancelAnim)
 					modelid = 1271
 				end
 
-				local obj = exports['item-world']:createItem(id, itemID, itemValue, modelid, x, y, z + zoffset - 0.05, rx, ry, rz+rz2)
+				local obj = exports['item-world']:createItem(id, itemID, itemValue, modelid, x, y, z + zoffset - 0.05, rx, ry, rz+rz2, interior, dimension)
 
 				if not isElement(obj) then
 					-- Object creation failed: rollback DB insert and inform the player
@@ -387,9 +398,6 @@ function dropItem(itemID, x, y, z, ammo, keepammo, cancelAnim)
 				end
 
 				exports.pool:allocateElement(obj)
-
-				setElementInterior(obj, interior)
-				setElementDimension(obj, dimension)
 
 				if (itemID==76) then
 					moveObject(obj, 200, x, y, z + zoffset, 90, 0, 0)
@@ -504,7 +512,7 @@ function dropItem(itemID, x, y, z, ammo, keepammo, cancelAnim)
 					modelid = weaponmodels[itemID] or 2969
 				end
 
-				local obj = exports['item-world']:createItem(id, -itemID, ammo, modelid, x, y, z - 0.4, 75, -10, rz2)
+				local obj = exports['item-world']:createItem(id, -itemID, ammo, modelid, x, y, z - 0.4, 75, -10, rz2, interior, dimension)
 
 				if not isElement(obj) then
 					-- Object creation failed: rollback DB insert and restore weapon
@@ -517,9 +525,6 @@ function dropItem(itemID, x, y, z, ammo, keepammo, cancelAnim)
 				end
 
 				exports.pool:allocateElement(obj)
-
-				setElementInterior(obj, interior)
-				setElementDimension(obj, dimension)
 
 				moveObject(obj, 200, x, y, z+0.1)
 

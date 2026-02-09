@@ -8,9 +8,28 @@
 ]]
 
 items = exports['item-system']
-function createItem(id, itemID, itemValue, ...)
-	local o = createObject(...)
+function createItem(id, itemID, itemValue, modelid, cx, cy, cz, crx, cry, crz, optInterior, optDimension)
+	modelid = tonumber(modelid) or 1271
+	cx, cy, cz = tonumber(cx), tonumber(cy), tonumber(cz)
+	crx, cry, crz = tonumber(crx) or 0, tonumber(cry) or 0, tonumber(crz) or 0
+
+	if not (cx and cy and cz) then
+		outputDebugString("[ITEM-WORLD] createItem: invalid coordinates for id=" .. tostring(id) .. " itemID=" .. tostring(itemID), 2)
+		return false
+	end
+
+	local o = createObject(modelid, cx, cy, cz, crx, cry, crz)
+	if not o and modelid ~= 1271 then
+		outputDebugString("[ITEM-WORLD] createItem: createObject failed for model=" .. tostring(modelid) .. ", using fallback 1271 (id=" .. tostring(id) .. ", itemID=" .. tostring(itemID) .. ")", 2)
+		o = createObject(1271, cx, cy, cz, crx, cry, crz)
+	end
 	if o then
+		-- Set interior and dimension immediately after creation, before
+		-- MTA streams the element to any clients, to prevent the object
+		-- being briefly invisible in the wrong dimension/interior.
+		if optInterior ~= nil then setElementInterior(o, optInterior) end
+		if optDimension ~= nil then setElementDimension(o, optDimension) end
+
 		anticheat:changeProtectedElementDataEx(o, "id", id)
 		anticheat:changeProtectedElementDataEx(o, "itemID", itemID)
 		anticheat:changeProtectedElementDataEx(o, "itemValue", itemValue, itemValue ~= 1)

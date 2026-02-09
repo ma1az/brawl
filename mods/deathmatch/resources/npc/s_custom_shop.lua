@@ -589,10 +589,8 @@ function shopLeaveNoteOnLeave(shopElement, content)
 	local insert = mysql:query_free("INSERT INTO `worlditems` SET `id` = '"..tostring(id).."', `itemid`='"..tostring(itemID).."',`itemvalue`='"..tostring(itemValue):gsub("'","''").."', `x`='"..tostring(x).."', `y`='"..tostring(y).."', `z`='"..tostring(z).."', `dimension`='"..tostring(dimension).."', `interior`='"..tostring(interior).."', `rz`='"..tostring(rz2).."', `creator`='"..tostring(creator).."' ") or false
 
 	if insert then
-		local obj = exports["item-world"]:createItem(id, itemID, itemValue, modelid, x, y, z + ( zoffset or 0 ), rx, ry, rz+rz2)
+		local obj = exports["item-world"]:createItem(id, itemID, itemValue, modelid, x, y, z + ( zoffset or 0 ), rx, ry, rz+rz2, interior, dimension)
 		exports.pool:allocateElement(obj)
-		setElementDimension(obj, dimension)
-		setElementInterior(obj, interior)
 		setElementData(obj, "creator", creator, false)
 	end
 end

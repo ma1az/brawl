@@ -118,7 +118,7 @@ local function unsubscribeChanges( element )
 end
 
 addEvent( "unsubscribeFromInventoryChanges", true )
-addEventHandler( "unsubscribeFromInventoryChanges", getRootElement(), subscribeChanges )
+addEventHandler( "unsubscribeFromInventoryChanges", getRootElement(), unsubscribeChanges )
 
 -- returns the 'owner' column content
 local function getID(element)

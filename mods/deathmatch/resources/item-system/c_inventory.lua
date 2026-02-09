@@ -37,6 +37,7 @@ local show = false -- defines wherever to show the inventory or not
 
 local clickDown = false
 waitingForItemDrop = false
+local waitingForItemDropTick = 0
 local hoverElement = false
 
 local hoverItemSlot = false
@@ -656,6 +657,12 @@ addEventHandler( "recieveItems", getRootElement( ),
 
 addEventHandler( "onClientClick", getRootElement( ),
 	function( button, state, cursorX, cursorY, worldX, worldY, worldZ )
+		-- Safety timeout: if waitingForItemDrop has been stuck for over 5 seconds, force reset
+		if waitingForItemDrop and (getTickCount() - waitingForItemDropTick > 5000) then
+			outputDebugString("[ITEM-SYSTEM] waitingForItemDrop timeout - force resetting", 2)
+			waitingForItemDrop = false
+			inventory = false
+		end
 		if not waitingForItemDrop then
 			if button == "left" or ( button == "middle" and exports.integration:isPlayerTrialAdmin( getLocalPlayer( ) ) ) then
 				if button == "left" and ( hoverItemSlot or clickItemSlot ) then
@@ -708,10 +715,12 @@ addEventHandler( "onClientClick", getRootElement( ),
 												outputChatBox( "You have too much stuff in your inventory.", 255, 0, 0 )
 											else
 												waitingForItemDrop = true
+												waitingForItemDropTick = getTickCount()
 												triggerServerEvent( "dropItem", localPlayer, clickItemSlot.id, worldX, worldY, worldZ )
 											end
 										elseif itemID == -100 then
 											waitingForItemDrop = true
+											waitingForItemDropTick = getTickCount()
 											triggerServerEvent( "dropItem", localPlayer, 100, worldX, worldY, worldZ, savedArmor )
 										end
 									elseif hoverElement then
@@ -720,6 +729,7 @@ addEventHandler( "onClientClick", getRootElement( ),
 											triggerServerEvent("xmas:useChristmasLotteryTicket", localPlayer, hoverElement, clickItemSlot.id)
 										elseif itemID > 0 then
 											waitingForItemDrop = true
+											waitingForItemDropTick = getTickCount()
 											triggerServerEvent( "moveToElement", localPlayer, hoverElement, clickItemSlot.id, nil, "finishItemDrop" )
 										elseif itemID == -100 then
 											triggerServerEvent( "moveToElement", localPlayer, hoverElement, clickItemSlot.id, true, "finishItemDrop" )
@@ -762,9 +772,11 @@ addEventHandler( "onClientClick", getRootElement( ),
 								
 								if itemID > 0 then
 									waitingForItemDrop = true
+									waitingForItemDropTick = getTickCount()
 									triggerServerEvent( "dropItem", localPlayer, clickItemSlot.id, x, y, z )
 								elseif itemID == -100 then
 									waitingForItemDrop = true
+									waitingForItemDropTick = getTickCount()
 									triggerServerEvent( "dropItem", localPlayer, 100, x, y, z, savedArmor )
 								else
 									-- weapon
@@ -773,6 +785,7 @@ addEventHandler( "onClientClick", getRootElement( ),
 										openWeaponDropGUI(-itemID, itemValue, x, y, z)
 									else
 										waitingForItemDrop = true
+										waitingForItemDropTick = getTickCount()
 										triggerServerEvent( "dropItem", localPlayer, -itemID, x, y, z, itemValue )
 									end
 								end

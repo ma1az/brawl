@@ -16,7 +16,7 @@ function spawnItem (thePlayer, targetPlayerID, itemID, itemValue )
 	end
 
 	if targetPlayer then
-		local success = giveItem(targetPlayer, tonumber(itemID), tostring(itemValue))
+		local success = giveItem(targetPlayer, tonumber(itemID), tostring(itemValue), nil, true)
 		if success then
 			outputChatBox("Spawned item " .. itemID .. " for " .. getPlayerName(targetPlayer) .. ".", thePlayer, 0, 255, 0)
 		else

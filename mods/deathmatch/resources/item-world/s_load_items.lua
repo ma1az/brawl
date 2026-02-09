@@ -40,10 +40,8 @@ function loadOneWorldItem(row)
 				modelid = weaponmodels[itemID]
 			end
 		
-			local obj = createItem(id, -itemID, itemValue, modelid, x, y, z - 0.1, 75, -10, rz2)
+			local obj = createItem(id, -itemID, itemValue, modelid, x, y, z - 0.1, 75, -10, rz2, interior, dimension)
 			exports.pool:allocateElement(obj)
-			setElementDimension(obj, dimension)
-			setElementInterior(obj, interior)
 			setElementData(obj, "creator", creator)
 			setElementData(obj, "createdDate", createdDate)
 			
@@ -65,12 +63,10 @@ function loadOneWorldItem(row)
 			if useExactValues ~= 1 then
 				rx, ry, rz, zoffset = exports['item-system']:getItemRotInfo(itemID)
 			end
-			local obj = createItem(id, itemID, itemValue, modelid, x, y, z + ( zoffset or 0 ), rx+rx2, ry+ry2, rz+rz2)
+			local obj = createItem(id, itemID, itemValue, modelid, x, y, z + ( zoffset or 0 ), rx+rx2, ry+ry2, rz+rz2, interior, dimension)
 			
 			if isElement(obj) then
 				exports.pool:allocateElement(obj, id, true)
-				setElementDimension(obj, dimension)
-				setElementInterior(obj, interior)
 				setElementData(obj, "creator", creator)
 				setElementData(obj, "createdDate", createdDate)
 				

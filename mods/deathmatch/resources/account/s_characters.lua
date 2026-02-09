@@ -183,7 +183,7 @@ function spawnCharacter(characterID, remoteAccountID, theAdmin, targetAccountNam
         setElementDataEx(client, "maxvehicles", tonumber(characterData["maxvehicles"]))
         setElementDataEx(client, "maxinteriors", tonumber(characterData["maxinteriors"]))
         --DATE OF BIRTH
-        setElementDataEx(client, "age", tonumber(characterData["dob_age"]))
+        setElementDataEx(client, "age", tonumber(characterData["dob_age"]), true)
         setElementDataEx(client, "month", tonumber(characterData["dob_month"]))
         setElementDataEx(client, "day", tonumber(characterData["dob_day"]))
         setElementDataEx(client, "year", tonumber(characterData["dob_year"]))
